@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>奥群育种系统</title>
+</head>
+<script src="ace1.4/components/bootstrap/dist/js/bootstrap.js"></script>
+<link rel="stylesheet" href="ace1.4/assets/css/bootstrap.css"/>
+<link rel="stylesheet" href="ace1.4/components/font-awesome/css/font-awesome.css"/>
+<link rel="stylesheet" href="css/login1.css"/>
+<!-- text fonts -->
+<link rel="stylesheet" href="ace1.4/assets/css/ace-fonts.css"/>
+<!-- ace styles -->
+<link rel="stylesheet" href="ace1.4/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+<script src="ace1.4/components/jquery.1x/dist/jquery.min.js"></script>
+<script src="ace1.4/components/layer/layer.js"></script>
+<script src="js/common.js"></script>
+<body style="background: url(img/login.jpg ) no-repeat">
+<div >
+    <center>
+        <h1 class="text-primary white" style="color: white;"><i class="fa fa-binoculars"></i>
+            奥群物联网育种管理系统</h1>
+    </center>
+</div>
+<div class="col-sm-12 col-xs-12 col-md-12">
+    <div class=" col-md-3 col-sm-6 col-sm-offset-7" style="background-color: white;margin-top: 65px; width: 350px;">
+        <div class="widget-main">
+            <h4 class="header blue lighter bigger">
+                &nbsp;<i class="fa fa-coffee green"></i>
+                请输入您的登陆信息
+            </h4>
+            <div class="space-6"></div>
+            <form action="user_login.htm" method='post'>
+                <fieldset>
+                    <label class="block clearfix">
+                                    <span class="block input-icon input-icon-right">
+                                       <input type="text" placeholder="账号" class="form-control"
+                                              name="username" id="phone"/>
+                                        <i class="ace-icon fa fa-user"></i>
+                                    </span>
+                    </label>
+                    <label class="block clearfix">
+                                    <span class="block input-icon input-icon-right">
+                                        <input type="password" placeholder="密码" class="form-control"
+                                               name="password"/>
+                                        <i class="ace-icon fa fa-lock"></i>
+                                    </span>
+                    </label>
+                    <div class="block clearfix" style="clear:both;" >
+                        <center>
+                            <input type="button" value="提交" class="width-35 pull-right btn btn-sm btn-primary">
+                        </center>
+                    </div>
+                    <div class="space-4"></div>
+                </fieldset>
+            </form>
+
+            <div class="red center">
+            </div>
+        </div>
+        <div class="toolbar clearfix" style="border-top: 1px solid #d5e3ef;padding-top: 5px;padding-bottom: 20px;">
+            <div>
+                <center>
+                    <img src="img/apk.png" height="150" width="150"/>
+                    <div>扫码下载APP</div>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+       $("input[type=button]").click(function () {
+    // function tj() {
+        $.ajax({
+            url: getUrl("auth/token"),
+            data: $("form").serialize(),
+            timeout: 10000,
+            type: "post",
+            success: function (data) {
+                var d = JSON.stringify(data.message);
+                if(d=='101'){
+                    msg("该用户已注销")
+                }else{
+                    setAuthorization(data.token);//设置权限
+                    localStorage.userInfo = JSON.stringify(data.user);
+                    po(getUrl("pvg/list"), function (data) {
+                        localStorage.pvgs = JSON.stringify(data);
+                        location.href = "index.html";
+                    })
+                }
+            },
+            complete: function (xhr, textStatus) {
+                if (xhr.status == 401) {
+                    msg("账号或者密码错误");
+                } else {
+                    // alert("网络出现问题");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (textStatus == "timeout") {
+                    msg("加载超时，请重试");
+                }
+            }
+        })
+    // }
+    })
+       //回车提交事件
+       $("body").keydown(function() {
+           if (event.keyCode == "13") {//keyCode=13是回车键
+               $("input[type=button]").click();
+           }
+       });
+</script>
+</body>
+</html>

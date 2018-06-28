@@ -1,0 +1,178 @@
+<title>添加冻胚编码登记</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">冻胚编码登记</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="breed">供对应品种</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-6" name="breed.id" required
+                                                        id="breed">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="breed in data1" :value="breed.id">
+                                                        {{breed.breedName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="name">编码编号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input name="prefix" placeholder="前缀" style="padding:5px;" alnum
+                                                       :value="data.prefix" type="text" class="col-xs-10 col-sm-1"
+                                                       required maxlength="8" onchange="count()"/>
+                                                <input name="start" :value="data.start" type="text"
+                                                       placeholder="开始号"
+                                                       class="col-xs-10 col-sm-2" required maxlength="6" digits="true"
+                                                       onchange="count()"/>
+                                                <input name="number" :value="data.number" type="text" placeholder="数量"
+                                                       class="col-xs-10 col-sm-3" required digits="true" maxlength="3" max="99"
+                                                       onchange="count()"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="end">结束号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="end" id="end" class="col-xs-12 col-sm-6"
+                                                     maxlength="20" readonly="readonly"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <center>
+                                <button class="btn btn-info add"  onclick="tj()" type="button">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>提交</span>
+                                </button>
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-prev" type="reset" id="resetBtn" v-if="data.id==null">
+                                    <i class="fa fa-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.load("codeRegister/one/", getPama());
+        vue.loadCompany();
+        vue.loadPama1('customer/all');
+        vue.loadPama('breed/all');
+        // setPama1("embryoRegistration/adds");//为表单传值
+        // setPama2("#page/codeRegistration/list");//设置提交数据完成的跳转界面
+    })
+    function count() {
+
+        var s=$("input[name=start]").val().length
+        var endc=Number($("input[name='start']").val()) + Number($("input[name='number']").val()) - 1
+        var end="000000000"+endc
+        if($("input[name='number']").val().length!=0){
+            $("input[name=end]").val($("input[name=prefix]").val()+end.substring(end.length-s))
+        }
+    }
+    //检查校验
+    //     function check(){
+    //         if ($(".myform").valid()) {
+    //
+    //             po(getUrl("embryoRegistration/addsVerify"), $(".myform").serialize(), function (checkcode) {
+    //                 var content=""
+    //                 $.each(checkcode, function (idx, obj) {
+    //                     if(this.code!=undefined){
+    //                         content+="<span class='col-sm-4' style='border:1px solid #ccc;text-align=center'>"
+    //                         content+=this.code
+    //                         content+="</span>"
+    //                     }
+    //
+    //                 });
+    //                 if(checkcode.length>0){
+    //                     layer.open({
+    //                         type: 1,
+    //                         title: '错误数据',
+    //                         area: ['300px', '200px'],
+    //                         shadeClose: true,
+    //                         content:content
+    //                     });
+    //                 }
+    //                 else{
+    //                     msg("可以添加");
+    //                     $(".add").attr('disabled',false);
+    //
+    //                 }
+    //             });
+    //         }
+    //     }
+        function tj(){
+            if ($(".myform").valid()) {
+
+                po(getUrl("embryoRegistration/addsVerify"), $(".myform").serialize(), function (checkcode) {
+                    var content=""
+                    $.each(checkcode, function (idx, obj) {
+                        if(this.code!=undefined){
+                            content+="<span class='col-sm-4' style='border:1px solid #ccc;text-align=center'>"
+                            content+=this.code
+                            content+="</span>"
+                        }
+
+                    });
+                    if(checkcode.length>0){
+                        layer.open({
+                            type: 1,
+                            title: '错误数据',
+                            area: ['300px', '200px'],
+                            shadeClose: true,
+                            content:content
+                        });
+                    }
+                    else{
+                        $(".add i").removeClass().addClass("fa fa-spin fa-spinner  bigger-110");
+                        $(".add span").html("正在提交...");
+                        $(".add").attr('disabled', true);
+                        po(getUrl('embryoRegistration/adds'), $(".myform").serialize(), function (data) {
+                            if(data.code=='100'){
+                                location.href='#page/codeRegistration/list'
+                            }
+                        });
+                    }
+                });
+
+            }
+        }
+
+</script>

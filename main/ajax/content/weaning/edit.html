@@ -1,0 +1,115 @@
+<title>修改断奶</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">断奶信息</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <input type="hidden" name="recorder" v-model="data2.cname">
+                        <input type="hidden" name="org.id" value="1">
+                        <input type="hidden" name="id">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="userName">母羊耳号</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="damCode" id="damCode" v-if="data.id!=null" v-model="data.dam.code"
+                                                           class="col-xs-12 col-sm-6 " required maxlength="14" readonly="readonly"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="userName">断奶日期</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="weaningDate" id="weaningDate" v-model="data.weaningDate"
+                                                           class="col-xs-12 col-sm-6 datep" required maxlength="14"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="paddock">转至圈舍</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-xs-12 col-sm-6" name="paddock.id" id="paddock.id">
+                                                        <option value="">不转圈</option>
+                                                        <option v-for="paddockType in data3" :value="paddockType.id">
+                                                            {{paddockType.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                        <button class="btn btn-info" type="button" onclick="tj()">
+                            <i class="fa fa-check bigger-110"></i>
+                            <span>提交</span>
+                        </button>
+                        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                        <button class="btn btn-prev" type="reset">
+                            <i class="fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    var editId=localStorage.editId;
+    jQuery(function () {
+        vue.load("weaning/one/", editId);
+        vue.loadCompany();
+        vue.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+    })
+
+    function tj(){
+        $("input[name=id]").val(editId);
+        $.post(base_url + "weaning/updateVerify" ,$(".myform").serialize(), function (data1) {
+            //若果修改成功跳转页面
+            if (data1.code == "101") {
+                msg(data1.msg);
+            }else{
+                $.post(base_url + "weaning/update" ,$(".myform").serialize(), function (data1) {
+                    //若果修改成功跳转页面
+                    if (data1.code == "100") {
+                        msg("修改成功")
+                        to("#page/weaning/list")
+                    }
+                })
+            }
+        })
+
+    }
+</script>

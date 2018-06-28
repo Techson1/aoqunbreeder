@@ -1,0 +1,189 @@
+<title>羊只基础信息</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">基础信息</h4>
+                </div>
+                <div class="widget-body" style="height: 300px;">
+                    <div class="widget-main">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <div class="col-xs-12" style="width: 900px;">
+                                            <h5 style="margin-left: 200px;font-weight: bold">耳号：{{data1.base.code}}</h5>
+                                            <div class="col-xs-6" style="height: 30px;">品种：{{data1.base.breed.breedName}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">定级：{{data1.base.rank==null?'':data1.base.rank.name}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">性别：<span v-if="data1.base.sex=='1'">公羊</span><span v-if="data1.base.sex=='2'">母羊</span></div>
+                                            <div class="col-xs-6" style="height: 30px;">蹄颜色：{{data1.looks==null?'':data1.looks.footColor}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">出生日期：{{data1.base.birthDay.substring(0,10)}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">嘴颜色：{{data1.looks==null?'':data1.looks.mouthColor}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">繁殖方式：未开发
+                                                <!--<span v-if="data1.base.breedingState=='&#45;&#45;'">无状态</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='10'">空怀</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='111'">一配</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='112'">二配</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='113'">三配</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='114'">四配</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='115'">五配</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='116'">六配</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='117'">七配</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='118'">八配</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='119'">九配</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='1110'">十配</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='131'">未孕一</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='132'">未孕二</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='133'">未孕三</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='134'">未孕四</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='135'">未孕五</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='136'">未孕六</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='137'">未孕七</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='138'">未孕八</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='139'">未孕九</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='1310'">未孕十</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='141'">妊娠一</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='142'">妊娠二</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='143'">妊娠三</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='144'">妊娠四</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='145'">妊娠五</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='146'">妊娠六</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='147'">妊娠七</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='148'">妊娠八</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='149'">妊娠九</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='1410'">妊娠十</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='15'">哺乳</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='20'">供体准备</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='21'">受体准备</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='22'">AI</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='23'">供体恢复期</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='24'">已移植</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='25'">未调教</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='26'">好</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='27'">中</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='28'">差</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='29'">不爬羊</span>-->
+                                                <!--<span v-if="data1.base.breedingState=='30'">本交成功</span>-->
+                                            </div>
+                                            <div class="col-xs-6" style="height: 30px;">毛发：{{data1.looks==null?'':data1.looks.hair}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">同胎数：{{data1.base.theSameFetus}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">角：{{data1.looks==null?'':data1.looks.horn}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">出生重：{{data1.base.initialWeigh}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">脂肪分布：{{data1.looks==null?'':data1.looks.fats}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">断奶日龄：</div>
+                                            <div class="col-xs-6" style="height: 30px;">牙齿咬合：{{data1.looks==null?'':data1.looks.tooth}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">断奶重：{{data1.base.weaningWeight}}</div>
+                                            <div class="col-xs-6" style="height: 30px;">来源：
+                                                <span v-if="data1.base.isOutsourcing==1">
+                                                     <span v-if="data1.base.sourceType=='1'">自产</span>
+                                                    <span v-if="data1.base.sourceType=='2'">外购</span>
+                                                    <span v-if="data1.base.source!=null">
+                                                    {{data1.base.source.brief}}
+                                                    </span>
+                                                    <span v-if="data1.base.customer!=null">
+                                                    {{data1.base.customer.firstName}}
+                                                    </span>
+                                                </span>
+                                                <span v-else>
+                                                    <span v-if="data1.base.org!=null">{{data1.base.org.brief}}</span>
+                                                </span>
+
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-header widget-header-blue widget-header-flat" style="border-top: 1px solid #ccc">
+                    <h4 class="widget-title lighter">系谱信息</h4>
+                </div>
+                <div class="widget-body" style="height: 350px;">
+                    <div class="widget-main">
+                        <div >
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <div class="col-xs-12" style="margin-top: 80px;">
+                                        <div style="height: 180px;line-height: 180px;float: left;margin-top: 2px;"><span>{{data1.base.code}}</span></div>
+                                        <div  style="height: 180px;line-height: 180px;padding-left: 10px;float:left;">—</div>
+                                        <div style="border:1px solid black;border-right: 0px;width: 30px;height: 180px;float:left;"></div>
+                                        <div style="float: left">
+                                            <div style="margin-top: -10px;">&nbsp;&nbsp;父号：{{data1.base.sire==null?'暂无':data1.base.sire.code}}
+                                                <div style="margin-left: 155px;margin-top: -10px;">
+                                                    <div  style="height: 100px;line-height: 100px;padding-left: 10px;float:left;margin-top:-50px;">—</div>
+                                                    <div style="border:1px solid black;border-right: 0px;width: 30px;height: 100px;float:left;margin-top: -50px;"></div>
+                                                    <div style="float: left;margin-top: -50px;">
+                                                        <div style="margin-top: -10px;">&nbsp;&nbsp;祖父：<span v-if="data1.base.sire!=null">{{data1.base.sire.sire==null?'暂无':data1.base.sire.sire.code}}</span>
+                                                            <div style="margin-left: 180px;margin-top: -10px;">
+                                                                <div  style="height: 50px;line-height: 50px;padding-left: 10px;float:left;margin-top: -25px;">—</div>
+                                                                <div style="border:1px solid black;border-right: 0px;width: 30px;height: 50px;float:left;margin-top: -25px;"></div>
+                                                                <div style="float: left;margin-top: -25px;">
+                                                                    <div style="margin-top: -10px;">&nbsp;&nbsp;曾祖父：<span v-if="data1.base.sire!=null"><span v-if="data1.base.sire.sire!=null">{{data1.base.sire.sire.sire==null?'暂无':data1.base.sire.sire.sire.code}}</span></span></div>
+                                                                    <div style="margin-top: 30px;">&nbsp;&nbsp;曾祖母：<span v-if="data1.base.sire!=null"><span v-if="data1.base.sire.sire!=null">{{data1.base.sire.sire.dam==null?'暂无':data1.base.sire.sire.dam.code}}</span></span></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div style="margin-top: 80px;">&nbsp;&nbsp;祖母：<span v-if="data1.base.sire!=null">{{data1.base.sire.dam==null?'暂无':data1.base.sire.dam.code}}</span>
+                                                            <div style="margin-left: 180px;margin-top: -10px;">
+                                                                <div  style="height: 50px;line-height: 50px;padding-left: 10px;float:left;margin-top: -25px;">—</div>
+                                                                <div style="border:1px solid black;border-right: 0px;width: 30px;height: 50px;float:left;margin-top: -25px;"></div>
+                                                                <div style="float: left;margin-top: -25px;">
+                                                                    <div style="margin-top: -10px;">&nbsp;&nbsp;祖母父：<span v-if="data1.base.sire!=null"><span v-if="data1.base.sire.dam!=null">{{data1.base.sire.dam.sire==null?'暂无':data1.base.sire.dam.sire.code}}</span></span></div>
+                                                                    <div style="margin-top: 30px;">&nbsp;&nbsp;祖母母：<span v-if="data1.base.sire!=null"><span v-if="data1.base.sire.dam!=null">{{data1.base.sire.dam.dam==null?'暂无':data1.base.sire.dam.dam.code}}</span></span></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="margin-top: 160px;">&nbsp;&nbsp;母号：{{data1.base.dam==null?'暂无':data1.base.dam.code}}
+                                                <div style="margin-left: 155px;margin-top: -10px;">
+                                                    <div  style="height: 100px;line-height: 100px;padding-left: 10px;float:left;margin-top:-50px;">—</div>
+                                                    <div style="border:1px solid black;border-right: 0px;width: 30px;height: 100px;float:left;margin-top: -50px;"></div>
+                                                    <div style="float: left;margin-top: -50px;">
+                                                        <div style="margin-top: -10px;">&nbsp;&nbsp;外祖父：<span v-if="data1.base.dam!=null">{{data1.base.dam.sire==null?'暂无':data1.base.dam.sire.code}}</span>
+                                                            <div style="margin-left: 180px;margin-top: -10px;">
+                                                                <div  style="height: 50px;line-height: 50px;padding-left: 10px;float:left;margin-top: -25px;">—</div>
+                                                                <div style="border:1px solid black;border-right: 0px;width: 30px;height: 50px;float:left;margin-top: -25px;"></div>
+                                                                <div style="float: left;margin-top: -25px;">
+                                                                    <div style="margin-top: -10px;">&nbsp;&nbsp;外曾祖父：<span v-if="data1.base.dam!=null"><span v-if="data1.base.dam.sire!=null">{{data1.base.dam.sire.sire==null?'暂无':data1.base.dam.sire.sire.code}}</span></span></div>
+                                                                    <div style="margin-top: 30px;">&nbsp;&nbsp;外曾祖母：<span v-if="data1.base.dam!=null"><span v-if="data1.base.dam.sire!=null">{{data1.base.dam.sire.dam==null?'暂无':data1.base.dam.sire.dam.code}}</span></span></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div style="margin-top: 80px;">&nbsp;&nbsp;外祖母：<span v-if="data1.base.dam!=null">{{data1.base.dam.dam==null?'暂无':data1.base.dam.dam.code}}</span>
+                                                            <div style="margin-left: 180px;margin-top: -10px;">
+                                                                <div  style="height: 50px;line-height: 50px;padding-left: 10px;float:left;margin-top: -25px;">—</div>
+                                                                <div style="border:1px solid black;border-right: 0px;width: 30px;height: 50px;float:left;margin-top: -25px;"></div>
+                                                                <div style="float: left;margin-top: -25px;">
+                                                                    <div style="margin-top: -10px;">&nbsp;&nbsp;外祖母父：<span v-if="data1.base.dam!=null"><span v-if="data1.base.dam.dam!=null">{{data1.base.dam.dam.sire==null?'暂无':data1.base.dam.dam.sire.code}}</span></span></div>
+                                                                    <div style="margin-top: 30px;">&nbsp;&nbsp;外祖母母：<span v-if="data1.base.dam!=null"><span v-if="data1.base.dam.dam!=null">{{data1.base.dam.dam.sire==null?'暂无':data1.base.dam.dam.dam.code}}</span></span></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<script src="js/vue-one.js"></script>
+<script  type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.loadPama('baseInfo/baseDisposal?code='+localStorage.code);
+    })
+</script>

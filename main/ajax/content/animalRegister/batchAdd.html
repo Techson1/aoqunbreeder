@@ -1,0 +1,269 @@
+<title>批量添加羊只登记</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">羊只登记</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="space-2"></div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="code">起始耳号</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <input name="prefix" placeholder="前缀" style="padding:5px;" alnum
+                                                       :value="data.prefix"
+                                                       type="text" class="col-xs-10 col-sm-2" required maxlength="8"/>
+                                                <input name="codes" type="text" id="codes"
+                                                       placeholder="开始号" class="col-xs-10 col-sm-3" required
+                                                       maxlength="6" digits="true"/>
+                                                <input name="number" type="text" placeholder="数量"
+                                                       class="col-xs-10 col-sm-2" required digits="true" maxlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="step">批量添加方式</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="step" required id="step">
+                                                    <option value="">请选择</option>
+                                                    <option value="2">顺序</option>
+                                                    <option value="1">奇数</option>
+                                                    <option value="0">偶数</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="birthDay">出生日期</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <input type="text" name="birthDay" id="birthDay"
+                                                       class="col-xs-12 col-sm-7 datep"
+                                                       required maxlength="20" v-model="data.birthDay"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="enterhDay">入场日期</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="enterhDay" id="enterhDay"
+                                                       class="col-xs-12 col-sm-7 start"
+                                                       maxlength="20" v-model="data.enterhDay"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right" for="customer">品种</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="breed.id" required
+                                                        id="breed">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="breed in data1" :value="breed.id">
+                                                        {{breed.breedName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="sex">性别</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="sex" required>
+                                                    <option value="">请选择</option>
+                                                    <option value="1" v-if="data.sex=='1'" selected="selected">公羊</option>
+                                                    <option value="1" v-else>公羊</option>
+                                                    <option value="2" v-if="data.sex=='2'" selected="selected">母羊</option>
+                                                    <option value="2" v-else>母羊</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="geneticLevel">基因等级</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="geneticLevel"
+                                                        id="geneticLevel">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">核心群</option>
+                                                    <option value="2">后备级</option>
+                                                    <option value="3">生产级</option>
+                                                    <option value="4">销售级</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="initialWeigh">出生重</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="initialWeigh" id="initialWeigh"
+                                                       class="col-xs-12 col-sm-7"
+                                                       maxlength="20" v-model="data.initialWeigh"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="paddock">圈舍</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="paddock.id"
+                                                        id="paddockType.id" required>
+                                                    <option value="">请选择</option>
+                                                    <option v-for="paddockType in data3" :value="paddockType.id">
+                                                        {{paddockType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="sourceType ">羊只来源</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-2" name="sourceType" @change="yc()"
+                                                        id="type">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">自产</option>
+                                                    <option value="2">购入</option>
+                                                </select>
+                                                <select class="col-xs-12 col-sm-5" name="source.id" id="source">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="organization in data4" :value="organization.id">
+                                                        {{organization.orgName}}
+                                                    </option>
+                                                </select>
+                                                <select class="col-xs-12 col-sm-5" name="customer.id" id="customer"
+                                                        style="display:none;">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="customer in data5" :value="customer.id">
+                                                        {{customer.firstName}}
+                                                    </option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <center>
+                                <button class="btn btn-info" onclick="tj()" type="button">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>提交</span>
+                                </button>
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-prev" type="reset" id="resetBtn" v-if="data.id==null">
+                                    <i class="fa fa-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+        jQuery.validator.addMethod("alnum", function (value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
+        }, "只能包括英文字母和数字");
+    });
+    jQuery(function () {
+        vue.loadCompany();
+        vue.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+        vue.loadPama('breed/all');
+        vue.loadPama2('organization/all');
+        vue.loadPama3('contact/findBySupplier');
+    })
+
+    //判断羊只来源显示不同数据
+    function yc() {
+        if ($("#type option:selected").text() == '自产') {
+            $("#source").show();
+            $("#customer").hide();
+            $("#customer").val("");
+        }
+        else {
+            $("#source").hide();
+            $("#customer").show();
+            $("#source").val("");
+        }
+    }
+
+    //完成提交
+    function tj() {
+        if ($(".myform").valid()) {
+            //判断批量添加方式
+            if ($("#step option:selected").text() == '奇数' && $("#codes").val() % 2 == 0) {
+                msg("开始号段该为奇数")
+                return;
+            }
+            if ($("#step option:selected").text() == '偶数' && !($("#codes").val() % 2 == 0)) {
+                msg("开始号段该为偶数")
+                return;
+            }
+            $("#breed").attr('name','breedId')
+            po(getUrl("baseInfo/registerAdds"), $(".myform").serialize(), function (data) {
+                var content = "<table style='margin-left:25px;margin-right:10px;margin-top:10px;'><thead><tr style='border:2px solid black'><th style='border:2px solid #ccc;padding:5px;text-align:center'>耳标号</th> <th style='border:2px solid #ccc;padding:5px;text-align:center'>错误原因</th></tr></thead><tbody>";
+                var isOpen = false;
+                $.each(data, function (idx, obj) {
+                    var msg = obj.msg.split(":");
+                    if (obj.code == 101 || obj.code == 102) {
+                        var tishi;
+                        obj.code==101?tishi=msg[1]:tishi="耳标号不存在，请在耳标登记中添加"
+                        content += "<tr><td style='border:2px solid #ccc;padding:5px;text-align:center'>" + msg[0] + "</td><td style='border:2px solid #ccc;padding:5px;text-align:center'  >" +tishi+ "</td></tr>";
+                        isOpen = true;
+                    }
+                });
+                content += "</tbody></table><button class='btn btn-info' style='widht:100px;height:30px;margin-left:120px;margin-top:20px;padding:1px 5px' type='button' onClick=submitT()>确认</button>";
+                if (isOpen) {
+                    layer.open({
+                        type: 1,
+                        area: ['340px', '240px'], //宽高
+                        content: content
+                    });
+                }
+                else {
+                    location.href = "#page/animalRegister/list";
+                }
+            })
+        }
+
+    }
+    function submitT(){
+        layer.closeAll();
+        location.href = "#page/animalRegister/list";
+    }
+
+</script>

@@ -1,0 +1,180 @@
+<title>体重校正数据</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>耳号</span>
+                                    <input type="text" name="base.code" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>品种</span>
+                                    <select name="base.breed.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>性别</span>
+                                    <select name="base.sex" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option value="1">公羊</option>
+                                        <option value="2">母羊</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>现在月龄</span>
+                                    <input type="text" name="monthAge" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/user/add" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-download"></i>添加到群组</a>
+                            <a href="javascript:exports('reviseWeight/export?','base.org.id')" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
+                            <ul class="pagination pull-right">
+                                <li><a>共：{{data.totalElements}}</a></li>
+                                <li><a @click="goto('0')">首页</a></li>
+                                <li :class="data.first==true?'disabled':''">
+                                    <a @click="prev">
+                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                    <a @click="goto(n-1)">{{n}}</a>
+                                </li>
+                                <li :class="data.last==true?'disabled':''">
+                                    <a @click="next">
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th  rowspan="2" class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th rowspan="2">耳号</th>
+                        <th rowspan="2">品种</th>
+                        <th rowspan="2">性别</th>
+                        <th rowspan="2">出生日期</th>
+                        <th rowspan="2">现在月龄</th>
+                        <th rowspan="2">出生重（kg）</th>
+                        <th rowspan="2">断奶日龄</th>
+                        <th rowspan="2">断奶重（kg）</th>
+                        <th colspan="12" class="center">校正重量（月龄kg）</th>
+                    </tr>
+                    <tr>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>10</th>
+                        <th>11</th>
+                        <th>12</th>
+                        <th>18</th>
+                        <th>24</th>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <tr v-for="reviseWeight in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="reviseWeight.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{reviseWeight.base.code}}</td>
+                        <td>{{reviseWeight.base.breed.breedName}}</td>
+                        <td>
+                            <span v-if="reviseWeight.base.sex=='1'">公羊</span>
+                            <span v-if="reviseWeight.base.sex=='2'">母羊</span>
+                        </td>
+                        <td>{{reviseWeight.base.birthDay==null?"":reviseWeight.base.birthDay.substring(0,10)}}</td>
+                        <td>{{reviseWeight.monthAge}}</td>
+                        <td>{{reviseWeight.base.initialWeigh}}</td>
+                        <td>{{reviseWeight.weaningAge}}</td>
+                        <td>{{reviseWeight.base.weaningWeight}}</td>
+                        <td>{{reviseWeight.threeWeight}}</td>
+                        <td>{{reviseWeight.fourWeight}}</td>
+                        <td>{{reviseWeight.fiveWeight}}</td>
+                        <td>{{reviseWeight.sixWeight}}</td>
+                        <td>{{reviseWeight.sevenWeight}}</td>
+                        <td>{{reviseWeight.eightWeight}}</td>
+                        <td>{{reviseWeight.nineWeight}}</td>
+                        <td>{{reviseWeight.tenWeight}}</td>
+                        <td>{{reviseWeight.elevenWeight}}</td>
+                        <td>{{reviseWeight.twelveWeight}}</td>
+                        <td>{{reviseWeight.eighteenWeight}}</td>
+                        <td>{{reviseWeight.twentyFourWeight}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "reviseWeight/list?base.org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all");
+            root.loadPama1("paddockType/all");
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

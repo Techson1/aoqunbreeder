@@ -1,0 +1,120 @@
+<title>饲喂记录</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <center><h1>2017-10-25饲喂记录</h1></center>
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>日期</span>
+                                    <input type="text" name="userName" value="" class="datep" placeholder="2017-10-25"
+                                           style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>圈舍</span>
+                                    <select name="accountType" style="height:25px;">
+                                        <option value="">请选择</option>
+                                        <option v-for="paddockType in data1" :value="paddockType.id">
+                                            {{paddockType.paddockTypeName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+
+                                </div>
+                                <div class="box pull-right">
+                                    <a href="#page/user/add" class="btn btn-xs btn-success add"
+                                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i>保存并锁定</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+
+                        <th>圈舍</th>
+                        <th>饲喂群组</th>
+                        <th>羊数</th>
+                        <th>配方</th>
+                        <th>饲喂量</th>
+                        <th>饲喂系数</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th rowspan="3">a1-1</th>
+                        <th>1#群组</th>
+                        <th>10</th>
+                        <th>1#配方</th>
+                        <th>20</th>
+                        <th>0.8</th>
+                        <th>
+                            <button class="btn btn-xs btn-info"
+                                    title="修改" id="xg">
+                                <i class="fa fa-edit bigger-120"></i>
+                            </button>
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <th>2#群组</th>
+                        <th>10</th>
+                        <th>2#配方</th>
+                        <th>20</th>
+                        <th>0.8</th>
+                        <th>
+                            <button class="btn btn-xs btn-info"
+                                    title="修改" id="xg">
+                                <i class="fa fa-edit bigger-120"></i>
+                            </button></th>
+                    </tr>
+                    <tr>
+                        <th>3#群组</th>
+                        <th>10</th>
+                        <th>3#配方</th>
+                        <th>20</th>
+                        <th>0.8</th>
+                        <th>
+                            <button class="btn btn-xs btn-info"
+                                    title="修改" id="xg">
+                                <i class="fa fa-edit bigger-120"></i>
+                            </button></th>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    localStorage.url_list = "user/list";
+    localStorage.url_del = "user/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("paddockType/all")
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

@@ -1,0 +1,177 @@
+<title>批次跟踪</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+
+                                <div class="box">
+                                    <span>批次名称</span> <input type="text" name="code" value=""
+                                                           style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>创建日期</span>
+                                    <input type="text" name="startDate" value="" class="datep" readonly="readonly" style="height:25px;width:107px;">&nbsp;到&nbsp;
+                                    <input type="text" name="endDate" value="" class="end" readonly="readonly" style="height:25px;width:107px;">
+                                </div>
+
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/batch/add" class="btn btn-xs btn-success add"
+                            style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 添加批次</a>
+                            <a @click="edit('#page/batch/add')" class="btn btn-xs btn-success edit"
+                               style="padding:1px 5px;border-radius:5px;"><i
+                                    class="fa fa-pencil-square-o"></i>修改</a>
+                            <a @click="del()" class="btn btn-xs btn-success del"
+                               style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i
+                                    class="fa fa-trash-o"></i>
+                                删除</a>
+                            <a @click="typeUpdate('0')" class="btn btn-xs btn-success del"
+                               style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                                结束批次</a>
+                            <a @click="typeUpdate('0')" class="btn btn-xs btn-success del"
+                               style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                                存档</a>
+                            <a @click="typeUpdate('1')" class="btn btn-xs btn-success del"
+                               style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                                可用</a>
+                            <ul class="pagination pull-right">
+                                <li><a>共：{{data.totalElements}}</a></li>
+                                <li><a @click="goto('0')">首页</a></li>
+                                <li :class="data.first==true?'disabled':''">
+                                    <a @click="prev">
+                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                    <a @click="goto(n-1)">{{n}}</a>
+                                </li>
+                                <li :class="data.last==true?'disabled':''">
+                                    <a @click="next">
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>批次名称</th>
+                        <th>批次状态</th>
+                        <th>创建日期</th>
+                        <th>只数</th>
+                        <th>零配</th>
+                        <th>1配</th>
+                        <th>2配</th>
+                        <th>3配</th>
+                        <th>4配</th>
+                        <th>5配</th>
+                        <th>NPD</th>
+                        <th>死亡</th>
+                        <th>流产</th>
+                        <th>疾病淘汰</th>
+                        <th>育种淘汰</th>
+                        <th>销售</th>
+                        <th>转场</th>
+                        <th>产羔母羊数</th>
+                        <th>产羔羊数</th>
+                        <th>产羔率</th>
+                        <th>创建人</th>
+                        <th>更新时间</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="breedingPlan in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="breedingPlan.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td><a href="#page/batch/xqadd">{{breedingPlan.name}}</a></td>
+                        <td>
+                            <span v-if="breedingPlan.flag=='1'">可用</span>
+                            <span v-if="breedingPlan.flag=='0'">存档</span>
+                        </td>
+                        <td>
+                            <span v-if="breedingPlan.damBreed!=null">{{breedingPlan.sireBreed.breedName}}</span>
+                        </td>
+                        <td>
+                            <span v-if="breedingPlan.damBreed!=null">{{breedingPlan.damBreed.breedName}}</span>
+                        </td>
+                        <td>{{breedingPlan.ctime}}</td>
+                        <!--<td>{{breedingPlan.breedingPlanDetailSires}}</td>-->
+                        <td>第二公羊</td>
+                        <td>第三公羊</td>
+                        <td>第四公羊</td>
+                        <td>{{breedingPlan.breedingPlanDetailDams.length}}</td>
+                        <td>{{breedingPlan.recorder}}</td>
+                        <td>{{breedingPlan.createdTime}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "breedingPlan/list";
+    localStorage.url_del = "breedingPlan/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all");
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

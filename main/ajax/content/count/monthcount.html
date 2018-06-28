@@ -1,0 +1,114 @@
+<title>羊只存栏月报表</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" name="org" v-if="data5.id!=null" v-model="data5.organization.id">
+                                <div class="box">
+                                    <span>查询区间</span>
+                                    <input type="text" name="startDate"  class="datep" style="height:25px;width:107px;" readonly="readonly" ondblclick="clearDate()">
+                                    <span>早-</span>
+                                    <input type="text" name="endDate"  class="end" style="height:25px;width:107px;" readonly="readonly" ondblclick="clearDate()">
+                                    <span>晚</span>
+                                </div>
+                                <div class="box">
+                                    <span>性别</span>
+                                    <select name="sex" style="height:25px;">
+                                        <!--<option value="">全部</option>-->
+                                        <option value="1">公羊</option>
+                                        <option value="2">母羊</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            onclick="search()">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                    <a href="javascript:exportsmon('onHandMonth/export?','org.id')" class="btn btn-xs btn-success add"
+                                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th rowspan="2" style="text-align: center">出生年月</th>
+                        <th rowspan="2" style="text-align: center">期初库存</th>
+                        <th colspan="4" style="text-align: center">增加</th>
+                        <th colspan="6" style="text-align: center">减少</th>
+                        <th rowspan="2" style="text-align: center">期末库存</th>
+                    </tr>
+                    <tr>
+                        <th>出生</th>
+                        <th>调拨转入</th>
+                        <th>购入</th>
+                        <th>合计</th>
+                        <th>调拨转出</th>
+                        <th>销售</th>
+                        <th>死亡</th>
+                        <th>疾病淘汰</th>
+                        <th>育种淘汰</th>
+                        <th>合计</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="onHandMonth in data1">
+                        <td>{{onHandMonth.brithday}}</td>
+                        <td>{{onHandMonth.startNum}}</td>
+                        <td>{{onHandMonth.brithdayNum}}</td>
+                        <td>{{onHandMonth.allotInNum}}</td>
+                        <td>{{onHandMonth.purchase}}</td>
+                        <td>{{onHandMonth.brithdayNum+onHandMonth.allotInNum+onHandMonth.purchase}}</td>
+                        <td>{{onHandMonth.allotOutNum}}</td>
+                        <td>{{onHandMonth.sale}}</td>
+                        <td>{{onHandMonth.death}}</td>
+                        <td>{{onHandMonth.disease}}</td>
+                        <td>{{onHandMonth.breeding}}</td>
+                        <td>{{onHandMonth.allotOutNum+onHandMonth.sale+onHandMonth.death+onHandMonth.disease+onHandMonth.breeding}}</td>
+                        <td>{{onHandMonth.endNum}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama('onHandMonth/list')
+            root.loadCompany()
+        })
+    });
+    
+    function search() {
+        po(getUrl('onHandMonth/list'), $(".searchForm").serialize(), function (data) {
+            root.data1=data;
+        });
+    }
+
+    function exportsmon(url,id) {
+        exportsUrl=url;
+        exportsorg=id;
+        alert($(".searchForm").serialize())
+        window.location.href=base_url+exportsUrl+$(".searchForm").serialize()+"&number="+$('#number').val()+'&'+exportsorg+"="+JSON.parse(localStorage.userInfo).organization.id;
+    }
+</script>
+<script src="js/base-vue.js"></script>

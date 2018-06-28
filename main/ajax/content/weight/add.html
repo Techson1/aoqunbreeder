@@ -1,0 +1,177 @@
+<title>添加体重原始数据</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">体重数据</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="earTag">耳号</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="earTag" id="earTag" required maxlength="20" v-if="data.id!=null" v-model="data.base.code" readonly="readonly"
+                                                           class="col-xs-12 col-sm-6"/>
+                                                    <input type="text" name="earTag" id="earTag" required maxlength="20" v-else
+                                                           class="col-xs-12 col-sm-6"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="weighthDate">称重日期</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="weighthDate" id="weighthDate"  :value="data.weighthDate"
+                                                           class="col-xs-12 col-sm-6 datep" required maxlength="20"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="weights">重量</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="weights" id="weights"  v-model="data.weights"  onkeypress="return noNumbers(event)"  number=true
+                                                           class="col-xs-12 col-sm-6 " required  maxlength="11">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="type">类型</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select v-if="data.id==null" name="type" class="col-xs-12 col-sm-6 ">
+                                                        <option v-if="data.type=='2'" selected="selected" value="2">断奶重</option>
+                                                        <option v-else value="2">月龄重</option>
+                                                        <option v-if="data.type=='1'" selected="selected" value="1">断奶重</option>
+                                                        <option v-else value="1">断奶重</option>
+                                                    </select>
+                                                    <select v-if="data.id!=null" name="type" class="col-xs-12 col-sm-6 ">
+                                                        <option v-if="data.type=='2'" selected="selected" value="2">月龄重</option>
+                                                        <option v-else value="2">月龄重</option>
+                                                        <option v-if="data.type=='1'" selected="selected" value="1">断奶重</option>
+                                                        <option v-else value="1">断奶重</option>
+                                                        <option v-if="data.type=='0'" selected="selected" value="0">出生重</option>
+                                                        <option v-else value="0">出生重</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                        <button class="btn btn-info"type="button" onclick="tj()">
+                            <i class="fa fa-check bigger-110"></i>
+                            <span>提交</span>
+                        </button>
+                        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                        <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                            <i class="fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.load("wigth/one/", getPama());
+        vue.loadPama('role/all');
+        vue.loadCompany();
+        //setPama1("wigth/add");//为表单传值
+        //setPama2("#page/weight/originallist");//设置提交数据完成的跳转界面
+    })
+
+	function tj(){
+		if ($(".myform").valid()) {
+                $.post(base_url + "wigth/addVerify",$(".myform").serialize(), function (message) {
+                    if (message.code == "101") {
+                        msg(message.msg)
+                    }
+                    else{
+                        if(vue.id==null){
+                            $.post(base_url+"wigth/add",$(".myform").serialize(),function(date){
+                                if(date.code=='100'){
+                                    to("#page/weight/originallist")
+                                }
+                            })
+                        }else{
+                            $.post(base_url+"wigth/update",$(".myform").serialize(),function(date){
+                                if(date.code=='100'){
+                                    to("#page/weight/originallist")
+                                }
+                            })
+                        }
+
+                    }
+                })
+            }
+	}
+
+
+    function noNumbers(e)
+    {
+        var keynum
+        var keychar
+        var numcheck
+        if(window.event) // IE
+        {
+            keynum = e.keyCode
+        }
+        else if(e.which) // Netscape/Firefox/Opera
+        {
+            keynum = e.which
+        }
+        keychar = String.fromCharCode(keynum);
+//判断是数字,且小数点后面只保留两位小数
+        if(!isNaN(keychar)){
+            var index=e.currentTarget.value.indexOf(".");
+            if(index >= 0 && e.currentTarget.value.length-index >1){
+                return false;
+            }
+            return true;
+        }
+//如果是小数点 但不能出现多个 且第一位不能是小数点
+        if("."== keychar ){
+            if(e.currentTarget.value==""){
+                return false;
+            }
+            if(e.currentTarget.value.indexOf(".") >= 0){
+                return false;
+            }
+            return true;
+        }
+        return false  ;
+    }
+</script>

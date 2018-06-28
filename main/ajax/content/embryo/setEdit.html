@@ -1,0 +1,246 @@
+<title>冲胚</title>
+<div id="app">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="operate">
+                <center><h1>冲胚、检胚</h1></center>
+                <div style="margin-top:50px;">
+					 <form class="form-horizontal myform">
+                       <input type="hidden" name="recorder" v-model="data5.cname">
+                        <input type="hidden" name="org.id" v-model="data5.organization.id">
+                        <input type="hidden" name="project.id" id="projectId" v-model="data1.id">
+                       <input type="hidden" name="id" id="id" v-model="data1.id">
+                       <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                   for="donorCode">供体耳号</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="donorCode" id="donorCode" v-model="data1.donor.code"
+                                           class="col-xs-12 col-sm-6" required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1"
+                                   for="date">冲胚日期</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="date" id="date" v-model="data1.date"
+                                           class="col-xs-12 col-sm-6 datep" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                   for="isEmbryoFlush">是否冲胚</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <div class="col-sm-3 col-xs-12"
+                                         style="padding-left:0px;padding-right:0px;">
+                                        <input name="isEmbryoFlush" type="radio" class="ace" required
+                                               id="isEmbryoFlush"
+                                               v-if="data1.isEmbryoFlush=='1'" checked="checked"
+                                               value="1"/> <span class="lbl">是</span>
+                                    </div>
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input name="isEmbryoFlush" type="radio" class="ace" required
+                                               id="isEmbryoFlush"
+                                                v-if="data1.isEmbryoFlush=='2'" checked="checked"
+                                               value="0"/> <span class="lbl">否</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1"
+                                   for="purposeType">基因等级</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                	<div v-if="data1.purposeType=='1'">
+                                		<select name="purposeType" id="purposeType">
+                                        	<option value="1" selected="selected">核心级</option>
+                                       		<option value="2">生产级</option>
+                                    	</select>
+                                	</div>
+                                	<div v-else>
+                                		<select name="purposeType" id="purposeType">
+                                        	<option value="1">核心级</option>
+                                       		<option value="2" selected="selected">生产级</option>
+                                    	</select>
+                                	</div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border:1px solid #ccc;clear:both;height:320px;padding-top:20px;padding-bottom:20px;">
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                           for="total">总胚胎数</label>
+                                    <div class="col-xs-12 col-sm-7">
+                                        <div class="clearfix">
+                                            <input type="text" name="total" id="total" v-model="data1.total"
+                                                   class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1"
+                                           for="usable">可用胚胎数</label>
+                                    <div class="col-xs-12 col-sm-7">
+                                        <div class="clearfix">
+                                            <input type="text" name="usable" id="usable" v-model="data1.usable"
+                                                   class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                       for="alevel">A级胚胎数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="alevel" id="alevel" v-model="data1.alevel"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1"
+                                       for="frozen">冻胚数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="frozen" id="frozen" v-model="data1.frozen"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                       for="blevel">B级胚胎数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="blevel" id="blevel" v-model="data1.blevel"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1"
+                                       for="number">鲜胚数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="number" id="number" v-model="data1.number"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                       for="infertile">未受精数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="infertile" id="infertile" v-model="data1.infertile"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6" style="height:50px;"></div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                       for="degenerate">退化胚胎数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="degenerate" id="degenerate" v-model="data1.degenerate"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <button class="btn btn-info" type="button" onclick="tj()">
+               				 <i class="fa fa-check bigger-110"/>
+               				 <span>提交</span>
+           				 </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+	<script src="js/myUtils.js"></script>
+    <script type="text/javascript">
+        var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            myValidate();
+        });
+        localStorage.url_list = "embryoTransplant/list";
+        localStorage.delRelation = "embryoTransplant/delVerify/";
+        var s = localStorage.deathDisposalReasonId;
+          
+         var editId=localStorage.editId;
+        
+        var scripts = [null, null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            jQuery(function ($) {
+                initCheckBox();
+                root.loadCompany();
+                root.loadPama("embryoFlush/one/"+editId);
+                root.loadCompany();
+            })
+        });
+        
+        function computing(){
+        	//总胚胎数
+        	var totalembryo=parseInt($("#alevel").val())+parseInt($("#blevel").val())+parseInt($("#infertile").val())+parseInt($("#degenerate").val());
+            //可用胚胎数
+            var useEmbryo1=parseInt($("#frozen").val())+parseInt($("#number").val());
+            //A级B级胚胎数
+            var useEmbryo2=parseInt($("#alevel").val())+parseInt($("#blevel").val());
+        	//判断总胚胎数
+        	if (totalembryo!=$("#total").val()){
+        		 msg("总胚胎数不对，应为"+totalembryo)
+        		 return false;
+        	}
+        	//判断可用胚胎数=冻胚数+鲜胚数
+        	if(useEmbryo1!=$("#usable").val()){
+        		msg("可用胚胎数不对，冻胚数+鲜胚数="+useEmbryo1)
+        		return false;
+        	}
+        	//判断可用胚胎数=A级胚胎数+B级胚胎数
+        	if(useEmbryo2!=$("#usable").val()){
+                 msg("可用胚胎数不对，A级胚胎数+B级胚胎数="+useEmbryo2)
+                 return false;
+            }
+        	//判断冻胚数<=A级胚胎数
+            if(parseInt($("#frozen").val())>parseInt($("#alevel").val())){
+            	 msg("冻胚数应小于A级胚胎数")
+            	 return false;
+            }
+            return true;
+        }
+        function tj(){
+            if ($(".myform").valid()) {
+            	//校验数据
+                if (computing()){
+                	//执行校验并添加方法
+//					if (verifyAndSave(base_url + "embryoFlush/updateVerify",base_url+"embryoFlush/update")){
+//						root.children("#page/embryo/embryoSet",$("#projectId").val());
+//					}
+ 					$.post(base_url + "embryoFlush/updateVerify" ,$(".myform").serialize(), function (data1) {
+                        if (data1.code == "101") {
+                            msg(data1.msg)
+                        }
+                        else{
+                            //添加
+                            $.post(base_url + "embryoFlush/update" ,$(".myform").serialize(), function (data) {
+                                if(data.code=='100'){
+                                    msg("添加成功")
+                                }
+                                root.children("#page/embryo/embryoSet",$("#projectId").val());
+                            })
+                        }
+                    })
+                }
+            }
+        }     
+    </script>
+    <script src="js/base-vue.js"></script>

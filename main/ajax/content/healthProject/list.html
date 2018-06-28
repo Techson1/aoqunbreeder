@@ -1,0 +1,154 @@
+<title>免疫保健项目</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <form class="myform">
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <input type="hidden" name="flag" value="1">
+                        <div class="box">
+                            <span>免疫保健项目</span>
+                            <input type="text" name="immName" v-model="data.name" id="ewename" style="height:25px;width:107px;">
+                        </div>
+                        <a class="btn btn-xs btn-success add" onclick="sx()"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            添加到列表</a>
+                        <a @click="del()" class="btn btn-xs btn-success del"
+                           style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 删除</a>
+                        <a @click="typeUpdate('0')" class="btn btn-xs btn-success del"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            存档</a>
+                        <a @click="typeUpdate('1')" class="btn btn-xs btn-success del"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            可用</a>
+                        <ul class="pagination pull-right">
+                            <li><a>共：{{data.totalElements}}</a></li>
+                            <li><a @click="goto('0')">首页</a></li>
+                            <li :class="data.first==true?'disabled':''">
+                                <a @click="prev">
+                                    <i class="ace-icon fa fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                <a @click="goto(n-1)">{{n}}</a>
+                            </li>
+                            <li :class="data.last==true?'disabled':''">
+                                <a @click="next">
+                                    <i class="ace-icon fa fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                            <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                        </ul>
+                    </form>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>免疫保健项目</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="fakeTypeDam in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace" :value="fakeTypeDam.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>{{fakeTypeDam.immName}}</td>
+                <td>
+                    <span v-if="fakeTypeDam.flag=='0'">存档</span>
+                    <span v-if="fakeTypeDam.flag=='1'">可用</span>
+                  </td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination pull-right" id="pagemd">
+            <li><a>共：{{data.totalElements}}</a></li>
+            <li><a @click="goto('0')">首页</a></li>
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+            <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "immuneHealthProject/list";
+    localStorage.url_del = "immuneHealthProject/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+
+    //实现添加
+    function sx() {
+        if ($("input[name='immName']").val().length == 0) {
+            msg("免疫保健项目不能为空")
+        }
+        else {
+            po(getUrl("immuneHealthProject/nameVerify"), $(".myform").serialize(), function (data) {
+                if (!data) {
+                    msg("免疫保健项目已存在")
+                } else {
+                    po(getUrl("immuneHealthProject/save"), $(".myform").serialize(), function (data) {
+                        root.load();
+                    });
+                }
+            })
+
+        }
+    }
+
+    //实现存档
+    function typeUpdate(flagc) {
+        var ids = getIds();
+        if (ids.length == 1) {
+            setPama(ids[0]);
+            root.loadedit("immuneHealthProject/one/");
+            $.post(base_url + "immuneHealthProject/flagUpdate/" +getIds() +'/'+ flagc, function (data1) {
+                //若果修改成功跳转页面
+                if (data1.code == "100") {
+                    root.load();
+                    $('.ace').attr('checked', false);
+                }
+            })
+        } else if (ids.length > 1) {
+            msg("只能选择一条数据!")
+        } else {
+            msg("请选择数据！")
+        }
+
+    }
+</script>
+<script src="js/base-vue.js"></script>

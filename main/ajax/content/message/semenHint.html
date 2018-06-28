@@ -1,0 +1,142 @@
+<title>采精调教提示警告</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <div class="tabbable" style="margin-bottom:10px;">
+                                    <ul id="inbox-tabs"
+                                        class="inbox-tabs nav nav-tabs tab-size-bigger tab-space-1">
+
+                                        <li class="active"><a href="#"
+                                                              style="border-left:0px;border-right:0px;"><i
+                                                class="orange ace-icon fa fa-bullhorn bigger-180"></i>
+                                            <span class="bigger-50">提示</span> </a></li>
+                                        <li><a href="#"
+                                               style="border-left:0px;border-right:0px;"> <i
+                                                class="blue ace-icon fa fa-flash bigger-180"></i>
+                                            <span class="bigger-50">警告</span>
+                                        </a></li>
+
+                                    </ul>
+                                    <button
+                                            class="aside-trigger btn btn-info btn-app btn-xs ace-settings-btn visible-xs"
+                                            data-target="#right-menu" data-toggle="modal"
+                                            type="button" style="margin-top: -110px;">
+                                        <i data-icon1="fa-search" data-icon2="fa-search"
+                                           class="ace-icon fa fa-search icon-only"></i>
+                                    </button>
+                                </div>
+
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>耳号</span> <input type="text" name="code"
+                                                           style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>圈舍</span>
+                                    <select name="paddockId" id="">
+                                        <option value="">全部</option>
+                                        <option v-for="paddock in data1" :value="paddock.id">{{paddock.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+
+                                </div>
+                                <ul class="pagination pull-right">
+                                    <li><a>共：{{data.totalElements}}</a></li>
+                                    <li><a @click="goto('0')">首页</a></li>
+                                    <li :class="data.first==true?'disabled':''">
+                                        <a @click="prev">
+                                            <i class="ace-icon fa fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                        <a @click="goto(n-1)">{{n}}</a>
+                                    </li>
+                                    <li :class="data.last==true?'disabled':''">
+                                        <a @click="next">
+                                            <i class="ace-icon fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                    <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+
+                        <th>耳号</th>
+                        <th>品种</th>
+                        <th>出生日期</th>
+                        <th>月龄</th>
+                        <th>当前圈舍</th>
+                        <th>繁殖状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="message in data.content">
+                        <td>{{message.code}}</td>
+                        <td>{{message.breed.breedName}}</td>
+                        <td>{{message.birthDay==null?"":message.birthDay.substring(0,10)}}</td>
+                        <td>{{message.moonAge}}</td>
+                        <td>{{message.paddock.name}}</td>
+                        <td>
+                            <span v-if="message.breedingState=='25'">未调教</span>
+                            <span v-if="message.breedingState=='28'">差</span>
+                            <span v-if="message.breedingState=='29'">不爬羊</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "message/semenHint?orgId="+JSON.parse(localStorage.userInfo).organization.id;
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id)
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

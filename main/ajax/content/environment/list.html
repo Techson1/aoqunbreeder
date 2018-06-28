@@ -1,0 +1,114 @@
+<title>环境监控</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>圈舍名称</span>
+                                    <input type="text" name="breedName" value=""
+                                       style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>类型</span>
+                                    <input type="text" name="breedName" value=""
+                                           style="height:25px;width:107px;">
+                                </div>
+
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search" >
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/varieties/add" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 视屏监控</a>
+                            <a @click="edit('#page/varieties/add')" class="btn btn-xs btn-success edit"
+                               style="padding:1px 5px;border-radius:5px;"><i
+                                    class="fa fa-pencil-square-o"></i> 有害气体监控</a>
+                            <a @click="del()" class="btn btn-xs btn-success del"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 圈舍消毒</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>圈舍名称</th>
+                        <th>类型</th>
+                        <th>视频监控状态</th>
+                        <th>传感器状态</th>
+                        <th>最近消毒日期</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="breed in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="breed.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{breed.breedName}}</td>
+                        <td>
+                            <span v-if="breed.breedType==15">纯种</span>
+                            <span v-if="breed.breedType==17">杂种</span>
+                            <span v-if="breed.breedType==16">杂交</span>
+                        </td>
+                        <td>{{breed.recorder}}</td>
+                        <td>{{breed.ctime}}</td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right">
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in (data.number<5?(10<data.totalPages?10:data.totalPages):(data.number+5>data.totalPages?data.totalPages:data.number+5))" :class="data.number+1 == n?'active':''">
+                        <a @click="goto(n-1)"  v-if="data.number-5 < n || (data.totalPages-data.number<5 && n>data.totalPages-10)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "breed/list";
+    localStorage.url_del = "breed/breedType";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

@@ -1,0 +1,50 @@
+<title>系统维护</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+            <form class="form-horizontal myform" id="validation-form">
+                <a  class="col-sm-2 col-xs-6" style="margin-top: 20px;margin-bottom:20px; " onclick="timing('maintenance/taskAll')">
+                    <div class="col-sm-3 col-xs-6" style="width: 200px; height: 100px;color: white;background-color: #177cb0;text-align: center;line-height: 100px;font-size: 30px;color: white">
+                        全部
+                    </div>
+                </a>
+                <a  class="col-sm-2 col-xs-6" style="margin-top: 20px;margin-bottom:20px; " onclick="timing('maintenance/taskBornStatus')">
+                    <div class="col-sm-3 col-xs-6" style="width: 200px; height: 100px;color: white;background-color: #177cb0;text-align: center;line-height: 100px;font-size: 30px;color: white">
+                        羊只库存状态
+                    </div>
+                </a>
+                <a  class="col-sm-2 col-xs-6" style="margin-top: 20px;margin-bottom:20px; " onclick="timing('maintenance/taskMoonAge')">
+                    <div class="col-sm-3 col-xs-6" style="width: 200px; height: 100px;color: white;background-color: #177cb0;text-align: center;line-height: 100px;font-size: 30px;color: white">
+                        羊只月龄
+                    </div>
+                </a>
+                <a  class="col-sm-2 col-xs-6" style="margin-top: 20px;margin-bottom:20px; " onclick="timing('maintenance/taskBreedingState')">
+                    <div class="col-sm-3 col-xs-6" style="width: 200px; height: 100px;color: white;background-color: #177cb0;text-align: center;line-height: 100px;font-size: 30px;color: white">
+                        羊只繁殖状态
+                    </div>
+                </a>
+                <a  class="col-sm-2 col-xs-6" style="margin-top: 20px;margin-bottom:20px; " onclick="timing('maintenance/taskPerformance')">
+                    <div class="col-sm-3 col-xs-6" style="width: 200px; height: 100px;color: white;background-color: #177cb0;text-align: center;line-height: 100px;font-size: 30px;color: white">
+                        绩效考核
+                    </div>
+                </a>
+                <a  class="col-sm-2 col-xs-6" style="margin-top: 20px;margin-bottom:20px; " onclick="timing('maintenance/taskPaddockNumber')">
+                    <div class="col-sm-3 col-xs-6" style="width: 200px; height: 100px;color: white;background-color: #177cb0;text-align: center;line-height: 100px;font-size: 30px;color: white">
+                        存栏统计
+                    </div>
+                </a>
+            </form>
+    </div>
+</div>
+</div>
+<script src="ace1.4/components/layer/layer.js"></script>
+<script type="text/javascript">
+   function timing(url) {
+       layer.load();
+       $.post(base_url+url, function (data) {
+           if(data!=null){
+               layer.closeAll();
+               msg(data.msg)
+           }
+       })
+   }
+</script>

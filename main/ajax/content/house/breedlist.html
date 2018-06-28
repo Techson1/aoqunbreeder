@@ -1,0 +1,142 @@
+<title>定级存栏</title>
+<script src="js/myUtils.js"></script>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <center><h1 id="getDate"></h1></center>
+                        </div>
+                        <div>
+                            <form class="searchForm">
+                                <div class="box">
+                                    <span>日期</span>
+                                    <input type="text" name="date"  class="datep" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>品种</span>
+                                    <select name="breed.id" id="breed" onchange="">
+                                        <option value="">请选择</option>
+                                        <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            onclick="getData()">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover" style="text-align: center">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center;">品种</th>
+                        <th style="text-align: center;">性别</th>
+                        <th style="text-align: center;">繁殖状态</th>
+                        <th style="text-align: center;">数量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="breedingOnHand in data88">
+                        <td style="padding: 0px;vertical-align: middle!important"  :rowspan="breedingOnHand.breedNamespan" :class="{hidden: breedingOnHand.breedNamedis}">{{breedingOnHand.breed.breedName}}</td>
+                        <td style="padding: 0px;vertical-align: middle!important"  :rowspan="breedingOnHand.sexspan" :class="{hidden: breedingOnHand.sexdis}">
+                            <span v-if="breedingOnHand.sex=='1'">公羊</span>
+                            <span v-if="breedingOnHand.sex=='2'">母羊</span>
+                        </td>
+                        <td style="padding: 0px;vertical-align: middle!important" :rowspan="breedingOnHand.breedingStatespan" :class="{hidden: breedingOnHand.breedingStatedis}">
+                            <span v-if="breedingOnHand.breedingState=='--'">无状态</span>
+                            <span v-if="breedingOnHand.breedingState=='10'">空怀</span>
+                            <span v-if="breedingOnHand.breedingState=='111'">一配</span>
+                            <span v-if="breedingOnHand.breedingState=='112'">二配</span>
+                            <span v-if="breedingOnHand.breedingState=='113'">三配</span>
+                            <span v-if="breedingOnHand.breedingState=='114'">四配</span>
+                            <span v-if="breedingOnHand.breedingState=='115'">五配</span>
+                            <span v-if="breedingOnHand.breedingState=='116'">六配</span>
+                            <span v-if="breedingOnHand.breedingState=='117'">七配</span>
+                            <span v-if="breedingOnHand.breedingState=='118'">八配</span>
+                            <span v-if="breedingOnHand.breedingState=='119'">九配</span>
+                            <span v-if="breedingOnHand.breedingState=='1110'">十配</span>
+                            <span v-if="breedingOnHand.breedingState=='1111'">十一配</span>
+                            <span v-if="breedingOnHand.breedingState=='1112'">十二配</span>
+                            <span v-if="breedingOnHand.breedingState=='131'">未孕一</span>
+                            <span v-if="breedingOnHand.breedingState=='132'">未孕二</span>
+                            <span v-if="breedingOnHand.breedingState=='133'">未孕三</span>
+                            <span v-if="breedingOnHand.breedingState=='134'">未孕四</span>
+                            <span v-if="breedingOnHand.breedingState=='135'">未孕五</span>
+                            <span v-if="breedingOnHand.breedingState=='136'">未孕六</span>
+                            <span v-if="breedingOnHand.breedingState=='137'">未孕七</span>
+                            <span v-if="breedingOnHand.breedingState=='138'">未孕八</span>
+                            <span v-if="breedingOnHand.breedingState=='139'">未孕九</span>
+                            <span v-if="breedingOnHand.breedingState=='1310'">未孕十</span>
+                            <span v-if="breedingOnHand.breedingState=='141'">妊娠一</span>
+                            <span v-if="breedingOnHand.breedingState=='142'">妊娠二</span>
+                            <span v-if="breedingOnHand.breedingState=='143'">妊娠三</span>
+                            <span v-if="breedingOnHand.breedingState=='144'">妊娠四</span>
+                            <span v-if="breedingOnHand.breedingState=='145'">妊娠五</span>
+                            <span v-if="breedingOnHand.breedingState=='146'">妊娠六</span>
+                            <span v-if="breedingOnHand.breedingState=='147'">妊娠七</span>
+                            <span v-if="breedingOnHand.breedingState=='148'">妊娠八</span>
+                            <span v-if="breedingOnHand.breedingState=='149'">妊娠九</span>
+                            <span v-if="breedingOnHand.breedingState=='1410'">妊娠十</span>
+                            <span v-if="breedingOnHand.breedingState=='15'">哺乳</span>
+                            <span v-if="breedingOnHand.breedingState=='20'">供体准备</span>
+                            <span v-if="breedingOnHand.breedingState=='21'">受体准备</span>
+                            <span v-if="breedingOnHand.breedingState=='22'">AI</span>
+                            <span v-if="breedingOnHand.breedingState=='23'">供体恢复期</span>
+                            <spanspan v-if="breedingOnHand.breedingState=='24'">已移植</spanspan>
+                        </td>
+                        <td style="padding: 0px;vertical-align: middle!important" :rowspan="breedingOnHand.sumspan" :class="{hidden: breedingOnHand.sumdis}">{{breedingOnHand.sum}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    localStorage.url_list = "";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama('breed/all')
+            // root.rephb('breedingOnHand/findByList?org.id='+JSON.parse(localStorage.userInfo).organization.id+'&ctime='+new Date(),'breedingState,num')
+            $('h1').html(show()+"繁殖状态存栏表")
+    });
+    })
+    function getData() {
+        var date=$("input[name=date]").val();
+        if(date.length<1){
+            $('h1').html(show()+"繁殖状态存栏表")
+        }else{
+            $('h1').html(date.substring(0,4)+'年'+date.substring(5,7)+'月'+date.substring(8,10)+'日'+"繁殖状态存栏表")
+            root.rephb('breedingOnHand/findByList?org.id='+JSON.parse(localStorage.userInfo).organization.id+'&breed.id='+$("#breed").val()+"&ctime="+$("input[name=date]").val(),',breedingState,sum,')
+        }
+    }
+    function show(){
+        var mydate = new Date();
+        var str = "" + mydate.getFullYear()+"年";
+        if(mydate.getMonth()+1>10){
+            str += (mydate.getMonth()+1)+"月";
+        }
+        else{
+            str+='0';
+            str += (mydate.getMonth()+1)+"月";
+        }
+        str += mydate.getDate()+"日";
+        return str;
+
+    }
+</script>
+<script src="js/base-vue.js"></script>

@@ -1,0 +1,234 @@
+<title>供体组群</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <center><h1>{{data1.projectName}}</h1></center>
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <div>
+                        <a @click="childrenurl('#page/embryo/donorGroup')"
+                           class="btn btn-xs btn-success" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-sitemap"></i>&nbsp;供体组群</a>
+                        <a @click="childrenurl('#page/embryo/receptorGroup')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-bullseye"></i>&nbsp;受体组群</a>
+                        <a @click="childrenurl('#page/embryo/AI')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-venus-mars"></i>&nbsp;供体AI</a>
+                        <a @click="childrenurl('#page/embryo/embryoSet')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-retweet"></i>&nbsp;供体冲胚、鲜胚移植、冻胚制作</a>
+                        <a @click="childrenurl('#page/embryo/freshEmbryo')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-life-ring"></i>&nbsp;鲜胚移植查询</a>
+                        <a @click="childrenurl('#page/embryo/frozenEmbryo')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-asterisk"></i>&nbsp;冻胚制作查询</a>
+                    </div>
+                    <form class="myform">
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <input type="hidden" name="recorder" v-model="data5.cname">
+                        <input type="hidden" name="org.id" v-if="data5.id!=null" v-model="data5.organization.id">
+                        <div class="box">
+                            <span>母羊耳号</span>
+                            <input type="text" name="codes" id="codes"
+                                                     style="height:25px;width:107px;">
+                        </div>
+                        <div class="box">
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="search">
+                                <i class="icon-search fa fa-search"></i>&nbsp;查询
+                            </button>
+                        </div>
+                        <a class="btn btn-xs btn-success add" onclick="sx()"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            添加到列表</a>
+                        <a class="btn btn-xs btn-success add"  @click="selectList('#page/animal/listSelectSire','#page/embryo/donorGroup')"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            从列表中选择</a>
+                        <a @click="typeUpdate('0')" class="btn btn-xs btn-success del"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            复核</a>
+                        <a @click="typeUpdate('1')" class="btn btn-xs btn-success del"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            取消复核</a>
+                        <a @click="delRelation()" class="btn btn-xs btn-success del"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i
+                                class="fa fa-trash-o"></i> 移除</a>
+                        <ul class="pagination pull-right">
+                            <li><a>共：{{data.totalElements}}</a></li>
+                            <li><a @click="goto('0')">首页</a></li>
+                            <li :class="data.first==true?'disabled':''">
+                                <a @click="prev">
+                                    <i class="ace-icon fa fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                <a @click="goto(n-1)">{{n}}</a>
+                            </li>
+                            <li :class="data.last==true?'disabled':''">
+                                <a @click="next">
+                                    <i class="ace-icon fa fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                            <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>母羊耳号</th>
+                    <th>月龄</th>
+                    <th>总胎次</th>
+                    <th>胚移次数</th>
+                    <th>平均冲胚数</th>
+                    <th>最近一次冲胚时间</th>
+                    <th>最近一次冲胚数量</th>
+                    <th>定级</th>
+                    <th>复核</th>
+                    <th>操作人</th>
+                    <th>更新时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="donorGroup in data.content">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace" :value="donorGroup.id"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>{{donorGroup.baseInfo.code}}</td>
+                    <td>月龄</td>
+                    <td>{{donorGroup.parity.parityMaxNumber}}</td>
+                    <th>胚移次数</th>
+                    <th>平均冲胚数</th>
+                    <th>最近一次冲胚时间</th>
+                    <th>最近一次冲胚数量</th>
+                    <th>定级</th>
+                    <td>
+                    <span v-if="donorGroup.flag=='0'">
+                        <button style="padding:1px 5px;width:30px;height:30px;" title="复核"
+                                type="submit" class="btn btn-xs btn-success">
+							<i class="icon-search fa fa-check"></i>
+						</button></span>
+                        <span v-if="donorGroup.flag=='1'">
+                        <button style="padding:1px 5px;width:30px;height:30px;" title="取消复核"
+                                type="submit" class="btn btn-xs" onclick="checkTime()">
+							<i class="icon-search fa fa-times"></i>
+						</button>
+                    </span>
+                    </td>
+                    <td>{{donorGroup.recorder}}</td>
+                    <td>{{donorGroup.ctime}}</td>
+                </tr>
+                </tbody>
+            </table>
+        <ul class="pagination pull-right" id="pagemd">
+            <li><a>共：{{data.totalElements}}</a></li>
+            <li><a @click="goto('0')">首页</a></li>
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+            <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var s = localStorage.deathDisposalReasonId;
+    var ids;
+    localStorage.url_list = "donorGroup/list?project.id="+s;
+    localStorage.delRelation="donorGroup/delVerify/"
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadCompany();
+            root.loadPama("embryoProject/one/"+s);
+            var getids =getPama();
+            if(getids.length!=0){
+                po(getUrl("donorGroup/addVerifysTo?projectId="+s+"&recorder="+JSON.parse(localStorage.userInfo).cname+"&org.id="+JSON.parse(localStorage.userInfo).organization.id+"&codes="+getids), function (success) {
+                        var content = "<table style='margin-left:25px;margin-right:10px;margin-top:10px;'>";
+                        var isOpen = false;
+                        success.forEach(function(d){
+                            if (d.code=='101') {
+                            content += "<tr><td style='border:2px solid #ccc;padding:5px;text-align:center'>" + d.msg+"</td></tr>";
+                            isOpen = true;
+                             }
+                        })
+                    content += "</table>";
+                    if (isOpen) {
+                        layer.open({
+                            title:"错误数据",
+                            type: 1,
+                            area: ['540px', '300px'], //宽高
+                            content: content
+                        });
+                    }
+                    root.load();
+                });
+            }
+        })
+    });
+
+    //实现添加
+    function sx() {
+        if ($("input[name='codes']").val().length == 0) {
+            msg("母羊耳号不能为空")
+        }
+        else {
+            po(getUrl("donorGroup/addVerifys?projectId="+s+"&codes="+$("#codes").val()), function (data) {
+                if(data[0].code=='101'){
+                    msg(data[0].msg)
+                    $("#codes").val("");
+                }else{
+                    po(getUrl("donorGroup/adds?projectId="+s), $(".myform").serialize(), function (data) {
+                        alert("1");
+                        $("#codes").val("");
+                        root.load();
+                    })
+                }
+            })
+        }
+    }
+
+    //实现复核
+    function typeUpdate(flagc) {
+        var ids = getIds();
+        if (ids.length >= 1) {
+            $.post(base_url + "donorGroup/flagUpdate/" +getIds() +'/'+ flagc, function (data1) {
+                if (data1.code == "100") {
+                    location.reload();
+                }
+            })
+        } else {
+            msg("请选择数据！")
+        }
+    }
+</script>
+<script src="js/base-vue.js"></script>

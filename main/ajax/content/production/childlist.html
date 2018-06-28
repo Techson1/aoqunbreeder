@@ -1,0 +1,264 @@
+<title>产羔登记</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <form class="searchForm">
+                            <input type="hidden" id="page" value="0" name="pageNum">
+                            <div class="box">
+                                <span>羔羊耳号</span> <input type="text" name="code" value="" style="height:25px;width:107px;">
+                            </div>
+                            <div class="box">
+                                <span>母羊耳号</span> <input type="text" name="dam.code" value="" style="height:25px;width:107px;">
+                            </div>
+                            <div class="box">
+                                <span>出生日期</span>
+                                <input type="text" name="birthDayAssistStart" value="" class="datep" readonly="readonly" style="height:25px;width:107px;">&nbsp;到&nbsp;
+                                <input type="text" name="birthDayAssistEnd" value="" class="end" readonly="readonly" style="height:25px;width:107px;">
+                            </div>
+                            <div class="box">
+                                <span>品种</span>
+                                <select name="breed.id" style="height:25px;">
+                                    <option value="">全部</option>
+                                    <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}</option>
+                                </select>
+                            </div>
+                            <div class="box">
+                                <span>出生状态</span>
+                                <select name="state" style="height:25px;">
+                                    <option value="">全部</option>
+                                    <option value="2">正常</option>
+                                    <option value="3">死胎</option>
+                                    <option value="4">畸形</option>
+                                </select>
+                            </div>
+                            <div class="box">
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        @click="search">
+                                    <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                </button>
+                            </div>
+                        </form>
+                        <div>
+                            <a href="#page/production/list" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-search"></i>&nbsp;母羊查询</a>
+                            <a href="#page/production/add" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-file-text"></i>&nbsp;母羊产羔登记</a>
+                            <a @click="editVerify('#page/production/edit','lambingDam/updateUiVerify')" class="btn btn-xs btn-success edit" disabled="false"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-pencil-square-o"></i> 母羊修改</a>
+                            <a @click="delRelation()" class="btn btn-xs btn-success del" disabled="false"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 母羊删除</a>
+
+                            <a href="#page/production/childlist" class="btn btn-xs btn-info add" disabled="false"
+                               style="padding:1px 5px;border-radius:5px;margin-left: 25px;"><i class="fa fa-search"></i>&nbsp;羔羊查询</a>
+                            <a href="#page/production/childadd" class="btn btn-xs btn-info add" disabled="false"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-file-text"></i>&nbsp;羔羊登记</a>
+                            <a @click="edit('#page/production/childedit')" class="btn btn-xs btn-info edit"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-pencil-square-o"></i> 羔羊修改</a>
+                            <a @click="dellam()" class="btn btn-xs btn-info del"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 羔羊删除</a>
+                            <ul class="pagination pull-right">
+                                <li><a>共：{{data.totalElements}}</a></li>
+                                <li><a @click="goto('0')">首页</a></li>
+                                <li :class="data.first==true?'disabled':''">
+                                    <a @click="prev">
+                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                    <a @click="goto(n-1)">{{n}}</a>
+                                </li>
+                                <li :class="data.last==true?'disabled':''">
+                                    <a @click="next">
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>羔羊耳号</th>
+                        <th>父号</th>
+                        <th>母号</th>
+                        <th>出生日期</th>
+                        <th>品种</th>
+                        <th>性别</th>
+                        <th>出生状态</th>
+                        <th>繁殖方式</th>
+                        <th>同胎数</th>
+                        <th>出生重</th>
+                        <th>角</th>
+                        <th>牙齿咬合</th>
+                        <th>毛发打分</th>
+                        <th>色斑打分</th>
+                        <th>蹄颜色</th>
+                        <th>嘴颜色</th>
+                        <th>受体母羊号</th>
+                        <th>代养母羊号</th>
+                        <th>操作人</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="baseInfo in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="baseInfo.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{baseInfo.code}}</td>
+                        <td>
+                            {{baseInfo.sireCode}}
+                        </td>
+                        <td>
+                            {{baseInfo.damCode}}
+                        </td>
+                        <td>
+                            {{baseInfo.birthDay==null?'':baseInfo.birthDay.substring(0,10)}}
+                        </td>
+                        <td>
+                            <span v-if="baseInfo.breed!=null">{{baseInfo.breed.breedName}}</span>
+                        </td>
+                        <td>
+                            <span v-if="baseInfo.sex=='1'">公羊</span>
+                            <span v-if="baseInfo.sex=='2'">母羊</span>
+                        </td>
+                        <td>
+                        	<span v-if="baseInfo.state=='2'">正常</span>
+                        	<span v-if="baseInfo.state=='3'">死胎</span>
+                        	<span v-if="baseInfo.state=='4'">畸形</span>
+                        </td>
+                        <td>
+                        	<!--<span v-if="baseInfo.lambingDam.bornType =='NB'">自然繁殖</span>-->
+                        	<!--<span v-if="baseInfo.lambingDam.bornType =='FR'">鲜胚移植</span>-->
+                        	<!--<span v-if="baseInfo.lambingDam.bornType =='FO'">冻胚移植</span>-->
+                            <span v-if="baseInfo.lambingDam.joining!=null">
+                                <span v-if="baseInfo.lambingDam.joining.joiningType=='2'">鲜精-子宫角</span>
+                                <span v-if="baseInfo.lambingDam.joining.joiningType=='3'">鲜精-阴道</span>
+                                <span v-if="baseInfo.lambingDam.joining.joiningType=='4'">本交</span>
+                                <span v-if="baseInfo.lambingDam.joining.joiningType=='6'">冻精-阴道</span>
+                                <span v-if="baseInfo.lambingDam.joining.joiningType=='5'">冻精-子宫角</span>
+                            </span>
+                        </td>
+                        <td>{{baseInfo.theSameFetus}}</td>
+                        <td>{{baseInfo.initialWeigh}}</td>
+                        <th>
+                            <span v-if="baseInfo.looks!=null">
+                                <span v-if="baseInfo.looks.horn=='1'">小角</span>
+                                <span v-if="baseInfo.looks.horn=='2'">大角</span>
+                                <span v-if="baseInfo.looks.horn=='3'">无</span>
+                            </span>
+                        </th>
+                        <th>
+                            <span v-if="baseInfo.looks!=null">
+                                <span v-if="baseInfo.looks.tooth=='1'">正常</span>
+                                <span v-if="baseInfo.looks.tooth=='2'">错齿</span>
+                            </span>
+                        </th>
+                        <th>
+                            <span v-if="baseInfo.looks!=null">
+                                {{baseInfo.looks.hair}}
+                            </span>
+                        </th>
+                        <th>
+                            <span v-if="baseInfo.looks!=null">
+                                {{baseInfo.looks.splash}}
+                            </span>
+                        </th>
+                        <th>
+                             <span v-if="baseInfo.looks!=null">
+                                {{baseInfo.looks.footColor}}
+                            </span>
+                        </th>
+                        <th>
+                             <span v-if="baseInfo.looks!=null">
+                                {{baseInfo.looks.mouthColor}}
+                            </span>
+                        </th>
+                        <th>{{baseInfo.ewes}}</th>
+                        <th>
+                            <span v-if="baseInfo.fosterDam!=null">{{baseInfo.fosterDam.code}}</span>
+                        </th>
+                        <td>{{baseInfo.recorder}}</td>
+                        <td>{{baseInfo.ctime}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //只显示羔羊
+    localStorage.url_list = "baseInfo/lambList?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all");
+        })
+    });
+function dellam() {
+    var ids = getIds();
+    localStorage.editId = ids;
+    if (ids.length == 1) {
+        if(ids[0]=='on'){
+            msg("不能选择标题")
+            $('.ace').attr('checked', false);
+        }
+        else{
+           po(getUrl('baseInfo/lambDel/'+ids[0]),function (data) {
+                msg(data.msg)
+               root.load();
+               $('.ace').attr('checked', false);
+           })
+        }
+    } else if (ids.length > 1) {
+        msg("只能选择一条数据！")
+        $('.ace').attr('checked', false);
+    } else {
+        msg("请选择数据！")
+    }
+}
+</script>
+<script src="js/base-vue.js"></script>

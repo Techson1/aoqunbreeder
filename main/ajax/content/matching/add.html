@@ -1,0 +1,169 @@
+<title>添加方案名称</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">方案名称</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="flag" value="1">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <input type="hidden" name="introduceFlag" value="1">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="userName">请选择年月</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-sm-1" style="width:100px;" id="year"
+                                                            @change="jtyear()">
+                                                    </select><span class="col-sm-1" style="font-size:14px;">年</span>
+                                                    <select class="col-sm-1" style="width:80px;" id="month" onchange="refresh()">
+                                                    </select>
+                                                    <span class="col-sm-1" style="font-size:14px;">月</span>
+                                                </div>
+                                                <input type="hidden" name="createdTime" id="createdTime">
+                                            </div>
+                                        </div>
+
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="sireBreed">公羊品种</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="hidden" name="sireBreed.id" v-if="data.id!=null" v-model="data.sireBreed.id">
+                                                    <select class="col-xs-12 col-sm-6" name="sireBreed.id" required onchange="refresh()"
+                                                            id="sireBreed" v-if="data.id!=null" v-model="data.sireBreed.id" disabled="true">
+                                                        <option value="">请选择</option>
+                                                        <option v-for="sirebreed in data1" :value="sirebreed.id">
+                                                            {{sirebreed.breedName}}
+                                                        </option>
+                                                    </select>
+                                                    <select class="col-xs-12 col-sm-6" name="sireBreed.id" required onchange="refresh()"
+                                                            id="sireBreed" v-else>
+                                                        <option value="">请选择</option>
+                                                        <option v-for="sirebreed in data1" :value="sirebreed.id">
+                                                            {{sirebreed.breedName}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="dambreed">母羊品种</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="hidden" name="damBreed.id" v-if="data.id!=null" v-model="data.damBreed.id">
+                                                    <select class="col-xs-12 col-sm-6" name="damBreed.id" required onchange="refresh()" disabled="true"
+                                                            id="dambreed" v-if="data.id!=null" v-model="data.damBreed.id">
+                                                        <option value="">请选择</option>
+                                                        <option v-for="dambreed in data1" :value="dambreed.id">
+                                                            {{dambreed.breedName}}
+                                                        </option>
+                                                    </select>
+                                                    <select class="col-xs-12 col-sm-6" name="damBreed.id" required onchange="refresh()"
+                                                            id="dambreed" v-else>
+                                                        <option value="">请选择</option>
+                                                        <option v-for="dambreed in data1" :value="dambreed.id">
+                                                            {{dambreed.breedName}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="userName"></label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    命名规范：年份+月份+品种+项目名称
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="name">方案名称</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="name" id="name"
+                                                           class="col-xs-12 col-sm-6" required maxlength="30"
+                                                           v-model="data.name"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                            <button class="btn btn-info btn-submit" type="button">
+                                <i class="fa fa-check bigger-110"></i>
+                                <span>提交</span>
+                            </button>
+                            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                            <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                                <i class="fa fa-undo bigger-110"></i>
+                                重置
+                            </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script src="js/myUtils.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        // vue.load("breedingPlan/projectOne/", getPama());
+        vue.load("breedingPlan/one/", getPama());
+        vue.loadPama('breed/all');
+        vue.loadCompany();
+        setPama1("breedingPlan/save");//为表单传值
+        setPama2("#page/matching/list");//设置提交数据完成的跳转界面\
+        renderingYear(5,"year");
+        renderingMonth(getMonth(),"month");
+    })
+
+    // //判断年份不是当前年份，则月份显示1-12，若是当前年份，则显示当前月份到1月
+    // function jtyear() {
+    //     renderingMonth(getMonth($("#year option:selected").text()),"month");
+    //     refresh();
+    // }
+    // function refresh(){
+    //     if($("#month").val()<=9){
+    //         month="0"+$("#month").val()
+    //     }
+    //     else{
+    //         month=$("#month").val()
+    //     }
+    //     if($("#sireBreed option:selected").text()==$("#dambreed option:selected").text()){
+    //         $("#name").val($("#year").val()+month+$.trim($("#sireBreed option:selected").text()))
+    //     }
+    //     else{
+    //         $("#name").val($("#year").val()+month+$.trim($("#sireBreed option:selected").text())+$.trim($("#dambreed option:selected").text()))
+    //     }
+    // }
+</script>

@@ -1,0 +1,83 @@
+<title>羊只盘点</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <form class="searchForm">
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <div class="box">
+                            <span>创建日期</span>
+                            <input type="text" name="startDate" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">&nbsp;到&nbsp;
+                            <input type="text" name="endDate" value="" class="end" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
+                        </div>
+                        <div class="box">
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="search">
+                                <i class="icon-search fa fa-search"></i>&nbsp;查询
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <a href="#page/sheepInventory/add" class="btn btn-xs btn-success add"
+                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 创建羊只盘点</a>
+                    <a @click="del()" class="btn btn-xs btn-success del"
+                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 删除</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>盘点任务单号</th>
+                <th>盘点状态</th>
+                <th>操作人</th>
+                <th>创建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="inventory in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace prid" :value="inventory.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>
+                    <a @click="children('#page/sheepInventory/inventorylist',inventory.id)">{{inventory.name}}</a>
+                </td>
+                <td>
+                    <span v-if="inventory.flag=='0'">存档</span>
+                    <span v-if="inventory.flag=='1'">可用</span>
+                </td>
+                <td>{{inventory.recorder}}</td>
+                <td>{{inventory.ctime}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "inventory/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.url_del = "inventory/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

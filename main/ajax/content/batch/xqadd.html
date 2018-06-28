@@ -1,0 +1,134 @@
+<title>批次跟踪详情</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <form class="myform">
+
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <input type="hidden" name="flag" value="1">
+                        <div class="box">
+                            <span>羊号</span>
+                            <input type="text" name="name" v-model="data.name" id="ewename"
+                                                     style="height:25px;width:107px;">
+                        </div>
+                        <div class="box">
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="search">
+                                <i class="icon-search fa fa-search"></i>&nbsp;查询
+                            </button>
+
+                        </div>
+                        <a class="btn btn-xs btn-success add" onclick="sx()"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            添加到列表</a>
+                        <a class="btn btn-xs btn-success add" onclick="sx()"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            从列表种选择</a>
+                        <div class="box" style="margin-left:10px;">
+                            <span>群组</span>
+                            <select name="breed.id" style="height:25px;">
+                                <option value="">全部</option>
+                                <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                </option>
+                            </select>
+                        </div>
+                        <a class="btn btn-xs btn-success add" onclick="sx()"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            从群组添加</a>
+                        <a @click="del()" class="btn btn-xs btn-success del"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i
+                                class="fa fa-trash-o"></i>
+                            移除</a>
+
+                    </form>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>羊号</th>
+                <th>品种</th>
+                <th>出生日期</th>
+                <th>月龄</th>
+                <th>性别</th>
+                <th>状态</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="fakeTypeDam in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace" :value="fakeTypeDam.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>{{fakeTypeDam.name}}</td>
+                <td>
+                    <span v-if="fakeTypeDam.flag=='0'">存档</span>
+                    <span v-if="fakeTypeDam.flag=='1'">可用</span>
+                  </td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination pull-right">
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in (data.number<5?(10<data.totalPages?10:data.totalPages):(data.number+5>data.totalPages?data.totalPages:data.number+5))" :class="data.number+1 == n?'active':''">
+                <a @click="goto(n-1)"  v-if="data.number-5 < n || (data.totalPages-data.number<5 && n>data.totalPages-10)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    localStorage.url_list = "fakeTypeDam/list";
+    var scripts = [null, null]
+
+
+    //实现添加
+    function sx() {
+        if ($("input[name='name']").val().length == 0) {
+            msg("母羊缺陷不能为空")
+        }
+        else {
+            po(getUrl("fakeTypeDam/nameVerify"), $(".myform").serialize(), function (data) {
+                if (!data) {
+                    msg("母羊缺陷已存在")
+                } else {
+                    po(getUrl("fakeTypeDam/save"), $(".myform").serialize(), function (data) {
+                        root.load();
+                    });
+                }
+            })
+
+        }
+    }
+
+</script>
+<script src="js/base-vue.js"></script>

@@ -1,0 +1,226 @@
+<title>修改品相测定</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">品相测定数据</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="code">耳号</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="lookcode" id="lookcode" required readonly="readonly"
+                                                           maxlength="20" v-if="data.base!=null" v-model="data.code"
+                                                           class="col-xs-12 col-sm-6"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="date">评定日期</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="date" id="date"
+                                                           class="col-xs-12 col-sm-6 datep" required maxlength="20"
+                                                           v-model="data.date"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="footColor">蹄颜色打分</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="footColor" class="col-xs-10 col-sm-6"
+                                                            required  v-model="data.footColor">
+                                                        <option value="">请选择</option>
+                                                        <option value="1" v-if="data.footColor=='1'"selected="selected">1分</option>
+                                                        <option value="1" v-else>1分</option>
+                                                        <option value="2" v-if="data.footColor=='2'"selected="selected">2分</option>
+                                                        <option value="2" v-else>2分</option>
+                                                        <option value="3" v-if="data.footColor=='3'"selected="selected">3分</option>
+                                                        <option value="2" v-else>3分</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="mouthColor">嘴颜色打分</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="mouthColor" class="col-xs-10 col-sm-6"
+                                                            required v-model="data.mouthColor">
+                                                        <option value="">请选择</option>
+                                                        <option value="1" v-if="data.mouthColor=='1'"selected="selected">1分</option>
+                                                        <option value="1" v-else>1分</option>
+                                                        <option value="2" v-if="data.mouthColor=='2'"selected="selected">2分</option>
+                                                        <option value="2" v-else>2分</option>
+                                                        <option value="3" v-if="data.mouthColor=='3'"selected="selected">3分</option>
+                                                        <option value="2" v-else>3分</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="hair">毛发打分</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="hair"class="col-xs-10 col-sm-6"
+                                                            required  v-model="data.hair">
+                                                        <option value="">请选择</option>
+                                                        <option value="1" v-if="data.hair=='1'"selected="selected">1分</option>
+                                                        <option value="1" v-else>1分</option>
+                                                        <option value="2" v-if="data.hair=='2'"selected="selected">2分</option>
+                                                        <option value="2" v-else>2分</option>
+                                                        <option value="3" v-if="data.hair=='3'"selected="selected">3分</option>
+                                                        <option value="2" v-else>3分</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="splash">色斑打分</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="splash" class="col-xs-10 col-sm-6"
+                                                            required  v-model="data.splash">
+                                                        <option value="">请选择</option>
+                                                        <option value="1" v-if="data.splash=='1'"selected="selected">1分</option>
+                                                        <option value="1" v-else>1分</option>
+                                                        <option value="2" v-if="data.splash=='2'"selected="selected">2分</option>
+                                                        <option value="2" v-else>2分</option>
+                                                        <option value="3" v-if="data.splash=='3'"selected="selected">3分</option>
+                                                        <option value="2" v-else>3分</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="horn">角情况</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="horn" class="col-xs-10 col-sm-6"
+                                                            required  v-model="data.horn">
+                                                        <option value="">请选择</option>
+                                                        <option value="1" v-if="data.horn=='1'"selected="selected">大角</option>
+                                                        <option value="1" v-else>大角</option>
+                                                        <option value="2" v-if="data.horn=='2'"selected="selected">小角</option>
+                                                        <option value="2" v-else>小角</option>
+                                                        <option value="3" v-if="data.horn=='3'"selected="selected">无角</option>
+                                                        <option value="3" v-else>无角</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="fats">脂肪分布</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="fats" class="col-xs-10 col-sm-6"
+                                                            required  v-model="data.fats">
+                                                        <option value="">请选择</option>
+                                                        <option value="1" v-if="data.fats=='1'"selected="selected">1分</option>
+                                                        <option value="1" v-else>1分</option>
+                                                        <option value="2" v-if="data.fats=='2'"selected="selected">2分</option>
+                                                        <option value="2" v-else>2分</option>
+                                                        <option value="3" v-if="data.fats=='3'"selected="selected">3分</option>
+                                                        <option value="2" v-else>3分</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="tooth">牙齿咬合</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="tooth" class="col-xs-10 col-sm-6"
+                                                            required  v-model="data.tooth">
+                                                        <option value="">请选择</option>
+                                                        <option value="1" v-if="data.tooth=='1'"selected="selected">正常</option>
+                                                        <option value="1" v-else>正常</option>
+                                                        <option value="2" v-if="data.tooth=='2'"selected="selected">错齿</option>
+                                                        <option value="2" v-else>错齿</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                            <button class="btn btn-info" onclick="tj()" type="button">
+                                <i class="fa fa-check bigger-110"></i>
+                                <span>提交</span>
+                            </button>
+                            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                            <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                                <i class="fa fa-undo bigger-110"></i>
+                                重置
+                            </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.load("looks/one/", getPama());
+        vue.loadCompany();
+    })
+
+    function tj(){
+        if ($(".myform").valid()) {
+            $("#lookcode").attr("name","code")
+            po(getUrl("looks/add"), $(".myform").serialize(), function (data) {
+                if(data.code=='100'){
+                    to("#page/phaseDetermination/list")
+                }
+            })
+        }
+    }
+</script>

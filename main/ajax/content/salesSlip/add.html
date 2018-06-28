@@ -1,0 +1,391 @@
+<title>销售单添加</title>
+<div id="app">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="operate" style="margin-bottom:0px;">
+                <div style="margin-top:50px;">
+                    <form class="form-horizontal myform">
+                        <!--<input type="hidden" name="recorder" v-model="data5.cname">-->
+                        <input type="hidden" name="org.id" v-if="data5.id!=null" v-model="data5.organization.id" id="orgID">
+                        <input type="hidden" name="checkFlag" value="0">
+                        <input type="hidden" name="type" value="1">
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:80px;"
+                                   for="code">销售单编号</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="code" id="code" readonly="readonly"
+                                           class="col-xs-12 col-sm-6" required maxlength="20"/>
+                                    <a class="btn btn-success col-xs-12 col-sm-4" style="height: 30px;padding-top: 2px;padding: 0px;" onclick="getCode()">获取订单编号</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12"></div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:80px;"
+                                   for="sireCode">客户名称</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="" id="customerName"  oninput="validate()"
+                                           class="col-xs-12 col-sm-5" maxlength="14"/>
+                                    <select name="customer.id" id="customerId" class="col-xs-12 col-sm-5" onchange="getData()" required>
+                                        <option value="">请选择</option>
+                                        <option v-for="customer in data1" :value="customer.id">
+                                            {{customer.firstName}}
+                                        </option>
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1" style="width:80px;"
+                                   for="joiningDate">省份</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+
+                                    <input type="text" name="" id="provinceCode" readonly="readonly"
+                                           class="col-xs-12 col-sm-10 " required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:80px;"
+                                   for="sireCode">地址</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="" id="address" readonly="readonly"
+                                           class="col-xs-12 col-sm-10 " required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1" style="width:80px;"
+                                   for="joiningDate">手机</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="" id="phone" readonly="readonly"
+                                           class="col-xs-12 col-sm-10 " required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:80px;"
+                                   for="phone">业务员</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <select name="contact.id" id="contact" class="col-xs-12 col-sm-10" required>
+                                        <option value="">请选择</option>
+                                        <option v-for="salesman in data9" :value="salesman.id">{{salesman.firstName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1" style="width:80px;"
+                                   for="phone">制单人</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="recorder" v-model="data5.cname" readonly="readonly"
+                                           class="col-xs-12 col-sm-10 " required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:80px;"
+                                   for="totalCount">销售数量</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="" id="totalCount" readonly="readonly" v-model="data12.totalCount"
+                                           class="col-xs-12 col-sm-10" maxlength="14"/>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1" style="width:80px;"
+                                   for="price">合计金额</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="" id="price" readonly="readonly"  v-model="data12.totalPrice"
+                                           class="col-xs-12 col-sm-10" maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                            <center>
+                                <button class="btn btn-info" type="button" onclick="tj()">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>提交</span>
+                                </button>
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                                    <i class="fa fa-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </center>
+                        </div>
+                        <div class="col-sm-12"
+                             style="border-bottom: #ddd 1px solid;margin-bottom:30px;margin-top:20px; "></div>
+
+                        <div style="clear:both;display:none" class="xqconten">
+                            <input type="hidden" id="page" value="0" name="pageNum">
+                            <div class="box" style="margin-left:30px;">
+                                <span>耳号</span>
+                                <input type="text" name="earTag" style="height:25px;width:107px;">
+                                <input type="hidden" name="sales.id" id="salesId">
+                            </div>
+                            <div class="box" style="margin-left:30px;">
+                                <span>价格(元)</span>
+                                <input type="text" name="price" style="height:25px;width:107px;">
+                            </div>
+                            <div class="box">
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        @click="add()"> 添加到列表
+                                </button>
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        @click="delet()"> 删除
+                                </button>
+                                <a style="padding:1px 5px;border-radius:5px;" type="button" class="btn btn-xs btn-success" id="dangAn"  onclick="dangAn('print/printdangan.html')">打印档案
+                                </a>
+                                <a style="padding:1px 5px;border-radius:5px;" type="button" class="btn btn-xs btn-success" id="saleSlip" onclick="saleSlip('print/printSales.html')" target="_blank">打印销售单据
+                                </a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row xqconten"  style="display:none">
+        <div class="col-xs-12">
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>耳号</th>
+                    <th>品种</th>
+                    <th>性别</th>
+                    <th>年龄段</th>
+                    <th>生理状态</th>
+                    <th>定价</th>
+                    <th>折扣</th>
+                    <th>成交价</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="salesDatail in data11">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace prid" :value="salesDatail.id"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">{{salesDatail.item.code}}</span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">{{salesDatail.item.breed.breedName}}</span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">
+                            <span v-if="salesDatail.item.sex=='1'">公羊</span>
+                            <span v-if="salesDatail.item.sex=='2'">母羊</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">
+                            <span v-if="salesDatail.item.bornStatus=='2'">羔羊</span>
+                            <span v-if="salesDatail.item.bornStatus=='3'">青年羊</span>
+                            <span v-if="salesDatail.item.bornStatus=='4'">成年羊</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item.breedingState=='--'">无状态</span>
+                        <span v-if="salesDatail.item.breedingState=='10'">空怀</span>
+                        <span v-if="salesDatail.item.breedingState=='111'">一配</span>
+                        <span v-if="salesDatail.item.breedingState=='112'">二配</span>
+                        <span v-if="salesDatail.item.breedingState=='113'">三配</span>
+                        <span v-if="salesDatail.item.breedingState=='114'">四配</span>
+                        <span v-if="salesDatail.item.breedingState=='115'">五配</span>
+                        <span v-if="salesDatail.item.breedingState=='131'">未孕一</span>
+                        <span v-if="salesDatail.item.breedingState=='132'">未孕二</span>
+                        <span v-if="salesDatail.item.breedingState=='133'">未孕三</span>
+                        <span v-if="salesDatail.item.breedingState=='134'">未孕四</span>
+                        <span v-if="salesDatail.item.breedingState=='135'">未孕五</span>
+                        <span v-if="salesDatail.item.breedingState=='141'">妊娠一</span>
+                        <span v-if="salesDatail.item.breedingState=='142'">妊娠二</span>
+                        <span v-if="salesDatail.item.breedingState=='143'">妊娠三</span>
+                        <span v-if="salesDatail.item.breedingState=='144'">妊娠四</span>
+                        <span v-if="salesDatail.item.breedingState=='145'">妊娠五</span>
+                        <span v-if="salesDatail.item.breedingState=='15'">哺乳</span>
+                        <span v-if="salesDatail.item.breedingState=='20'">供体准备</span>
+                        <span v-if="salesDatail.item.breedingState=='21'">受体准备</span>
+                        <span v-if="salesDatail.item.breedingState=='22'">AI</span>
+                        <span v-if="salesDatail.item.breedingState=='23'">供体恢复期</span>
+                        <span v-if="salesDatail.item.breedingState=='24'">已移植</span>
+                    </td>
+                    <td>{{salesDatail.rankPrice}}</td>
+                    <td>{{salesDatail.discount}}</td>
+                    <td>{{salesDatail.price}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var s
+        var scripts = [null, null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            jQuery(function ($) {
+                initCheckBox();
+                root.loadCompany();
+                root.loadPama("customer/all")
+                root.loadPama2("contact/findBySalesman?org.id="+JSON.parse(localStorage.userInfo).organization.id)
+        })
+        });
+
+        //动态获取客户列表
+        function validate(){
+            root.loadPama("customer/findByFirstNameLike?firstName="+$("#customerName").val())
+        }
+
+        //获取客户信息
+        function getData(){
+            $.post(base_url + "customer/one/"+$("#customerId").val(), function (data1) {
+                $("#provinceCode").val(data1.provinceCode)
+                $("#address").val(data1.address)
+                $("#phone").val(data1.phone)
+            })
+        }
+
+        //完成批量提交,缺少校验
+        function tj() {
+            // if ($(".myform").valid()) {
+            if($("#code").val().length>0 && $('#customerId').val().length>0 && $('#contact').val().length>0){
+                $.post(base_url + "sales/codeVerify?code="+$("#code").val()+'&orgId='+JSON.parse(localStorage.userInfo).organization.id, function (data) {
+                    if(data){
+                        $.post(base_url + "sales/add", $(".myform").serialize(), function (data1) {
+                            //给订单ID赋值
+                            msg("销售单提交成功")
+                            $("#salesId").val(data1.id)
+                            root.loadPama3("salesDatail/findByList?sales.id="+data1.id)
+                            $(".xqconten").show();
+                            s=data1.id;
+                        })
+                    }else{
+                        msg("销售单名称已存在")
+                    }
+                })
+            }else{
+                msg('数据没有填写完整')
+            }
+
+            // }
+        }
+
+        //添加到列表
+        function add(){
+            var saleID=$("#salesId").val();
+            if($("#salesId").val().length>=1){
+                if ($("input[name=earTag]").val().length>=1) {
+                    if ($("input[name=price]").val().length>=1) {
+                        $.post(base_url + "salesDatail/addVerify", $(".myform").serialize(), function (data) {
+                            if(data.code=='100'){
+                                $.post(base_url + "salesDatail/add", $(".myform").serialize(), function (data) {
+                                    if(data.code=='100'){
+                                        root.loadPama3("salesDatail/findByList?sales.id="+ saleID)
+                                        root.loadPama4("sales/one/"+saleID );
+                                        $("input[name=earTag]").val("")
+                                        $("input[name=price]").val("")
+                                    }
+                                })
+                            }else{
+                                msg(data.msg)
+                            }
+                        })
+                    }else{
+                        msg("价格不能为空")
+                    }
+
+                }else{
+                    msg("耳号不能为空")
+                }
+            }else{
+                msg("请先添加销售单")
+            }
+        }
+
+        //删除销售明细
+        function delet(){
+            var saleID=$("#salesId").val();
+            var ids = getIds();
+            if (ids.length != 0) {
+                if(ids[0]=='on'){
+                    msg("不能选择标题")
+                }else{
+                    var index = layer.confirm('您确定要删除此数据？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        layer.close(index);
+                        po(getUrl("salesDatail/delete/" + ids) , function (data) {
+                                root.loadPama3("salesDatail/findByList?sales.id="+$("#salesId").val())
+                                root.loadPama4("sales/one/"+saleID );
+                                $('.ace').attr('checked', false);
+                        });
+                    }, function () {
+                        layer.close(index);
+                    });
+                }
+            } else {
+                msg("请选择数据！")
+            }
+        }
+
+        function dangAn(url) {
+            var ids = getIds();
+            if (ids.length ==1) {
+                if(ids[0]=='on'){
+                    msg("不能选择标题")
+                }else{
+                    po(getUrl("salesDatail/one/" + ids) , function (data) {
+                        localStorage.earTag=data.item.code
+                        localStorage.salieID=data.sales.org.orgName
+                        $("#dangAn").attr("href",url)
+                        $("#dangAn").attr("target",'_blank')
+                        // to(url);
+                    });
+                }
+            }
+            else if(ids.length>1){
+                msg("只能选择一条数据")
+            }
+            else {
+                msg("请选择数据！")
+            }
+        }
+        // 获取订单编号
+        function getCode() {
+            po(getUrl("sales/salesName") , function (data) {
+               $("#code").val(data)
+            });
+        }
+
+        //打印销售单
+        function saleSlip(url) {
+            localStorage.saleSlip=s
+            $("#saleSlip").attr("href",url)
+        }
+    </script>
+    <script src="js/base-vue.js"></script>

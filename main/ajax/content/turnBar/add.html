@@ -1,0 +1,210 @@
+<title>配种添加</title>
+<div id="app">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="operate">
+                <div style="margin-top:50px;">
+                    <form class="form-horizontal myform">
+                        <input type="hidden" name="recorder" v-model="data5.cname">
+                        <input type="hidden" name="org.id" v-if="data5.id!=null" v-model="data5.organization.id">
+                        <input type="hidden" id="idsValue" name="earTags">
+
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1" style="width:60px;"
+                                   for="joiningDate">转入圈舍</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <select class="col-xs-12 col-sm-7" name="toPaddock.id" required
+                                            id="paddock">
+                                        <option value="">请选择</option>
+                                        <option v-for="paddockType in data8" :value="paddockType.id">
+                                            {{paddockType.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="border-bottom: #ddd 1px solid;margin-bottom:30px;margin-top:20px;"></div>
+                        <div class="col-sm-12">
+                            <input type="hidden" id="page" value="0" name="pageNum">
+                            <div class="box" style="margin-left:30px;">
+                                <span>母羊耳号</span> <input type="text" name="damCode1" style="height:25px;width:107px;">
+                            </div>
+                            <div class="box">
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        @click="damAdd()"> 添加到列表
+                                </button>
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        @click="selectList('#page/animal/listSelect','#page/turnBar/add')"> 从列表选择
+                                </button>
+
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        @click="delet()"> 删除
+                                </button>
+                            </div>
+                            <div class="box" v-if="data99.length>=1">
+                                <button style="padding:1px 5px;border-radius:5px;" type="button" class="btn btn-xs">
+                                    共：{{data99.length}}只
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>耳号</th>
+                    <th>转出圈舍</th>
+                    <th>错误原因</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="baseInfo in data99">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace prid" :value="baseInfo.code"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>{{baseInfo.code}}</td>
+                    <td>
+                        <span v-if="baseInfo.paddock!=null">{{baseInfo.paddock.name}}</span>
+                    </td>
+                    <td class="tdEd"></td>
+                </tr>
+                </tbody>
+            </table>
+            <!--<div id="layerr" style="padding:20px;display: none;">-->
+                <!--<select name="breedingPlan.id" class="col-sm-12" style="height:35px;" id="breedID">-->
+                    <!--<option>请先选择选配方案</option>-->
+                    <!--<option v-for="breedingPlan in data9" :value="breedingPlan.id">{{breedingPlan.name}}-->
+                    <!--</option>-->
+                <!--</select>-->
+                <!--<button class="btn btn-xs btn-success  btn-submit col-sm-12" @click="yes()" type="button"-->
+                        <!--style="height:35px;padding:1px 5px;margin-top:10px;margin-left:0px;border-radius:5px;">-->
+                    <!--确认-->
+                <!--</button>-->
+            <!--</div>-->
+
+        </div>
+
+        <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+            <center>
+                <button class="btn btn-info" type="button" onclick="tj()">
+                    <i class="fa fa-check bigger-110"></i>
+                    <span>提交</span>
+                </button>
+                <!--&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;-->
+                <!--<button class="btn btn-prev" type="reset">-->
+                    <!--<i class="fa fa-undo bigger-110"></i>-->
+                    <!--保存并下一个-->
+                <!--</button>-->
+            </center>
+        </div>
+    </div>
+    <script src="js/myUtils.js"></script>
+
+    <script type="text/javascript">
+        var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            myValidate();
+        });
+        var getids =getPama();
+        if(getids!=''){
+            adds(getids);
+        }
+        var scripts = [null, null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            jQuery(function ($) {
+                initCheckBox();
+                root.loadCompany();
+                root.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+            })
+        });
+        //母羊从列表中选择
+        function adds(getids){
+            var codes=getids.split(",")
+            for (var code in codes){
+                $("input[name='damCode1']").val(codes[code])
+                damAdd();
+                $("input[name='damCode1']").val("")
+            }
+        }
+        //母羊单只添加
+        function damAdd() {
+            var t=1;
+            if($("input[name='damCode1']").val().length>=1){
+                $("table").find("tr").each(function(){
+                    var l=$(this).children().eq(1).text();
+                    if ($("input[name='damCode1']").val()== l){
+                        msg("该羊已添加到列表,请重新输入");
+                        $("input[name='damCode1']").val("")
+                        t=0;
+                    }
+                });
+                if(t==1){
+                    po(getUrl("baseInfo/findByCode?code=" + $("input[name='damCode1']").val() + "&type=1"+"&orgId="+JSON.parse(localStorage.userInfo).organization.id), function (data) {
+                        if(data==null){
+                            msg("该羊不存在")
+                        }
+                        else{
+                            root.data99.push(data)
+                        }
+                    });
+                    $("input[name='damCode1']").val("")
+                }
+            }
+            else{
+                msg("耳号不能为空");
+            }
+        }
+        //完成批量提交
+        function tj() {
+            if ($(".myform").valid()) {
+                var ids = getIds();
+                    $.each(ids,function(index,item){
+                        if(item=='on'){
+                            ids.splice(index,1);
+                        }
+                    });
+                    $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).prop('checked', false);
+                    var saveVerifyUrl=base_url+"paddockChange/addVerifys?earTags=" + ids+"&paddockId="+ $("#paddock").val();
+                    var saveUrl=base_url + "paddockChange/adds";
+                    //该方法在myUtils.js下
+                    utilsSubmit(saveVerifyUrl,saveUrl,ids,true,'#page/turnBar/list');
+                }
+
+        }
+        //删除母羊
+        function delet(){
+            var ids = getIds();
+            for(var i in ids) {
+                $("table").find("tr").each(function(){
+                    var l=$(this).children().eq(1).text();
+                    if (ids[i]== l){
+                        $(this).remove();
+                        po(getUrl("baseInfo/findByCode?code=" + ids[i] + "&type=1"), function (data) {
+                            root.data99.splice(data,0)
+                        });
+                    }
+                });
+            }
+        }
+    </script>
+    <script src="js/base-vue.js"></script>
+

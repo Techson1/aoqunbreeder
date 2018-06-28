@@ -1,0 +1,140 @@
+<title>繁殖报表</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <select class="col-sm-1" style="width:80px;" id="year"
+                                            @change="jtyear()">
+                                    </select><span>年</span>
+                                </div>
+                                <div class="box">
+                                    <select class="col-sm-1" style="width:80px;" id="month"
+                                            @change="jtyear()">
+                                    </select><span>月</span>
+                                </div>
+
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-refresh"></i>&nbsp;刷新
+                                    </button>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-upload"></i>&nbsp;数据导出
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>报告日期</th>
+                        <th>配种母羊数</th>
+                        <th>孕检合格</th>
+                        <th>妊检未孕</th>
+                        <th>流产母羊</th>
+                        <th>返情母羊</th>
+                        <th>分娩母羊数</th>
+                        <th>产羔数</th>
+                        <th>活羔数</th>
+                        <th>死胎数</th>
+                        <th>畸形数</th>
+                        <th>断奶母羊数</th>
+                        <th>断奶羔羊数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>本月累计</td>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    localStorage.url_list = "user/list";
+    localStorage.url_del = "user/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            var mydate = new Date();
+            for (var i = mydate.getFullYear(); i >= mydate.getFullYear() - 3; i--) {
+                $("#year").append("<option value='" + i + "'>" + i + "</option>");
+            }
+            var nowyear = mydate.getFullYear()
+            if ($("#year option:selected").text() == nowyear) {
+                for (var j = mydate.getMonth() + 1; j >= 1; j--) {
+                    $("#month").append("<option value='" + j + "'>" + j + "</option>");
+                }
+            }
+            else {
+                for (var j = 1; j <= 12; j++) {
+                    $("#month").append("<option value='" + j + "'>" + j + "</option>");
+                }
+            }
+            $("#date").append("<option value='" + mydate.getDate() + "'>" + mydate.getDate() + "</option>");
+        })
+    });
+
+    //判断年份不是当前年份，则月份显示1-12，若是当前年份，则显示当前月份到1月
+    function jtyear() {
+        var mydate = new Date();
+        $("#month option").remove()
+        var nowyear = mydate.getFullYear()
+        if ($("#year option:selected").text() == nowyear) {
+            for (var j = mydate.getMonth() + 1; j >= 1; j--) {
+                $("#month").append("<option value='" + j + "'>" + j + "</option>");
+            }
+        }
+        else {
+            for (var k = 1; k <= 12; k++) {
+                $("#month").append("<option value='" + k + "'>" + k + "</option>");
+            }
+        }
+    }
+
+</script>
+<script src="js/base-vue.js"></script>

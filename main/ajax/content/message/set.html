@@ -1,0 +1,76 @@
+<title>繁殖参数</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">繁殖参数</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <div class="col-lg-10 col-lg-offset-1">
+                                        <div class="col-lg-4 col-lg-offset-1 " v-for="hint in data.content"
+                                             style="height: 50px;line-height: 50px;border-bottom: 1px solid #d5d5d5;">{{hint.name}}
+                                            <input type="hidden" v-model="hint.id">
+                                            <span id="edit" class="pull-right" style="color: black;">
+                                                <a @click="editId('#page/message/edit',hint.id)">
+                                                    <span>{{hint.parameter}}
+                                                        <span v-if="hint.name=='久配不孕警告数'">配</span>
+                                                        <span v-else-if="hint.name=='定级提示天数'">日龄</span>
+                                                        <span v-else>天</span>
+                                                    </span>
+												<i class="ace-icon fa fa-edit"></i>
+                                                    <span style="margin-left: 10px;" v-if="hint.name!='定级提示天数' && hint.name!='久配不孕警告数'">
+                                                        {{hint.hint}}天
+                                                    </span>
+												<i class="ace-icon fa fa-edit"  v-if="hint.name!='定级提示天数' && hint.name!='久配不孕警告数'"></i></a>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                            <button class="btn btn-info" type="button" onclick="back()">
+                                <i class="fa fa-check bigger-110"></i>
+                                <span>还原</span>
+                            </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+    localStorage.url_list = "hint/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+//初始化按钮
+    function back() {
+        po(getUrl('hint/init?org.id='+JSON.parse(localStorage.userInfo).organization.id),function (data) {
+            if(data.code==100){
+                msg("数据还原成功")
+                root.load()
+            }
+        })
+    }
+</script>
+<script src="js/base-vue.js"></script>

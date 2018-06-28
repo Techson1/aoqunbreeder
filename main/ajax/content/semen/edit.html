@@ -1,0 +1,233 @@
+<title>添加采精调教</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">采精数据数据</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data6.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="earTag">公耳号</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="earTag" id="earTag" required maxlength="20" readonly="readonly"
+                                                           class="col-xs-12 col-sm-6" v-if="data6.id!=null" v-model="data6.ram.code"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="date">采精日期</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="date" id="date"
+                                                           class="col-xs-12 col-sm-6 datep" required maxlength="20" v-model="data6.date"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="assess">整体评价</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="assess" id="assess" class="col-xs-10 col-sm-6" onchange="panduan()"
+                                                            required>
+                                                        <option value="">请选择</option>
+                                                        <option v-if="data6.assess=='好'"selected="selected" value="好">好</option>
+                                                        <option v-else value="好">好</option>
+                                                        <option v-if="data6.assess=='中'"selected="selected" value="中">中</option>
+                                                        <option v-else value="中">中</option>
+                                                        <option v-if="data6.assess=='差'"selected="selected" value="差">差</option>
+                                                        <option v-else value="差">差</option>
+                                                        <option v-if="data6.assess=='不爬羊'"selected="selected" value="不爬羊">不爬羊</option>
+                                                        <option v-else value="不爬羊">不爬羊</option>
+                                                        <option v-if="data6.assess=='本交成功'"selected="selected" value="本交成功">本交成功</option>
+                                                        <option v-else value="本交成功">本交成功</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group yc">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="amount">精液量</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="amount" id="amount" class="col-xs-10 col-sm-6">
+                                                        <option value="">请选择</option>
+                                                        <option v-if="data6.amount=='0.4以下'"selected="selected" value="0.4以下">0.4以下</option>
+                                                        <option v-else value="0.4以下">0.4以下</option>
+                                                        <option v-if="data6.amount=='0.4-0.8'" selected="selected" value="0.4-0.8">0.4-0.8</option>
+                                                        <option v-else value="0.4-0.8">0.4-0.8</option>
+                                                        <option v-if="data6.amount=='0.8以上'"selected="selected" value="0.8以上">0.8以上</option>
+                                                        <option v-else value="0.8以上">0.8以上</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group yc">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="density">精液密度</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="density" id="density" class="col-xs-10 col-sm-6">
+                                                        <option value="">请选择</option>
+                                                        <option v-if="data6.density=='稀'"selected="selected" value="稀">稀</option>
+                                                        <option v-else value="稀">稀</option>
+                                                        <option v-if="data6.density=='中'"selected="selected" value="中" >中</option>
+                                                        <option v-else value="中">中</option>
+                                                        <option v-if="data6.density=='密'"selected="selected" value="密">密</option>
+                                                        <option v-else value="密">密</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group yc">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="activity">精子活力</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="activity" id="activity" class="col-xs-10 col-sm-6">
+                                                        <option value="">请选择</option>
+                                                        <option v-if="data6.activity=='0.1-0.3'"selected="selected" value="0.1-0.3">0.1-0.3</option>
+                                                        <option v-else value="0.1-0.3">0.1-0.3</option>
+                                                        <option v-if="data6.activity=='0.4-0.6'"selected="selected" value="0.4-0.6">0.4-0.6</option>
+                                                        <option v-else value="0.4-0.6">0.4-0.6</option>
+                                                        <option v-if="data6.activity=='0.7-0.9'"selected="selected" value="0.7-0.9">0.7-0.9</option>
+                                                        <option v-else value="0.7-0.9">0.7-0.9</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group yc">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="color">精液颜色</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="color" id="color" class="col-xs-10 col-sm-6">
+                                                        <option value="">请选择</option>
+                                                        <option v-if="data6.color=='正常'"selected="selected" value="正常">正常</option>
+                                                        <option v-else value="正常">正常</option>
+                                                        <option v-if="data6.color=='不正常'"selected="selected" value="不正常">不正常</option>
+                                                        <option v-else value="不正常">不正常</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group yc">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="smell">精液气味</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="smell" id="smell" class="col-xs-10 col-sm-6">
+                                                        <option value="">请选择</option>
+                                                        <option v-if="data6.smell=='正常'"selected="selected" value="正常">正常</option>
+                                                        <option v-else value="正常">正常</option>
+                                                        <option v-if="data6.smell=='不正常'"selected="selected" value="不正常">不正常</option>
+                                                        <option v-else value="不正常">不正常</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group yc">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="paddock">转至饲舍</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="paddock.id" id="paddock" class="col-xs-10 col-sm-6">
+                                                        <option value="">不转圈</option>
+                                                        <option v-for="paddock in data1" :value="paddock.id">{{paddock.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                            <button class="btn btn-info" type="button" onclick="tj()">
+                                <i class="fa fa-check bigger-110"></i>
+                                <span>提交</span>
+                            </button>
+                            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                            <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                                <i class="fa fa-undo bigger-110"></i>
+                                重置
+                            </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.loadPamaWithCallback("ramTraining/one/"+getPama(),function (){
+            panduan();
+        });
+        vue.loadCompany();
+        vue.loadPama('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+
+    })
+    //提交按钮
+        function tj() {
+            if ($(".myform").valid()) {
+                if($('#assess option:selected').text()=='不爬羊' || $('#assess option:selected').text()=='本交成功'){
+                   $('#amount').val('')
+                   $('#density').val('')
+                   $('#activity').val('')
+                   $('#color').val('')
+                   $('#smell').val('')
+                }
+                po(getUrl("ramTraining/add"), $(".myform").serialize(), function (data) {
+                    location.href ="#page/semen/list";//跳转页面
+                });
+            }
+        }
+
+        function panduan(){
+            if($('#assess option:selected').text()=='不爬羊'){
+                $(".yc").hide();
+            }
+            else if($('#assess option:selected').text()=='本交成功'){
+                $(".yc").hide();
+            }
+            else{
+                $(".yc").show();
+            }
+
+        }
+</script>

@@ -1,0 +1,62 @@
+<title>集团信息</title>
+<div class="row" id="app">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 8px;">
+                        <div>
+                            <a @click="edit('#page/company/add')" class="btn btn-xs btn-success edit"
+                               style="padding:1px 5px;border-radius:5px;"><i
+                                    class="fa fa-pencil-square-o"></i> 修改</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>集团名称</th>
+                        <th>简称</th>
+                        <th>地址</th>
+                        <th>联系人</th>
+                        <th>备注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="company in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="company.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{company.companyName}}</td>
+                        <td>{{company.brief}}</td>
+                        <td>{{company.address}}</td>
+                        <td>{{company.people}}</td>
+                        <td>{{company.ramarks}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "company/list";
+    localStorage.url_del = "company/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

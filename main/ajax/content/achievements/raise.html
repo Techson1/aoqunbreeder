@@ -1,0 +1,190 @@
+<title>绩效考核</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <input type="hidden" name="type" value="1">
+                                <div class="box">
+                                    <select class="col-sm-1" style="width:100px;" id="year" name="year"
+                                            @change="jtyear()">
+                                    </select><span>年</span>
+                                </div>
+                                <div class="box">
+                                    <select class="col-sm-1" style="width:80px;" id="month" onchange="refresh()" name="month">
+                                    </select><span>月</span>
+                                </div>
+
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"  onclick="getserch()"
+                                            type="button" class="btn btn-xs btn-success">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+
+                                <div class="box">
+                                    <a href="javascript:exports('performance/export?','contact.org.id')" class="btn btn-xs btn-success add"
+                                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/achievements/raise" class="btn btn-xs add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-legal"></i>饲养量考核</a>
+                            <a href="#page/achievements/death" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-legal"></i>死亡考核</a>
+                            <a href="#page/achievements/illOut" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-legal"></i>疾病淘汰考核</a>
+                            <a href="#page/achievements/breedOut" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-legal"></i>育种淘汰考核</a>
+                            <a href="#page/achievements/survivalRate" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-legal"></i>成活率考核</a>
+                            <a href="#page/achievements/weighter" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-legal"></i>增重考核</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <th>饲养员</th>
+                    <th>饲养积数</th>
+                    <th>天数</th>
+                    <th>日均数</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                    <th>8</th>
+                    <th>9</th>
+                    <th>10</th>
+                    <th>11</th>
+                    <th>12</th>
+                    <th>13</th>
+                    <th>14</th>
+                    <th>15</th>
+                    <th>16</th>
+                    <th>17</th>
+                    <th>18</th>
+                    <th>19</th>
+                    <th>20</th>
+                    <th>21</th>
+                    <th>22</th>
+                    <th>23</th>
+                    <th>24</th>
+                    <th>25</th>
+                    <th>26</th>
+                    <th>27</th>
+                    <th>28</th>
+                    <th>29</th>
+                    <th>30</th>
+                    <th>31</th>
+                    </thead>
+                    <tbody>
+                    <tr v-for="performance in data.content">
+                        <td>{{performance.contact.firstName}}</td>
+                        <td>
+                            {{parseInt(performance.day1)+parseInt(performance.day2)+parseInt(performance.day3)+parseInt(performance.day4)+parseInt(performance.day5)+
+                              parseInt(performance.day6)+parseInt(performance.day7)+parseInt(performance.day8)+parseInt(performance.day9)+parseInt(performance.day10)+
+                              parseInt(performance.day11)+parseInt(performance.day12)+parseInt(performance.day13)+parseInt(performance.day14)+parseInt(performance.day15)+
+                              parseInt(performance.day16)+parseInt(performance.day17)+parseInt(performance.day18)+parseInt(performance.day19)+parseInt(performance.day20)+
+                              parseInt(performance.day21)+parseInt(performance.day22)+parseInt(performance.day23)+parseInt(performance.day24)+parseInt(performance.day25)+
+                              parseInt(performance.day26)+parseInt(performance.day27)+parseInt(performance.day28)+parseInt(performance.day29)+parseInt(performance.day30)+
+                              parseInt(performance.day31)}}
+                        </td>
+                        <td class="dayNum"></td>
+                        <td>{{performance.sum}}</td>
+                        <td>{{performance.day1}}</td>
+                        <td>{{performance.day2}}</td>
+                        <td>{{performance.day3}}</td>
+                        <td>{{performance.day4}}</td>
+                        <td>{{performance.day5}}</td>
+                        <td>{{performance.day6}}</td>
+                        <td>{{performance.day7}}</td>
+                        <td>{{performance.day8}}</td>
+                        <td>{{performance.day9}}</td>
+                        <td>{{performance.day10}}</td>
+                        <td>{{performance.day11}}</td>
+                        <td>{{performance.day12}}</td>
+                        <td>{{performance.day13}}</td>
+                        <td>{{performance.day14}}</td>
+                        <td>{{performance.day15}}</td>
+                        <td>{{performance.day16}}</td>
+                        <td>{{performance.day17}}</td>
+                        <td>{{performance.day18}}</td>
+                        <td>{{performance.day19}}</td>
+                        <td>{{performance.day20}}</td>
+                        <td>{{performance.day21}}</td>
+                        <td>{{performance.day22}}</td>
+                        <td>{{performance.day23}}</td>
+                        <td>{{performance.day24}}</td>
+                        <td>{{performance.day25}}</td>
+                        <td>{{performance.day26}}</td>
+                        <td>{{performance.day27}}</td>
+                        <td>{{performance.day28}}</td>
+                        <td>{{performance.day29}}</td>
+                        <td>{{performance.day30}}</td>
+                        <td>{{performance.day31}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/myUtils.js"></script>
+<script src="ace1.4/components/jquery/dist/jquery.js"></script>
+<script src="ace1.4/assets/js/src/vue.min.js"></script>
+<script type="text/javascript">
+    var daynumber;
+    var vue= new Vue({
+        el: '#app',
+        data: {data: ""},
+        created:function () {
+            renderingYear(5, "year");
+            renderingMonth(getMonth(), "month");
+            daynumber=getnewDay()-1
+            // alert(getnewDay());
+            $('.dayNum').html(daynumber)
+            this.load();
+        },
+        methods: {
+            load: function () {
+                $.post(base_url+'performance/list?contact.org.id='+JSON.parse(localStorage.userInfo).organization.id, $(".searchForm").serialize(), function (data) {
+                    vue.data=data
+                    data.content.forEach(function(d){
+                        var count=parseInt(d.day1)+parseInt(d.day2)+parseInt(d.day3)+parseInt(d.day4)+parseInt(d.day5)+
+                            parseInt(d.day6)+parseInt(d.day7)+parseInt(d.day8)+parseInt(d.day9)+parseInt(d.day10)+parseInt(d.day11)+
+                            parseInt(d.day12)+parseInt(d.day13)+parseInt(d.day14)+parseInt(d.day15)+parseInt(d.day16)+parseInt(d.day17)+
+                            parseInt(d.day18)+parseInt(d.day19)+parseInt(d.day20)+parseInt(d.day21)+parseInt(d.day22)+parseInt(d.day23)+
+                            parseInt(d.day24)+parseInt(d.day25)+parseInt(d.day26)+parseInt(d.day27)+parseInt(d.day28)+parseInt(d.day29)+
+                            parseInt(d.day30)+parseInt(d.day31)
+                        var daynum=daynumber
+                        d.sum=(count/parseInt(daynum)).toFixed(2)
+                    })
+                })
+            }
+        }
+    });
+    function getserch() {
+        var getyear=$("#year").val()
+        var getmonth=$("#month").val()-1
+        var days= getMonthDays(getyear,getmonth);
+        $('.dayNum').html(days)
+        daynumber=days
+        vue.load();
+    }
+
+</script>
+<!--<script src="js/base-vue.js"></script>-->

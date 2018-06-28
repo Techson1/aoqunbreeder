@@ -1,0 +1,146 @@
+<title>已售查询</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>细管号</span> <input type="text" name="userName" value=""
+                                                           style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>品种</span>
+                                    <select name="breed.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="box">
+                                    <span>销售日期</span>
+                                    <input type="text" name="startDate" value="" class="datep" readonly="readonly"
+                                           style="height:25px;width:107px;">&nbsp;到&nbsp;
+                                    <input type="text" name="endDate" value="" class="datep" readonly="readonly"
+                                           style="height:25px;width:107px;">
+                                </div>
+
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                    <a href="#page/breederOut/add" class="btn btn-xs btn-success add"
+                                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
+                                </div>
+                                <div class="tabbable">
+                                    <ul id="inbox-tabs"
+                                        class="inbox-tabs nav nav-tabs tab-size-bigger tab-space-1">
+                                        <!-- /section:pages/inbox.compose-btn -->
+                                        <li><a href="#page/sold/list" style="border:0px">
+                                            <i class="orange ace-icon fa fa-stethoscope bigger-180"></i>
+                                            <span class="bigger-50">羊只</span>
+                                        </a></li>
+                                        <li class="active"><a href="#page/sold/embryolist"
+                                                              style="border-left:0px;border-right:0px;"> <i
+                                                class="blue ace-icon fa fa-venus-mars bigger-180"></i>
+                                            <span class="bigger-50">胚胎</span>
+                                        </a></li>
+                                    </ul>
+                                    <button
+                                            class="aside-trigger btn btn-info btn-app btn-xs ace-settings-btn visible-xs"
+                                            data-target="#right-menu" data-toggle="modal"
+                                            type="button" style="margin-top: -110px;">
+                                        <i data-icon1="fa-search" data-icon2="fa-search"
+                                           class="ace-icon fa fa-search icon-only"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+
+
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>细管号</th>
+                    <th>存储数</th>
+                    <th>移植数</th>
+                    <th>价格</th>
+                    <th>小计</th>
+                    <th>生产日期</th>
+                    <th>移植日期</th>
+                    <th>品种</th>
+                    <th>供体母羊</th>
+                    <th>供体公羊</th>
+                    <th>销售场区</th>
+                    <th>来源</th>
+                </thead>
+                <tbody>
+                <tr v-for="user in data.content">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace" :value="user.id"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>{{user.userName}}</td>
+                    <td>{{user.ctime}}</td>
+                    <td>{{user.accountScope}}</td>
+                    <td>{{user.accountType}}</td>
+                    <td>{{user.role.name}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="pagination pull-right">
+                <li :class="data.first==true?'disabled':''">
+                    <a @click="prev">
+                        <i class="ace-icon fa fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li v-for="n in (data.number<5?(10<data.totalPages?10:data.totalPages):(data.number+5>data.totalPages?data.totalPages:data.number+5))"
+                    :class="data.number+1 == n?'active':''">
+                    <a @click="goto(n-1)"
+                       v-if="data.number-5 < n || (data.totalPages-data.number<5 && n>data.totalPages-10)">{{n}}</a>
+                </li>
+                <li :class="data.last==true?'disabled':''">
+                    <a @click="next">
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+    localStorage.url_list = "user/list";
+    localStorage.url_del = "user/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

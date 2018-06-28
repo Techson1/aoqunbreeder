@@ -1,0 +1,164 @@
+<title>修改测孕</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">测孕信息</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <input type="hidden" name="recorder" v-model="data2.cname">
+                        <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="userName">母羊耳号</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="damCode" id="damCode" v-if="data.dam!=null" v-model="data.dam.code"
+                                                           class="col-xs-12 col-sm-6 " required maxlength="14" readonly="readonly"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="pregnancyDate">测孕日期</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="pregnancyDate" id="pregnancyDate" v-model="data.pregnancyDate"
+                                                           class="col-xs-12 col-sm-6 datep" required maxlength="14"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="result">测孕结果</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="result" class="col-sm-6" required >
+                                                        <!--<option value="">请选择</option>-->
+                                                        <!--<option v-if="data.result=='2'"selected="selected"  value="2">怀孕</option>-->
+                                                        <option value="2">怀孕</option>
+                                                        <!--<option v-if="data.result=='3'"selected="selected" value="3">未孕</option>-->
+                                                        <!--<option v-else value="3">未孕</option>-->
+                                                        <!--<option v-if="data.result=='4'"selected="selected" value="4">不确定</option>-->
+                                                        <!--<option v-else value="4">不确定</option>-->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+
+                                        <div class="form-group" id="organizationN">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="theSameFetus">测孕同胎数</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="theSameFetus" class="col-sm-6">
+                                                        <option value="">请选择</option>
+                                                        <option v-if="data.theSameFetus=='未知'" selected="selected"  value="未知">未知</option>
+                                                        <option v-else value="未知">未知</option>
+                                                        <option v-if="data.theSameFetus=='1'" selected="selected"  value="1">1</option>
+                                                        <option v-else value="1">1</option>
+                                                        <option v-if="data.theSameFetus=='2'" selected="selected"  value="2">2</option>
+                                                        <option v-else value="2">2</option>
+                                                        <option v-if="data.theSameFetus=='3'" selected="selected"  value="3">3</option>
+                                                        <option v-else value="3">3</option>
+                                                        <option v-if="data.theSameFetus=='4'" selected="selected"  value="4">4</option>
+                                                        <option v-else value="4">4</option>
+                                                        <option v-if="data.theSameFetus=='5'" selected="selected"  value="5">5</option>
+                                                        <option v-else value="5">5</option>
+                                                        <option v-if="data.theSameFetus=='6'" selected="selected"  value="6">6</option>
+                                                        <option v-else value="6">6</option>
+                                                        <option v-if="data.theSameFetus=='7'" selected="selected"  value="7">7</option>
+                                                        <option v-else value="7">7</option>
+                                                        <option v-if="data.theSameFetus=='8'" selected="selected"  value="8">8</option>
+                                                        <option v-else value="8">8</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5"
+                                                   for="paddock">转至圈舍</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-xs-12 col-sm-6" name="toPaddock.id"
+                                                            id="paddock.id">
+                                                        <option value="">不转圈</option>
+                                                        <option v-for="paddockType in data3" :value="paddockType.id">
+                                                            {{paddockType.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                        <button class="btn btn-info" type="button" onclick="tj()">
+                            <i class="fa fa-check bigger-110"></i>
+                            <span>提交</span>
+                        </button>
+                        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                        <button class="btn btn-prev" type="reset">
+                            <i class="fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    var editId=getPama();
+
+    jQuery(function () {
+        vue.load("pregnancy/one/", editId);
+        vue.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+        vue.loadCompany();
+    })
+    function tj(){
+        $.post(base_url + "pregnancy/updateVerify" ,$(".myform").serialize(), function (data1) {
+            //若果修改成功跳转页面
+            if (data1.code == "101") {
+                msg(data1.msg);
+            }else{
+                $.post(base_url + "pregnancy/update" ,$(".myform").serialize(), function (data1) {
+                    //若果修改成功跳转页面
+                    if (data1.code == "100") {
+                        to("#page/pregInspect/list")
+                    }
+                })
+            }
+        })
+
+    }
+
+</script>

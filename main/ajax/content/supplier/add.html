@@ -1,0 +1,102 @@
+<title>供货商维护</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">供应商信息</h4>
+            </div>
+            <div class="widget-body" style="padding-bottom: 50px;">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="flag" value="1">
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="firstName">供应商全称</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="supplierName" id="supplierName"
+                                                       class="col-xs-12 col-sm-5 " required maxlength="20"
+                                                       v-model="data.firstName"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="abbreviation">简称</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="abbreviation" id="abbreviation" class="col-xs-12 col-sm-5 "
+                                                       required  v-model="data.abbreviation"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="contacts">联系人</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="contacts" id="contacts"
+                                                       class="col-xs-12 col-sm-5 "
+                                                       maxlength="20" v-model="data.contacts"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="phone">备注</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="comment" id="comment"
+                                                       class="col-xs-12 col-sm-5 "
+                                                       maxlength="20" v-model="data.comment"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <center>
+                                <button class="btn btn-info btn-submit">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>提交</span>
+                                </button>
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-prev" type="reset"  v-if="data.id==null">
+                                    <i class="fa fa-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.load("contact/one/", getPama());
+        setPama1("contact/supplierSave");//为表单传值
+        setPama2("#page/supplier/list");//设置提交数据完成的跳转界面
+    })
+</script>

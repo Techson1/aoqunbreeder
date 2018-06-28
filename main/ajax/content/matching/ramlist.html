@@ -1,0 +1,52 @@
+<title>公羊清单</title>
+
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <center><h1>{{data.name}}</h1></center>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>公羊耳号</th>
+                        <th>品种</th>
+                        <th>出生日期</th>
+                        <th>月龄</th>
+                        <th>操作人</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item,index) in data.breedingPlanDetailSires">
+                        <td>{{item.sire.code}}</td>
+                        <td>{{item.sire.breed.breedName}}</td>
+                        <td>{{item.sire.birthDay}}</td>
+                        <td>月龄</td>
+                        <td>{{item.recorder}}</td>
+                        <td>{{item.ctime}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "breedingPlan/one/"+getPama();
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

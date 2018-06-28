@@ -1,0 +1,278 @@
+<title>添加冻精登记</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">冻精登记</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+
+                                <div class="step-pane active" data-step="1">
+
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-model="data2.organization.id">
+
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="WarehousingDate">供体公羊号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="WarehousingDate" id="WarehousingDate"
+                                                       class="col-xs-12 col-sm-6"
+                                                       required maxlength="20" v-model="data.WarehousingDate"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-2"></div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;">冻精细管编号</label>
+                                        <div class="col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="WarehousingDate" id="WarehousingDate"
+                                                       class="col-xs-12 col-sm-3"
+                                                       required maxlength="20" v-model="data.WarehousingDate"/>
+                                                <select name="color" id="color" class="col-xs-10 col-sm-3"
+                                                        required>
+                                                    <option value="" v-if="data.color==null" selected="selected">请选择品种
+                                                    </option>
+                                                    <option v-for="breed in data1" :value="breed.id">
+                                                        {{breed.breedName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="WarehousingDate">冻精剂量</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="WarehousingDate" id="WarehousingDate"
+                                                       class="col-xs-12 col-sm-6"
+                                                       required maxlength="20" v-model="data.WarehousingDate"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;">冻精等级</label>
+                                        <div class="col-sm-8">
+                                            <div class="clearfix">
+                                                <select name="type" id="s" class="col-xs-10 col-sm-2"
+                                                        required onchange="yc()">
+                                                    <option value="A">A</option>
+                                                    <option value="B">B</option>
+                                                    <option value="C">C</option>
+                                                </select>
+                                                <span class="col-sm-2" style="height:30px;padding-top:5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用途</span>
+
+                                                <select name="color" id="color" class="col-xs-10 col-sm-2"
+                                                        required>
+                                                    <option value="" v-if="data.color==null" selected="selected">请选择
+                                                    </option>
+                                                    <option value="生产">生产</option>
+                                                    <option value="核心">核心</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;">套管颜色</label>
+                                        <div class="col-sm-8">
+                                            <div class="clearfix">
+                                                <select name="type" id="s" class="col-xs-10 col-sm-6"
+                                                        required onchange="yc()">
+                                                    <option value="A">A</option>
+                                                    <option value="B">B</option>
+                                                    <option value="C">C</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="breed">存储罐号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-6" name="breed.id" required
+                                                        id="breed">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="breed in data1" :value="breed.id">
+                                                        {{breed.breedName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="WarehousingDate">生产日期</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="WarehousingDate" id="WarehousingDate"
+                                                       class="col-xs-12 col-sm-6"
+                                                       required maxlength="20" v-model="data.WarehousingDate"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="WarehousingDate">入库日期</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="WarehousingDate" id="WarehousingDate"
+                                                       class="col-xs-12 col-sm-6"
+                                                       required maxlength="20" v-model="data.WarehousingDate"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;">冻精来源</label>
+                                        <div class="col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="WarehousingDate" id="WarehousingDate"
+                                                       class="col-xs-12 col-sm-3"
+                                                       required maxlength="20" v-model="data.WarehousingDate"/>
+                                                <select name="color" id="color" class="col-xs-10 col-sm-3"
+                                                        required>
+                                                    <option value="" v-if="data.color==null" selected="selected">请选择
+                                                    </option>
+                                                    <option v-for="breed in data1" :value="breed.id">
+                                                        {{breed.breedName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <center>
+                                <button class="btn btn-info" onclick="check()" type="button">
+                                    <i class="fa fa-wrench bigger-110"></i>
+                                    <span>检查</span>
+                                </button>
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-info btn-submit" type="button" disabled="true">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>提交</span>
+                                </button>
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-prev" type="reset" id="resetBtn" v-if="data.id==null">
+                                    <i class="fa fa-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+
+
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+        jQuery.validator.addMethod("alnum", function (value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
+        }, "只能包括英文字母和数字");
+    });
+    jQuery(function () {
+        vue.load("codeRegister/one/", getPama());
+        vue.loadCompany();
+        vue.loadPama1('customer/all');
+        vue.loadPama('breed/all');
+        setPama1("codeRegister/codeAdds");//为表单传值
+        setPama2("#page/earTage/list");//设置提交数据完成的跳转界面
+    })
+    $(function () {
+        if ($("#s option:selected").text() == '电子耳标') {
+            $("input[name='prefix']").hide();
+            $("input[name='startCode']").hide();
+            $("input[name='endCode']").hide();
+            $("input[name='number']").show();
+            $("input[name='visualStartCode']").show();
+            $("input[name='visualEndCode']").show();
+        }
+    })
+    function yc() {
+        if ($("#s option:selected").text() == '电子耳标') {
+            $("input[name='prefix']").hide();
+            $("input[name='startCode']").hide();
+            $("input[name='endCode']").hide();
+            $("input[name='number']").show();
+            $("input[name='visualStartCode']").show();
+            $("input[name='visualEndCode']").show();
+        }
+        else {
+            $("input[name='prefix']").show();
+            $("input[name='startCode']").show();
+            $("input[name='endCode']").show();
+            $("input[name='number']").show();
+            $("input[name='visualStartCode']").hide();
+            $("input[name='visualEndCode']").hide();
+        }
+    }
+    function count() {
+        $("input[name='endCode']").val(Number($("input[name='startCode']").val()) + Number($("input[name='number']").val()) - 1)
+        $("input[name='visualEndCode']").val(Number($("input[name='visualStartCode']").val()) + Number($("input[name='number']").val()) - 1)
+    }
+    //检查校验
+        function check(){
+            alert("1")
+            po(getUrl("codeRegister/codeAddsVerify"), $(".myform").serialize(), function (data) {
+                alert(data.code)
+               if(data.code=='101'){
+                    alert(data.msg);
+               }
+               else{
+                   alert(data.msg)
+                   $(".btn-submit").attr('disabled',false);
+               }
+            });
+        }
+
+    //提交校验
+//    function tj() {
+//        po(getUrl("codeRegister/codeAddsVerify"), $(".myform").serialize(), function (data) {
+//            alert(data.code)
+//            if (data.code == '101') {
+//                msg(data.msg);
+//            }
+//            else {
+//                alert(data.msg)
+//                po(getUrl("codeRegister/codeAdds"), $(".myform").serialize(), function (data) {
+//                    location.href="#page/earTage/list"
+//                })
+//            }
+//        });
+//    }
+
+</script>

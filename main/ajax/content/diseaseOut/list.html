@@ -1,0 +1,256 @@
+<title>疾病淘汰</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>可视耳号</span>
+                                    <input type="text" name="base.code" value="" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>品种</span>
+                                    <select name="base.breed.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>性别</span>
+                                    <select name="base.sex" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option value="1">公羊</option>
+                                        <option value="2">母羊</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>月龄</span> <input type="text" name="moonAge" value="" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>圈舍</span>
+                                    <select name="base.paddock.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="paddock in data8" :value="paddock.id">{{paddock.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>淘汰日期</span>
+                                    <input type="text" name="dateAssistStart" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">&nbsp;到&nbsp;
+                                    <input type="text" name="dateAssistEnd" value="" class="end" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
+                                </div>
+                                <div class="box">
+                                    <span>淘汰原因</span>
+                                    <select name="fatherReason.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="fatherReason in data9" :value="fatherReason.id">{{fatherReason.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/diseaseOut/add" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 添加淘汰</a>
+                            <a href="javascript:exports('illnessWeed/export?','base.org.id')" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
+                            <a @click="editVerify('#page/diseaseOut/edit','illnessWeed/updateAndDelVerify')" class="btn btn-xs btn-success edit"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-pencil-square-o"></i> 修改</a>
+                            <a @click="delRelation()" class="btn btn-xs btn-success del"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 删除</a>
+                            <ul class="pagination pull-right">
+                                <li><a>共：{{data.totalElements}}</a></li>
+                                <li><a @click="goto('0')">首页</a></li>
+                                <li :class="data.first==true?'disabled':''">
+                                    <a @click="prev">
+                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                    <a @click="goto(n-1)">{{n}}</a>
+                                </li>
+                                <li :class="data.last==true?'disabled':''">
+                                    <a @click="next">
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>可视耳号</th>
+                        <th>电子耳号</th>
+                        <th>父号</th>
+                        <th>母号</th>
+                        <th>出生日期</th>
+                        <th>品种</th>
+                        <th>性别</th>
+                        <th>繁殖状态</th>
+                        <th>淘汰月龄</th>
+                        <th>淘汰日期</th>
+                        <th>淘汰原因</th>
+                        <th>淘汰详因</th>
+                        <th>处理措施</th>
+                        <th>所在圈舍</th>
+                        <th>饲养员</th>
+                        <th>复核</th>
+                        <th>操作人</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="illnessWeed in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="illnessWeed.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{illnessWeed.base.code}}</td>
+                        <td>{{illnessWeed.base.rfid}}</td>
+                        <td><span v-if="illnessWeed.base!=null">{{illnessWeed.base.damCode}}</span></td>
+                        <td><span v-if="illnessWeed.base!=null">{{illnessWeed.base.sireCode}}</span></td>
+                        <td>{{illnessWeed.base.birthDay!=null?illnessWeed.base.birthDay.substring(0,10):""}}</td>
+                        <td>{{illnessWeed.base.breed.breedName}}</td>
+                        <td>
+                            <span v-if="illnessWeed.base.sex=='1'">公羊</span>
+                            <span v-if="illnessWeed.base.sex=='2'">母羊</span>
+                        </td>
+                        <td>
+                            <span v-if="illnessWeed.base.breedingState=='--'">无状态</span>
+                            <span v-if="illnessWeed.base.breedingState=='10'">空怀</span>
+                            <span v-if="illnessWeed.base.breedingState=='111'">一配</span>
+                            <span v-if="illnessWeed.base.breedingState=='112'">二配</span>
+                            <span v-if="illnessWeed.base.breedingState=='113'">三配</span>
+                            <span v-if="illnessWeed.base.breedingState=='114'">四配</span>
+                            <span v-if="illnessWeed.base.breedingState=='115'">五配</span>
+                            <span v-if="illnessWeed.base.breedingState=='116'">六配</span>
+                            <span v-if="illnessWeed.base.breedingState=='117'">七配</span>
+                            <span v-if="illnessWeed.base.breedingState=='118'">八配</span>
+                            <span v-if="illnessWeed.base.breedingState=='119'">九配</span>
+                            <span v-if="illnessWeed.base.breedingState=='1110'">十配</span>
+                            <span v-if="illnessWeed.base.breedingState=='131'">未孕一</span>
+                            <span v-if="illnessWeed.base.breedingState=='132'">未孕二</span>
+                            <span v-if="illnessWeed.base.breedingState=='133'">未孕三</span>
+                            <span v-if="illnessWeed.base.breedingState=='134'">未孕四</span>
+                            <span v-if="illnessWeed.base.breedingState=='135'">未孕五</span>
+                            <span v-if="illnessWeed.base.breedingState=='136'">未孕六</span>
+                            <span v-if="illnessWeed.base.breedingState=='137'">未孕七</span>
+                            <span v-if="illnessWeed.base.breedingState=='138'">未孕八</span>
+                            <span v-if="illnessWeed.base.breedingState=='139'">未孕九</span>
+                            <span v-if="illnessWeed.base.breedingState=='1310'">未孕十</span>
+                            <span v-if="illnessWeed.base.breedingState=='141'">妊娠一</span>
+                            <span v-if="illnessWeed.base.breedingState=='142'">妊娠二</span>
+                            <span v-if="illnessWeed.base.breedingState=='143'">妊娠三</span>
+                            <span v-if="illnessWeed.base.breedingState=='144'">妊娠四</span>
+                            <span v-if="illnessWeed.base.breedingState=='145'">妊娠五</span>
+                            <span v-if="illnessWeed.base.breedingState=='146'">妊娠六</span>
+                            <span v-if="illnessWeed.base.breedingState=='147'">妊娠七</span>
+                            <span v-if="illnessWeed.base.breedingState=='148'">妊娠八</span>
+                            <span v-if="illnessWeed.base.breedingState=='149'">妊娠九</span>
+                            <span v-if="illnessWeed.base.breedingState=='1410'">妊娠十</span>
+                            <span v-if="illnessWeed.base.breedingState=='15'">哺乳</span>
+                            <span v-if="illnessWeed.base.breedingState=='20'">供体准备</span>
+                            <span v-if="illnessWeed.base.breedingState=='21'">受体准备</span>
+                            <span v-if="illnessWeed.base.breedingState=='22'">AI</span>
+                            <span v-if="illnessWeed.base.breedingState=='23'">供体恢复期</span>
+                            <span v-if="illnessWeed.base.breedingState=='24'">已移植</span>
+                            <span v-if="illnessWeed.base.breedingState=='25'">未调教</span>
+                            <span v-if="illnessWeed.base.breedingState=='26'">好</span>
+                            <span v-if="illnessWeed.base.breedingState=='27'">中</span>
+                            <span v-if="illnessWeed.base.breedingState=='28'">差</span>
+                            <span v-if="illnessWeed.base.breedingState=='29'">不爬羊</span>
+                            <span v-if="illnessWeed.base.breedingState=='30'">本交成功</span>
+                        </td>
+                        <td>{{illnessWeed.moonAge}}</td>
+                        <td>{{illnessWeed.date!=null?illnessWeed.date.substring(0,10):''}}</td>
+                        <td><span v-if="illnessWeed.fatherReason!=null">{{illnessWeed.fatherReason.name}}</span></td>
+                        <td><span v-if="illnessWeed.reason!=null">{{illnessWeed.reason.name}}</span></td>
+                        <td>
+                            <span v-if="illnessWeed.treat=='1'">销售</span>
+                            <span v-if="illnessWeed.treat=='2'">屠宰</span>
+                            <span v-if="illnessWeed.treat=='3'">无害化处理</span>
+                        </td>
+                        <td>
+                            <span v-if="illnessWeed.paddock!=null">{{illnessWeed.paddock.name}}</span>
+                        </td>
+                        <td>
+                            <span v-if="illnessWeed.paddock!=null">
+                                {{illnessWeed.paddock.contact==null?'':illnessWeed.paddock.contact.firstName}}
+                            </span>
+
+                        </td>
+                        <td>
+                            <span v-if="illnessWeed.base.isAudit=='0'" style="color: red">未审核</span>
+                            <span v-if="illnessWeed.base.isAudit=='1'" style="color: green;">已审核</span>
+                        </td>
+                        <td>{{illnessWeed.recorder}}</td>
+                        <td>{{illnessWeed.ctime}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "illnessWeed/list?base.org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.delRelation = "illnessWeed/delete/";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all")
+            root.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+            root.loadPama2('deathDisposalReason/parentFlagList/2');
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

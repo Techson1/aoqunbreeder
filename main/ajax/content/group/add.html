@@ -1,0 +1,101 @@
+<title>添加饲喂群组</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <style type="text/css">
+            input {
+                height: 28px;
+            }
+        </style>
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">饲喂群组</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="breedName">饲喂群组名称</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="breedName" id="breedName"
+                                                       class="col-xs-12 col-sm-6 " required maxlength="20"
+                                                       v-model="data.breedName"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;"> 日粮配方</label>
+                                        <div class="col-sm-8">
+                                            <select class="col-xs-12 col-sm-6" name="customer.id" required
+                                                    id="customer">
+                                                <option value="">请选择</option>
+                                                <option v-for="breed in data1" :value="breed.id">
+                                                    {{breed.breedName}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="breedName">饲喂量</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="breedName" id="breedName"
+                                                       class="col-xs-12 col-sm-6 " required maxlength="20"
+                                                       v-model="data.breedName"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix form-actions">
+                            <div class="col-md-12">
+                                <center>
+                                    <button name="sub" class="btn btn-info" onclick="panduan()" type="button">
+                                        <i class="fa fa-check bigger-110"></i>
+                                        <span>提交</span>
+                                    </button>
+                                    &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                    <button class="btn btn-prev" type="reset" v-if="data.id=null">
+                                        <i class="fa fa-undo bigger-110"></i>
+                                        重置
+                                    </button>
+                                </center>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+
+    jQuery(function () {
+        vue.load("breed/one/", getPama());
+        vue.loadPama('breed/all');
+        vue.loadCompany();
+    })
+
+
+</script>

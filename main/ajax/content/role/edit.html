@@ -1,0 +1,161 @@
+<title>修改角色</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">添加角色</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div id="fuelux-wizard-container">
+                        <div class="step-content pos-rel">
+                            <div class="step-pane active col-sm-11" data-step="1">
+                                <form class="form-horizontal myform" id="validation-form">
+                                    <input type="hidden" id="idd" name="id">
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-lg-1 col-md-1 col-sm-1 no-padding-right"
+                                               for="roleName"
+                                               style="font-size: 17px;font-weight: bolder">角色名称</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="name" id="name" style="width:200px;"
+                                                       class="col-xs-12 col-sm-6 " required maxlength="20"
+                                                       :value="data.name"/>
+                                                <input type="hidden" name="type" value="1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group"
+                                         style="height: 35px;line-height: 35px;">
+                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 control-label"
+                                                style="padding-top:0px;font-size: 17px;margin-left: -3px;font-weight: bolder">
+                                            Web权限
+                                        </div>
+
+                                    </div>
+
+                                    <style>
+                                        .pvgOne {
+                                            padding-left: 0px;
+                                            margin-top: 10px;
+                                        }
+                                        .pvgTwo {
+                                            margin-bottom: 10px;
+                                        }
+                                    </style>
+                                    <div id="allpvg">
+
+
+                                    <div  class="form-group">
+                                        <div v-for="pvg in pvgs.allPvgs">
+                                            <div class="col-sm-10 col-xs-12 col-sm-offset-1 pvgOne">
+                                                <input name="pvgIds" type="checkbox" class="ace pvgOneCheckbox"  :id="'id'+pvg.id"
+                                                       :value="pvg.id" v-if="pvg.children==''"/>
+                                                <span class="lbl" style="font-size: 17px;font-weight: bold"> {{pvg.name}}</span>
+                                            </div>
+                                            <div class="col-sm-11 col-sm-offset-2">
+                                                <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pvgTwo"
+                                                     v-for="child in pvg.children">
+                                                    <input name="pvgIds" type="checkbox" class="ace pvgTwoCheckbox" :id="'id'+child.id"
+                                                           :value="child.id"/>
+                                                    <span class="lbl">{{child.name}}</span>
+                                                </div>
+                                            </div>
+                                            <hr class="col-sm-12">
+                                        </div>
+                                    </div>
+                                    <div class="form-group"
+                                         style="height: 35px;line-height: 35px;">
+                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 control-label"
+                                             style="padding-top:0px;font-size: 17px;margin-left: -3px;font-weight: bolder">
+                                            App权限
+                                        </div>
+
+                                    </div>
+                                    <div id="allAppPvg" class="form-group">
+                                        <div class="col-sm-11 col-sm-offset-2">
+                                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pvgTwo"
+                                                v-for="pvg in data">
+                                            <input name="pvgIds" type="checkbox" class="ace" :id="'id'+pvg.id"
+                                                    :value="pvg.id"/>
+                                            <span class="lbl">{{pvg.name}}</span>
+                                            </div>
+                                        </div>
+                                        <hr class="col-sm-12">
+                                    </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="col-md-12" style="margin-top: 30px;">
+                        <center>
+                            <button class="btn btn-info" type="button" onclick="tj()">
+                                <i class="fa fa-check bigger-110"></i>
+                                <span>提交</span>
+                            </button>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script src="js/vue-one.js"></script>-->
+<script type="text/javascript">
+    var scripts = [null,null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        // myValidate();
+    });
+    var vue=new Vue({
+        el: '#allpvg',
+        data: {data:"",pvgs: ""},
+        created: function () {
+            this.pvgs = JSON.parse(localStorage.pvgs);
+            po(getUrl("pvg/appWebPvgs"), function (data) {
+                vue.data = data;
+                vue.load()
+            })
+        },
+        methods: {
+            load: function (url) {
+                po(getUrl("role/one/"+getPama()), function (data) {
+                    vue.data = data;
+                    var ids=data.pvgIds
+                    for(var i in ids){
+                        $("#id"+ids[i]).attr("checked","checked")
+                    }
+                    $("#name").val(data.name)
+                    $("#idd").val(data.id)
+                })
+            },
+            even: function (pama) {
+                var _selfPvgs = this.pvgs.selfPvgs;
+                return pama.filter(function (pvg) {
+                    return _selfPvgs.indexOf(pvg.id) >= 0;
+                })
+            }
+        }
+    });
+    function tj() {
+        if($("input[name=name]").val().length>=1){
+            var isc = "";
+            $("[name='pvgIds']:checked").each(function(index, element) {
+                isc += $(this).val() + ",";
+            });
+            if(isc.length>=1){
+                po(getUrl('role/roleAndPvgSave?user.id='+JSON.parse(localStorage.userInfo).id), $(".myform").serialize(), function (data) {
+                    if(data.code=='100'){
+                        to("#page/role/list")
+                    }
+                })
+            }else{
+                msg("权限不能为空")
+            }
+        }
+        else{
+            msg("角色名称不能为空")
+        }
+    }
+</script>

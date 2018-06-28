@@ -1,0 +1,103 @@
+<title>母羊繁殖日报表</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <center><h1>母羊繁殖日报表</h1></center>
+                        </div>
+                        <div>
+                            <form class="searchForm">
+                                <div class="box">
+                                    <span>日期</span>
+                                    <input type="text" name="date"  class="datep" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            onclick="getData()">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th rowspan="2">品种</th>
+                        <th colspan="2">未成熟母羊数</th>
+                        <th colspan="2">空怀母羊数</th>
+                        <th colspan="2">配种母羊数</th>
+                        <th colspan="2">未孕母羊数</th>
+                        <th colspan="2">妊娠母羊数</th>
+                        <th colspan="2">哺乳母羊数</th>
+                        <th colspan="2">合计</th>
+                    </tr>
+                    <tr>
+                        <th>数量</th>
+                        <th>百分比</th>
+                        <th>数量</th>
+                        <th>百分比</th>
+                        <th>数量</th>
+                        <th>百分比</th>
+                        <th>数量</th>
+                        <th>百分比</th>
+                        <th>数量</th>
+                        <th>百分比</th>
+                        <th>数量</th>
+                        <th>百分比</th>
+                        <th>数量</th>
+                        <th>百分比</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="data in data88">
+                    	<th>{{data.breed.breedName}}</th>
+                        <th>{{data.statelessNumber}}</th>
+                        <th>{{data.statelessPercentage}}</th>
+                        <th>{{data.nonpregnantNumber}}</th>
+                        <th>{{data.nonpregnantPercentage}}</th>
+                        <th>{{data.crossNumber}}</th>
+                        <th>{{data.crossPercentage}}</th>
+                        <th>{{data.unpregnancyNumber}}</th>
+                        <th>{{data.unpregnancyPercentage}}</th>
+                        <th>{{data.gestationNumber}}</th>
+                        <th>{{data.gestationPercentage}}</th>
+                        <th>{{data.lactationNumber}}</th>
+                        <th>{{data.lactationPercentage}}</th>
+                        <th>{{data.totalNumber}}</th>
+                        <th>{{data.totalPercentage}}</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "";
+
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+
+        })
+    });
+    function getData() {
+       po(getUrl('damBreedStateRep/findByList?orgId='+JSON.parse(localStorage.userInfo).organization.id), $(".searchForm").serialize(),function (data) {
+           root.data88=data
+       })
+    }
+</script>
+<script src="js/base-vue.js"></script>

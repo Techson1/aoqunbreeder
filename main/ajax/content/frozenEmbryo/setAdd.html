@@ -1,0 +1,250 @@
+<title>添加冻胚移植</title>
+<div id="app">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="operate">
+                <div style="margin-top:50px;">
+                    <form class="form-horizontal myform">
+                        <input type="hidden" name="recorder" v-model="data5.cname">
+                        <input type="hidden" name="org.id" v-model="data5.organization.id">
+                        <!--<input type="hidden" name="projectId" id="projectId" v-model="data1.id">-->
+                        <input type="hidden" name="frozenEmbryoId" id="frozenEmbryoId">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-4" style="width:100px;"
+                                   for="tubuleCode">冷冻细管号</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="clearfix">
+                                    <input type="text" name="tubuleCode" id="tubuleCode"
+                                           class="col-xs-12 col-sm-6" required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-offset-4 control-label no-padding-right" style="width:100px;">
+                            <button @click="getDetailed()" type="button">获取胚胎明细</button></label>
+                            <div class="col-sm-5">
+                                <span class="col-sm-2"  style="width:100px;">档案胚胎数</span>
+                                <input readonly="readonly" id="frozenNumber"
+                                    type="text" class="col-xs-10 col-sm-4" />
+                                <div class="col-sm-12"></div>
+                                <span class="col-sm-2" style="width:100px;">实际胚胎数</span>
+                                <input name="reality" type="text" class="col-xs-10 col-sm-4" id="reality"/>
+                                <button class="col-sm-1 btn btn-xs btn-success" style="width:60px;border-radius:5px;margin-left:10px;" type="button" @click="correct()">修正</button>
+                                <div class="col-sm-12"></div>
+                                <span class="col-sm-2" style="width:100px;">可用胚胎数</span>
+                                <input readonly="readonly" id="usableNumber" type="text" class="col-xs-10 col-sm-4" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-4" style="width:100px;"
+                                   for="sheetCode">受体移植序号</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="clearfix">
+                                    <input type="text" name="sheetCode" id="sheetCode"
+                                           class="col-xs-12 col-sm-6" required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-4" style="width:100px;"
+                                   for="transNum">移植胚胎数</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="clearfix">
+                                    <input type="text" name="transNum" id="transNum"
+                                           class="col-xs-12 col-sm-6" required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-4" style="width:100px;"
+                                   for="date">移植日期</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="clearfix">
+                                    <input type="text" name="date" id="date"
+                                           class="col-xs-12 col-sm-6 datep" required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+            <center>
+                <button class="btn btn-info" type="button" onclick="tj()">
+                    <i class="fa fa-check bigger-110"></i>
+                    <span>提交</span>
+                </button>
+                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                    <i class="fa fa-undo bigger-110"></i>
+                    重置
+                </button>
+            </center>
+        </div>
+    <table id="simple-table" class="table  table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>冷冻细管号</th>
+            <th>受体移植序号</th>
+            <th>受体母羊号</th>
+            <th>移植胚胎数</th>
+            <th>移植日期</th>
+            <th>操作人</th>
+            <th>更新时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="frozenEmbryoTransplant in data.content">
+            <td>{{frozenEmbryoTransplant.frozenEmbryo.tubuleCode}}</td>
+            <td>{{frozenEmbryoTransplant.sheetCode}}</td>
+            <td>
+                <span v-if="frozenEmbryoTransplant.receptor!=null">{{frozenEmbryoTransplant.receptor.code}}</span>
+             </td>
+            <td class="usable">{{frozenEmbryoTransplant.transNum}}</td>
+            <td>{{frozenEmbryoTransplant.date}}</td>
+            <td>{{frozenEmbryoTransplant.recorder}}</td>
+            <td>{{frozenEmbryoTransplant.ctime}}</td>
+            <td>
+                <button @click="editlayer(frozenEmbryoTransplant.id)" type="button">绑定受体母羊</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="layerr" style="padding:20px;display: none;">
+        <form id="layer">
+            <input type="hidden" type="text" id="editid" name="id">
+            <input type="text" required maxlength="20" name="code" id="code" class="col-sm-12" style="height:35px;margin-bottom: 15px;" placeholder="请输入受体羊耳号">
+            <button class="btn btn-xs btn-success  btn-submit col-sm-12" onclick="nameUpdate()" type="button"
+                    style="height:35px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                确认
+            </button>
+        </form>
+    </div>
+</div>
+
+    <script type="text/javascript">
+        var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            myValidate();
+        });
+        var s = localStorage.deathDisposalReasonId;
+        if($("input[name=frozenEmbryoId]").val()!=''){
+            alert("11")
+            localStorage.url_list = "frozenEmbryoTransplant/list?frozenEmbryo.id="+$("input[name=frozenEmbryoId]").val();
+        }
+        var scripts = [null, null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            jQuery(function ($) {
+                initCheckBox();
+                root.loadCompany();
+                root.loadPama("embryoProject/one/"+s);
+                $("#tubuleCode").focus()
+            })
+        });
+
+        //添加
+        function tj(){
+            if($("#usableNumber").val().length>=1){
+                var t=1;
+                if ($(".myform").valid()) {
+                    var fla=0;
+                    $("table").find("tbody").find("tr").each(function(){
+                        var l=$(this).children().eq(2).text();
+                        fla+=parseFloat($(this).children(".usable").text());
+                        if ($("input[name='sheetCode']").val()== l){
+                            msg("该受体移植序号已存在，请重新输入");
+                            $("input[name='sheetCode']").val("")
+                            t=0;
+                        }
+                    });
+                    fla+=parseInt($("input[name=transNum]").val());
+                    if(fla>$("#usableNumber").val()){
+                        msg("移植胚胎数不能大于可用胚胎数")
+                        $("input[name='transNum']").val("")
+                        t=0;
+                    }
+                    if(t==1){
+                        $.post(base_url + "frozenEmbryoTransplant/add" ,$(".myform").serialize(), function (data) {
+                            if(data.code=='100'){
+                                msg("添加成功")
+                                location.reload();
+                            }
+                        })
+                    }
+                }
+            }
+            else{
+                msg("请先获取胚胎明细")
+            }
+        }
+
+        //获取胚胎明细
+        function getDetailed(){
+            if($("#tubuleCode").val().length>=1){
+                $.post(base_url + "frozenEmbryo/findByTubuleCode/"+$("#tubuleCode").val() ,function (data99) {
+                    if(data99==null){
+                        msg("输入的细管号不在冻胚制作中")
+                    }
+                    else{
+                        $("#frozenNumber").val(data99.frozenNumber)
+                        $("#usableNumber").val(data99.usableNumber)
+                        $("#frozenEmbryoId").val(data99.id)
+                    }
+                })
+            }
+            else{
+                msg("请先输入冷冻细管号")
+            }
+        }
+
+        //修改胚胎个数
+        function correct(){
+                if($("#frozenEmbryoId").val().length>=1){
+                    if($("#reality").val().length>=1){
+                        $.post(base_url + "frozenEmbryo/updateNumber" ,$(".myform").serialize(), function (data) {
+                            $("#usableNumber").val(data.usableNumber)
+                        })
+                    }
+                    else{
+                        msg("实际胚胎数不能为空")
+                    }
+                }
+                else{
+                    msg("请先获取胚胎明细")
+                }
+        }
+
+        //绑定母羊耳号
+        function editlayer(id){
+            layer.open({
+                type: 1,
+                title: '修改',
+                area: ['300px', '200px'],
+                shadeClose: true,
+                content: $("#layerr")
+
+            });
+            $("#editid").val(id);
+        }
+
+        //layer弹出框实现绑定母羊耳号
+        function nameUpdate() {
+            $.post(base_url + "frozenEmbryoTransplant/codeVerify", $("#layer").serialize(),  function (data1) {
+                //若果修改成功跳转页面
+                if (data1.code == "100") {
+                    $.post(base_url + "frozenEmbryoTransplant/code", $("#layer").serialize(),  function (data) {
+                        msg("绑定成功");
+                        location.reload();
+                    })
+                }
+                else{
+                    msg(data1.msg);
+                }
+            })
+        }
+    </script>
+    <script src="js/base-vue.js"></script>

@@ -1,0 +1,215 @@
+<title>产羔登记</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>母羊耳号</span> <input type="text" name="dam.code" value="" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>产羔日期</span>
+                                    <input type="text" name="bornDateAssistStart" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">&nbsp;到&nbsp;
+                                    <input type="text" name="bornDateAssistEnd" value="" class="end" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
+                                </div>
+                                <div class="box">
+                                    <span>繁殖方式</span>
+                                    <select name="joining.joiningType" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option value="4">本交</option>
+                                        <option value="3">鲜精-阴道</option>
+                                        <option value="2">鲜精-子宫角</option>
+                                        <option value="6">冻精-阴道</option>
+                                        <option value="5">冻精-子宫角</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;筛选器
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#" class="btn btn-xs btn-success add" disabled="false"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-search"></i>&nbsp;母羊查询</a>
+                            <a href="#page/production/add" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-file-text"></i>&nbsp;母羊产羔登记</a>
+                            <a @click="editVerify('#page/production/edit','lambingDam/updateUiVerify')" class="btn btn-xs btn-success edit"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-pencil-square-o"></i> 母羊修改</a>
+                            <a @click="delRelation()" class="btn btn-xs btn-success del"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 母羊删除</a>
+                            <!--<a href="" style="width: 100px;margin-left: 25px;margin-right: 25px;border-left:1px solid #4c4c4c;padding: 0px;"></a>-->
+                            <a  href="#page/production/childlist"  class="btn btn-xs btn-info edit"
+                                style="padding:1px 5px;border-radius:5px;margin-left: 25px;"><i class="fa fa-search"></i>&nbsp;羔羊查询</a>
+                            <a @click="lamb('#page/production/childadd')" class="btn btn-xs btn-info edit"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-file-text"></i>&nbsp;羔羊登记</a>
+                            <a @click="edit('#page/production/childedit')" class="btn btn-xs btn-info edit"  disabled="false"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-pencil-square-o"></i> 羔羊修改</a>
+                            <a @click="dellam()" class="btn btn-xs btn-info del"  disabled="false"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 羔羊删除</a>
+                            <!--<div style="clear:both;">-->
+                                <ul class="pagination pull-right">
+                                    <li><a>共：{{data.totalElements}}</a></li>
+                                    <li><a @click="goto('0')">首页</a></li>
+                                    <li :class="data.first==true?'disabled':''">
+                                        <a @click="prev">
+                                            <i class="ace-icon fa fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                        <a @click="goto(n-1)">{{n}}</a>
+                                    </li>
+                                    <li :class="data.last==true?'disabled':''">
+                                        <a @click="next">
+                                            <i class="ace-icon fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                    <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                                </ul>
+                            <!--</div>-->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>母羊耳号</th>
+                        <th>胎次</th>
+                        <th>繁殖方式</th>
+                        <th>产羔日期</th>
+                        <th>后代品种</th>
+                        <th>怀孕天数</th>
+                        <th>分娩难易</th>
+                        <th>泌乳打分</th>
+                        <th>母性打分</th>
+                        <th>乳房炎打分</th>
+                        <th>产羔总数</th>
+                        <th>活羔数</th>
+                        <th>畸形数</th>
+                        <th>死胎数</th>
+                        <th>61日龄成活数</th>
+                        <th>61日龄成活率</th>
+                        <!--<th>二月龄存活率</th>-->
+                        <!--<th>断奶活羔率</th>-->
+
+                        <th>操作人</th>
+                        <th>记录场区</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="lambingDam in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="lambingDam.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{lambingDam.dam.code}}</td>
+                        <td>{{lambingDam.parity.parityMaxNumber}}</td>
+                        <td>
+                            <!--<span v-if="lambingDam.parity.parityType=='NB'">自然繁殖</span>-->
+                            <!--<span v-if="lambingDam.parity.parityType=='DO'">供体</span>-->
+                            <!--<span v-if="lambingDam.parity.parityType=='FR'">鲜胚受体</span>-->
+                            <!--<span v-if="lambingDam.parity.parityType=='FO'">冻胚受体</span>-->
+                            <span v-if="lambingDam.joining!=null">
+                                <span v-if="lambingDam.joining.joiningType=='2'">鲜精-子宫角</span>
+                                <span v-if="lambingDam.joining.joiningType=='3'">鲜精-阴道</span>
+                                <span v-if="lambingDam.joining.joiningType=='4'">本交</span>
+                                <span v-if="lambingDam.joining.joiningType=='6'">冻精-阴道</span>
+                                <span v-if="lambingDam.joining.joiningType=='5'">冻精-子宫角</span>
+                            </span>
+                        </td>
+                        <td>{{lambingDam.bornDate==null?"":lambingDam.bornDate.substring(0,10)}}</td>
+                        <td>
+                        	<span v-if="lambingDam.joining!=null">{{lambingDam.joining.childBreed.breedName}}</span> 
+                        </td>
+                        <td>
+                            <span v-if="lambingDam.joining!=null">
+                                {{parseInt(Math.abs(new Date(lambingDam.bornDate)-new Date(lambingDam.joining.joiningDate))/1000/60/60/24)}}</td>
+                            </span>
+                        <td>
+                            <span v-if="lambingDam.easyFlag=='1'">顺产</span>
+                            <span v-if="lambingDam.easyFlag=='2'">助产</span>
+                            <span v-if="lambingDam.easyFlag=='3'">剖腹产</span>
+                        </td>
+                        <td>{{lambingDam.breas}}分</td>
+                        <td>{{lambingDam.motherhood}}分</td>
+                        <td>{{lambingDam.mastitis}}分</td>
+                        <td>{{lambingDam.bornTimes}}</td>
+                        <td>{{lambingDam.aliveCountF+lambingDam.aliveCountM}}</td>
+                        <td>{{lambingDam.badCountF+lambingDam.badCountM}}</td>
+                        <td>{{lambingDam.deadCountF+lambingDam.deadCountM}}</td>
+                        <td>未开发</td>
+                        <td>未开发</td>
+                        <!--<td>未开发</td>-->
+                        <!--<td>断奶活羔率</td>-->
+
+                        <td>{{lambingDam.recorder}}</td>
+                        <td>
+                            <span v-if="lambingDam.org!=null">{{lambingDam.org.brief}}</span>
+                        </td>
+                        <td>{{lambingDam.ctime}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "lambingDam/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.delRelation = "lambingDam/delVerify/";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all");
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

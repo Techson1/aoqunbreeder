@@ -1,0 +1,161 @@
+<title>供体冲胚、鲜胚移植、冻胚制作</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <center><h1>{{data1.projectName}}</h1></center>
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <div>
+                        <a @click="childrenurl('#page/embryo/donorGroup')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-sitemap"></i>&nbsp;供体组群</a>
+                        <a @click="childrenurl('#page/embryo/receptorGroup')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-bullseye"></i>&nbsp;受体组群</a>
+                        <a @click="childrenurl('#page/embryo/AI')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-venus-mars"></i>&nbsp;供体AI</a>
+                        <a @click="childrenurl('#page/embryo/embryoSet')"
+                           class="btn btn-xs btn-success" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-retweet"></i>&nbsp;供体冲胚、鲜胚移植、冻胚制作</a>
+                        <a @click="childrenurl('#page/embryo/freshEmbryo')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-life-ring"></i>&nbsp;鲜胚移植查询</a>
+                        <a @click="childrenurl('#page/embryo/frozenEmbryo')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-asterisk"></i>&nbsp;冻胚制作查询</a>
+                    </div>
+                    <div>
+                        <a class="btn btn-xs btn-success add" @click="children('#page/embryo/setAdd',data1.id)"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            <i class="icon-sitemap fa fa-plus"></i>&nbsp; 添加供体冲胚</a>
+                        <a @click="editVerify('#page/embryo/setEdit','embryoFlush/updateUiVerify')" class="btn btn-xs btn-success edit"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i
+                                class="fa fa-pencil-square-o"></i>修改</a>
+                        <a @click="delRelation()" class="btn btn-xs btn-success del"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i
+                                class="fa fa-trash-o"></i>
+                            移除</a>
+                    </div>
+                    <form class="myform">
+
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <input type="hidden" name="flag" value="1">
+                        <div class="box">
+                            <span>耳号</span>
+                            <input type="text" name="name" v-model="data.name" id="ewename"
+                                                     style="height:25px;width:107px;">
+                        </div>
+
+                        <div class="box">
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="search">
+                                <i class="icon-search fa fa-search"></i>&nbsp;查询
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div id="layerr" style="padding:20px;display: none;">
+            <form id="layer">
+                <input type="hidden" name="id" v-model="data6.id" id="updataId">
+                <input type="text" value="" required maxlength="20" name="name" id="updateName" class="col-sm-12"
+                       v-model="data6.name"
+                       style="height:35px;margin-bottom: 15px;">
+                <button class="btn btn-xs btn-success  btn-submit col-sm-12" onclick="nameUpdate()"
+                        style="height:35px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                    确认
+                </button>
+            </form>
+        </div>
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>母羊耳号</th>
+                <th>公羊耳号</th>
+                <th>AI日期</th>
+                <th>冲胚日期</th>
+                <th>是否冲胚</th>
+                <th>可用胚胎数</th>
+                <th>未受精数</th>
+                <th>退化胚胎数</th>
+                <th>B级胚胎数</th>
+                <th>总胚胎数</th>
+                <th>冷冻胚胎数</th>
+                <th>移植鲜胚数</th>
+                <th colspan="2">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="embryoFlush in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace" :value="embryoFlush.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>{{embryoFlush.donor.code}}</td>
+                <td>{{embryoFlush.joining.sire.code}}</td>
+                <td>{{embryoFlush.joining.joiningDate}}</td>
+                <td>{{embryoFlush.date==null?"":embryoFlush.date.substring(0,10)}}</td>
+                <td>
+                    <span v-if="embryoFlush.isEmbryoFlush=='1'">是</span>
+                    <span v-if="embryoFlush.isEmbryoFlush=='0'">否</span>
+                </td>
+                <td>{{embryoFlush.usable}}</td>
+                <td>{{embryoFlush.infertile}}</td>
+                <td>{{embryoFlush.degenerate}}</td>
+                <td>{{embryoFlush.blevel}}</td>
+                <td>{{embryoFlush.total}}</td>
+                <td>{{embryoFlush.frozen}}</td>
+                <td>{{embryoFlush.number}}</td>
+                <th><a @click="xd('#page/embryo/freshEmbryoAdd',embryoFlush.id)">鲜胚移植</a></th>
+                <th><a @click="xd('#page/embryo/frozenEmbryoAdd',embryoFlush.id)">冻胚制作</a></th>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination pull-right">
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+<script type="text/javascript">
+    var s = localStorage.deathDisposalReasonId;
+    localStorage.url_list = "embryoFlush/list?project.id="+s;
+    localStorage.delRelation="embryoFlush/delVerify/"
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadCompany();
+            root.loadPama("embryoProject/one/"+s);
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

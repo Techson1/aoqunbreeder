@@ -1,0 +1,99 @@
+<title>饲料原料</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <center><h1>{{data1.materialName}}</h1></center>
+                <div>
+                    <form class="myform">
+                        <input type="hidden" name="formula.id" v-model="data1.id">
+                        <div class="box">
+                            <span>原料名称</span>
+                            <select name="material.id" id="materialID">
+                                <option value="">请选择</option>
+                                <option v-for="material in data8" :value="material.id">
+                                    {{material.materialName}}
+                                </option>
+                            </select>
+                            <input type="text" name="ratio" id="ratio" style="height:25px;width:30px;">%
+                        </div>
+                        <a class="btn btn-xs btn-success add" onclick="sx()"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            添加到列表</a>
+                        <a @click="del()" class="btn btn-xs btn-success del"
+                           style="padding:1px 5px;border-radius:5px;">删除</a>
+                    </form>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>原料名称</th>
+                <th>比例</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="material in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace" :value="material.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>{{material.material.materialName}}</td>
+                <td>{{material.ratio}}%</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    s=localStorage.deathDisposalReasonId
+    localStorage.url_list = "formualDetail/list?formula.id="+s;
+    localStorage.url_del = "formualDetail/dels/";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadCompany();
+            root.loadPama('formula/one/'+s)
+            root.loadPama1('material/findByAll')
+        })
+    });
+    //实现添加
+    function sx() {
+        if($("#materialID").val().length == 0){
+            msg("原料名称不能为空")
+        }
+        else if($("input[name=ratio]").val().length == 0){
+            msg("百分比不能为空")
+        }
+        else {
+            po(getUrl("formualDetail/addVerify"), $(".myform").serialize(), function (data) {
+                if (data.code=='101') {
+                    msg(data.msg)
+                } else {
+                    po(getUrl("formualDetail/save"), $(".myform").serialize(), function (data) {
+                        root.load();
+                        $("input[name=ratio]").val("");
+                    });
+                }
+            })
+        }
+    }
+
+</script>
+<script src="js/base-vue.js"></script>

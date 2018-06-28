@@ -1,0 +1,34 @@
+.operate div{
+    padding-bottom: 5px;
+}
+.operate .col-sm-2{
+    padding-left: 0px;
+}
+.operate > button{
+    padding-right: 10px;
+}
+.searchForm span{
+    margin-top: 10px;
+}
+.searchForm button {
+    /*margin-top: 10px;*/
+    height: 25px;
+}
+.searchForm input{
+    height: 25px;
+}
+.pagination{
+    margin-top: 0px;
+}
+.form-group select{
+    height: 30px;
+}
+.form-group input{
+    height:30px;
+}
+.page-content{
+    padding:8px 8px 8px;
+}
+.col-xs-12{
+    padding-right: 0px;
+}

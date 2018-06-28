@@ -1,0 +1,94 @@
+<title>死淘预算</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <select class="col-sm-1" style="width:80px;" id="year"
+                                            @change="jtyear()">
+                                    </select><span>年</span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th rowspan="2">项目</th>
+                        <th rowspan="2">月份</th>
+                        <th colspan="3">羔羊</th>
+                        <th colspan="3">青年羊</th>
+                        <th colspan="3">成年羊</th>
+                    </tr>
+                    <tr>
+                        <th>死亡</th>
+                        <th>育种淘汰</th>
+                        <th>疾病淘汰</th>
+                        <th>死亡</th>
+                        <th>育种淘汰</th>
+                        <th>疾病淘汰</th>
+                        <th>死亡</th>
+                        <th>育种淘汰</th>
+                        <th>疾病淘汰</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td rowspan="13">预算</td>
+                        <th>1月</th>
+                        <th><input style="width:70px;"></th>
+                        <th><input style="width:70px;"></th>
+                        <th><input style="width:70px;"></th>
+                        <th><input style="width:70px;"></th>
+                        <th><input style="width:70px;"></th>
+                        <th><input style="width:70px;"></th>
+                        <th><input style="width:70px;"></th>
+                        <th><input style="width:70px;"></th>
+                        <th><input style="width:70px;"></th>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="wizard-actions">
+                    <center>
+                        <button class="btn btn-info btn-submit">
+                            <i class="fa fa-check bigger-110"></i>
+                            <span>提交</span>
+                        </button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-prev" type="reset">
+                            <i class="fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+                    </center>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "user/list";
+    localStorage.url_del = "user/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            var mydate = new Date();
+            for (var i = mydate.getFullYear(); i >= mydate.getFullYear() - 3; i--) {
+                $("#year").append("<option value='" + i + "'>" + i + "</option>");
+            }
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

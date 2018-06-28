@@ -1,0 +1,159 @@
+<title>添加批次</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">批次跟踪</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="flag" value="1">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="userName">请选择年月</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-sm-1" style="width:80px;" id="year"
+                                                            @change="jtyear()">
+                                                    </select><span class="col-sm-1" style="font-size:14px;">年</span>
+                                                    <select class="col-sm-1" style="width:80px;" id="month">
+                                                    </select>
+                                                    <span class="col-sm-1" style="font-size:14px;">月</span>
+                                                </div>
+                                                <input type="hidden" name="createdTime" id="createdTime">
+                                            </div>
+                                        </div>
+
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="phone">品种</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-xs-12 col-sm-6" name="sireBreed.id" required @change="jtyear()"
+                                                            id="sireBreed">
+                                                        <option value="">请选择</option>
+                                                        <option v-for="breed in data1" :value="breed.id">
+                                                            {{breed.breedName}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="userName"></label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    命名规范：年份+月份+品种+批次名称
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="name">批次名称</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="name" id="name"
+                                                           class="col-xs-12 col-sm-6" required maxlength="30"
+                                                           :value="data.name"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                            <button class="btn btn-info btn-submit" type="button">
+                                <i class="fa fa-check bigger-110"></i>
+                                <span>提交</span>
+                            </button>
+                            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                            <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                                <i class="fa fa-undo bigger-110"></i>
+                                重置
+                            </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.load("breedingPlan/one/", getPama());
+        vue.loadPama('breed/all');
+        vue.loadCompany();
+        setPama1("breedingPlan/save");//为表单传值
+        setPama2("#page/matching/list");//设置提交数据完成的跳转界面
+        var mydate = new Date();
+//        alert(mydate.getFullYear() + "年")
+//        alert(mydate.getMonth()+1 + "月")
+        for (var i = mydate.getFullYear(); i >= mydate.getFullYear() - 3; i--) {
+            $("#year").append("<option value='" + i + "'>" + i + "</option>");
+        }
+        var nowyear = mydate.getFullYear()
+        if ($("#year option:selected").text() == nowyear) {
+            for (var j = mydate.getMonth() + 1; j >= 1; j--) {
+                $("#month").append("<option value='" + j + "'>" + j + "</option>");
+            }
+        }
+        else {
+            for (var j = 1; j <= 12; j++) {
+                $("#month").append("<option value='" + j + "'>" + j + "</option>");
+            }
+        }
+    })
+
+    //判断年份不是当前年份，则月份显示1-12，若是当前年份，则显示当前月份到1月
+    function jtyear() {
+        var mydate = new Date();
+        $("#month option").remove()
+        var nowyear = mydate.getFullYear()
+        if ($("#year option:selected").text() == nowyear) {
+            for (var j = mydate.getMonth() + 1; j >= 1; j--) {
+                $("#month").append("<option value='" + j + "'>" + j + "</option>");
+            }
+        }
+        else {
+            for (var k = 1; k <= 12; k++) {
+                $("#month").append("<option value='" + k + "'>" + k + "</option>");
+            }
+        }
+        var yearcent = $("#year").val();
+        var monthcent = $("#month").val();
+        var motherBreed=$("#damBreed option:selected").text()
+        var fatherBreed=$("#sireBreed option:selected").text()
+        $("#createdTime").val(yearcent + "-" + monthcent + "-" + 1)
+        if($("#damBreed option:selected").text()==$("#sireBreed option:selected").text()){
+            $("#name").val(yearcent+"年"+monthcent+"月"+$.trim(fatherBreed))
+        }
+        else{
+            $("#name").val(yearcent+"年"+monthcent+"月"+$.trim(fatherBreed)+$.trim(motherBreed))
+        }
+    }
+
+</script>

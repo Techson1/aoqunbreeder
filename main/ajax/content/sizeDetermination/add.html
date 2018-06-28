@@ -1,0 +1,209 @@
+<title>添加体尺测定</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">体尺测定数据</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="earTag">耳号</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="earTag" id="earTag" required maxlength="20"
+                                                           class="col-xs-12 col-sm-6 "/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="date">测量日期</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="date"
+                                                           class="col-xs-12 col-sm-6 datep" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group" v-if="data.id==null">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="tall">身高</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="tall" id="tall"  type="number" onkeypress="return noNumbers(event)"  number=true
+                                                           class="col-xs-12 col-sm-6" required maxlength="5"/>&nbsp;&nbsp;cm
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="bodyLength">体长</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="bodyLength" id="bodyLength"   type="number" onkeypress="return noNumbers(event)" number=true
+                                                           class="col-xs-12 col-sm-6 " required maxlength="5"/>&nbsp;&nbsp;cm
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="bust">胸围</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="bust" id="bust"   type="number" onkeypress="return noNumbers(event)"  number=true
+                                                           class="col-xs-12 col-sm-6 " required maxlength="5"/>&nbsp;&nbsp;cm
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="circumFerence">管围</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="circumFerence" id="circumFerence"   type="number" onkeypress="return noNumbers(event)"  number=true
+                                                           class="col-xs-12 col-sm-6 " required maxlength="5"/>&nbsp;&nbsp;cm
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="testis">阴囊围</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="testis" id="testis"  type="number" onkeypress="return noNumbers(event)"  number=true
+                                                           class="col-xs-12 col-sm-6 " required maxlength="5"/>&nbsp;&nbsp;cm
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="depth">腰膘厚度</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="depth" id="depth"  type="number" onkeypress="return noNumbers(event)"  number="true"
+                                                           class="col-xs-12 col-sm-6 " required maxlength="5" />&nbsp;&nbsp;cm
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="yjsd">眼肌深度</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="yjsd" id="yjsd"  type="number" onkeypress="return noNumbers(event)"  number=true
+                                                           class="col-xs-12 col-sm-6 " required maxlength="5"/>&nbsp;&nbsp;cm
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="yjkd">眼肌宽度</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="yjkd" id="yjkd"  type="number" onkeypress="return noNumbers(event)"  number=true
+                                                           class="col-xs-12 col-sm-6 " required maxlength="5" />&nbsp;&nbsp;cm
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                        <button class="btn btn-info btn-submit">
+                            <i class="fa fa-check bigger-110"></i>
+                            <span>提交</span>
+                        </button>
+                        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                        <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                            <i class="fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        $( "datep" ).datepicker({ minDate: -20, maxDate: "+1M +10D" });
+        vue.load("user/one/", getPama());
+        vue.loadCompany();
+        setPama1("sizeView/add");//为表单传值
+        setPama2("#page/sizeDetermination/list");//设置提交数据完成的跳转界面
+    })
+
+
+    function noNumbers(e)
+    {
+        var keynum
+        var keychar
+        var numcheck
+        if(window.event) // IE
+        {
+            keynum = e.keyCode
+        }
+        else if(e.which) // Netscape/Firefox/Opera
+        {
+            keynum = e.which
+        }
+        keychar = String.fromCharCode(keynum);
+//判断是数字,且小数点后面只保留两位小数
+        if(!isNaN(keychar)){
+            var index=e.currentTarget.value.indexOf(".");
+            if(index >= 0 && e.currentTarget.value.length-index >1){
+                return false;
+            }
+            return true;
+        }
+//如果是小数点 但不能出现多个 且第一位不能是小数点
+        if("."== keychar ){
+            if(e.currentTarget.value==""){
+                return false;
+            }
+            if(e.currentTarget.value.indexOf(".") >= 0){
+                return false;
+            }
+            return true;
+        }
+        return false  ;
+    }
+</script>

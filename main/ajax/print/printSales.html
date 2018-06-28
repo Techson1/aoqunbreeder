@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>销售单打印</title>
+    <script src="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/components/jquery/dist/jquery.js"></script>
+
+    <link rel="stylesheet" href="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/assets/css/bootstrap.css"/>
+    <script src="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/components/layer/layer.js"></script>
+    <script src="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/assets/js/src/vue.min.js"></script>
+    <script src="../js/common.js"></script>
+    <style>
+        h3{
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        center{
+            clear: both;
+            margin-top: 30px;
+        }
+        ul{
+            list-style-type: none;
+            width: 800px;
+        }
+        ul li{
+            margin-bottom: 10px;
+        }
+        .gao{
+            height: 30px;
+        }
+        table,table tr th, table tr td { border:1px solid black; text-align: center}
+        table { width: 200px; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;}
+    </style>
+</head>
+<body>
+<div class="col-xs-12" style="width: 800px;" id="app">
+        <center><h2>{{data.org.orgName}}销售单</h2></center>
+        <ul class="col-xs-12" style="padding-top: 30px;">
+            <li class="col-xs-6">销售日期：{{data.ctime!=null?data.ctime.substring(0,10):''}}</li>
+            <li class="col-xs-6">单号：{{data.code}}</li>
+        </ul>
+        <div class="gao"></div>
+        <center><h4>客户信息</h4></center>
+        <ul class="col-xs-12">
+            <li class="col-xs-12">客户名称：<span v-if="data.customer!=null">{{data.customer.firstName}}</span></li>
+            <li class="col-xs-12">客户地址：<span v-if="data.customer!=null">{{data.customer.address}}</span></li>
+            <li class="col-xs-4">联&nbsp;&nbsp;系&nbsp;&nbsp;人：<span v-if="data.customer!=null">{{data.customer.surName}}</span></li>
+            <li class="col-xs-4">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：<span v-if="data.customer!=null">{{data.customer.phone}}</span></li>
+            <li class="col-xs-4">客户签字：</li>
+        </ul>
+        <center><h4>经办信息</h4></center>
+        <ul class="col-xs-12">
+            <li class="col-xs-6">业&nbsp;&nbsp;务&nbsp;&nbsp;员：<span v-if="data.contact!=null">{{data.contact.firstName}}</span></li>
+            <li class="col-xs-6">经&nbsp;&nbsp;办&nbsp;&nbsp;人：{{data.recorder}}</li>
+            <li class="col-xs-6">财&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务：</li>
+            <li class="col-xs-6">仓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;管：</li>
+            <li class="col-xs-6">共&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计：{{data.totalCount}}只</li>
+            <li class="col-xs-6">合&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计：{{data.totalPrice}}元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大写：{{data.bigger}}</li>
+        </ul>
+    <center><h4>销售明细</h4></center>
+    <table class="col-xs-12">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>羊只品种</th>
+            <th>性别</th>
+            <th>耳号</th>
+            <th>销售等级</th>
+            <th>定价（元）</th>
+            <th>折扣</th>
+            <th>折后价（元）</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(salid,index) in data1">
+                <td>{{index}}</td>
+                <td>
+                   {{salid.item.breed.breedName}}
+                </td>
+                <td>
+                    <span v-if="salid.item.sex=='1'">公羊</span>
+                    <span v-if="salid.item.sex=='2'">母羊</span>
+                </td>
+                <td>{{salid.item.code}}</td>
+                <td>{{salid.item.rank==null?'':salid.item.rank.name}}</td>
+                <td>{{salid.rankPrice}}</td>
+                <td>{{salid.discount}}</td>
+                <td>{{salid.price}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<script  type="text/javascript">
+    var vue= new Vue({
+        el: '#app',
+        data: {data: "",data1:""},
+        created:function () {
+            $.post(base_url+'sales/one/'+localStorage.saleSlip, function (data) {
+                vue.data=data
+                vue.data.bigger=Arabia_to_Chinese(data.totalPrice)
+            })
+            $.post(base_url+'salesDatail/findByList?sales.id='+localStorage.saleSlip, function (data) {
+                vue.data1=data
+            })
+        }
+    });
+
+    function Arabia_to_Chinese(Num) {
+        for (i = Num.length - 1; i >= 0; i--) {
+            Num = Num.replace(",", "")//替换tomoney()中的“,”
+            Num = Num.replace(" ", "")//替换tomoney()中的空格
+        }
+        Num = Num.replace("￥", "")//替换掉可能出现的￥字符
+        if (isNaN(Num)) { //验证输入的字符是否为数字
+            alert("请检查小写金额是否正确");
+            return;
+        }
+        //---字符处理完毕，开始转换，转换采用前后两部分分别转换---//
+        part = String(Num).split(".");
+        newchar = "";
+        //小数点前进行转化
+        for (i = part[0].length - 1; i >= 0; i--) {
+            if (part[0].length > 10) { alert("位数过大，无法计算"); return ""; } //若数量超过拾亿单位，提示
+            tmpnewchar = ""
+            perchar = part[0].charAt(i);
+            switch (perchar) {
+                case "0": tmpnewchar = "零" + tmpnewchar; break;
+                case "1": tmpnewchar = "壹" + tmpnewchar; break;
+                case "2": tmpnewchar = "贰" + tmpnewchar; break;
+                case "3": tmpnewchar = "叁" + tmpnewchar; break;
+                case "4": tmpnewchar = "肆" + tmpnewchar; break;
+                case "5": tmpnewchar = "伍" + tmpnewchar; break;
+                case "6": tmpnewchar = "陆" + tmpnewchar; break;
+                case "7": tmpnewchar = "柒" + tmpnewchar; break;
+                case "8": tmpnewchar = "捌" + tmpnewchar; break;
+                case "9": tmpnewchar = "玖" + tmpnewchar; break;
+            }
+            switch (part[0].length - i - 1) {
+                case 0: tmpnewchar = tmpnewchar + "元"; break;
+                case 1: if (perchar != 0) tmpnewchar = tmpnewchar + "拾"; break;
+                case 2: if (perchar != 0) tmpnewchar = tmpnewchar + "佰"; break;
+                case 3: if (perchar != 0) tmpnewchar = tmpnewchar + "仟"; break;
+                case 4: tmpnewchar = tmpnewchar + "万"; break;
+                case 5: if (perchar != 0) tmpnewchar = tmpnewchar + "拾"; break;
+                case 6: if (perchar != 0) tmpnewchar = tmpnewchar + "佰"; break;
+                case 7: if (perchar != 0) tmpnewchar = tmpnewchar + "仟"; break;
+                case 8: tmpnewchar = tmpnewchar + "亿"; break;
+                case 9: tmpnewchar = tmpnewchar + "拾"; break;
+            }
+            newchar = tmpnewchar + newchar;
+        }
+        //小数点之后进行转化
+        if (Num.indexOf(".") != -1) {
+            if (part[1].length > 2) {
+                alert("小数点之后只能保留两位,系统将自动截段");
+                part[1] = part[1].substr(0, 2)
+            }
+            for (i = 0; i < part[1].length; i++) {
+                tmpnewchar = ""
+                perchar = part[1].charAt(i)
+                switch (perchar) {
+                    case "0": tmpnewchar = "零" + tmpnewchar; break;
+                    case "1": tmpnewchar = "壹" + tmpnewchar; break;
+                    case "2": tmpnewchar = "贰" + tmpnewchar; break;
+                    case "3": tmpnewchar = "叁" + tmpnewchar; break;
+                    case "4": tmpnewchar = "肆" + tmpnewchar; break;
+                    case "5": tmpnewchar = "伍" + tmpnewchar; break;
+                    case "6": tmpnewchar = "陆" + tmpnewchar; break;
+                    case "7": tmpnewchar = "柒" + tmpnewchar; break;
+                    case "8": tmpnewchar = "捌" + tmpnewchar; break;
+                    case "9": tmpnewchar = "玖" + tmpnewchar; break;
+                }
+                if (i == 0) tmpnewchar = tmpnewchar + "角";
+                if (i == 1) tmpnewchar = tmpnewchar + "分";
+                newchar = newchar + tmpnewchar;
+            }
+        }
+        //替换所有无用汉字
+        while (newchar.search("零零") != -1)
+            newchar = newchar.replace("零零", "零");
+        newchar = newchar.replace("零亿", "亿");
+        newchar = newchar.replace("亿万", "亿");
+        newchar = newchar.replace("零万", "万");
+        newchar = newchar.replace("零元", "元");
+        newchar = newchar.replace("零角", "");
+        newchar = newchar.replace("零分", "");
+
+        if (newchar.charAt(newchar.length - 1) == "元" || newchar.charAt(newchar.length - 1) == "角")
+            newchar = newchar + "整"
+        //  document.write(newchar);
+        return newchar;
+    }
+</script>
+</body>
+</html>

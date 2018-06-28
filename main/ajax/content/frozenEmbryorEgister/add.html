@@ -1,0 +1,255 @@
+<title>添加冻胚登记</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">冻胚登记</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+
+                                <div class="step-pane active" data-step="1">
+
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="isOutsourcing" value="1">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="sireCode">供体公羊号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="sireCode" id="sireCode"
+                                                       class="col-xs-12 col-sm-6" required maxlength="20"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="donorCode">供体母羊号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="donorCode" id="donorCode"
+                                                       class="col-xs-12 col-sm-6" required maxlength="20"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;">胚胎细管编号</label>
+                                        <div class="col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="tubuleCode" id="tubuleCode"
+                                                       class="col-xs-12 col-sm-3" readonly="readonly" required maxlength="20"/>
+                                                <select name="breedId" id="breedId" class="col-xs-10 col-sm-3" onchange="getNum()"
+                                                        required>
+                                                    <option value="" v-if="data.color==null" selected="selected">请选择品种
+                                                    </option>
+                                                    <option v-for="breed in data1" :value="breed.id">
+                                                        {{breed.breedName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="frozenNumber">冷冻胚胎数</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="frozenNumber" id="frozenNumber"
+                                                       class="col-xs-12 col-sm-6" required maxlength="20"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;">基因等级</label>
+                                        <div class="col-sm-8">
+                                            <div class="clearfix">
+                                                <select name="geneticLevel" id="geneticLevel" class="col-xs-10 col-sm-6"
+                                                        required>
+                                                    <option value="">请选择</option>
+                                                    <option value="1">核心</option>
+                                                    <option value="2">生产</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;">细管颜色</label>
+                                        <div class="col-sm-8">
+                                            <div class="clearfix">
+                                                <select name="tubuleColor" id="tubuleColor" class="col-xs-10 col-sm-2" required>
+                                                    <option value="">请选择</option>
+                                                    <option value="blue">蓝</option>
+                                                    <option value="yellow">黄</option>
+                                                    <option value="white">白</option>
+                                                    <option value="pink">粉</option>
+                                                    <option value="red">红</option>
+                                                </select>
+                                                <span class="col-sm-2" style="height:30px;padding-top:5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;套管颜色</span>
+
+                                                <select name="drivepipeColor" id="drivepipeColor" class="col-xs-10 col-sm-2"
+                                                        required>
+                                                    <option value="">请选择</option>
+                                                    <option value="blue">蓝</option>
+                                                    <option value="yellow">黄</option>
+                                                    <option value="white">白</option>
+                                                    <option value="pink">粉</option>
+                                                    <option value="red">红</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="breed">存储罐号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-6" name="frozenStore.id" required
+                                                        id="frozenStore">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="frozenStore in data3" :value="frozenStore.id">
+                                                        {{frozenStore.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="freezeDate">生产日期</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="freezeDate" id="freezeDate"
+                                                       class="col-xs-12 col-sm-6 datep" required maxlength="20"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="enterhDay">入库日期</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="enterhDay" id="enterhDay"
+                                                       class="col-xs-12 col-sm-6 datep" required maxlength="20"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;">胚胎来源</label>
+                                        <div class="col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-2" name="purchaseFrom" @change="yc()" required
+                                                        id="type">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">自产</option>
+                                                    <option value="2">购入</option>
+                                                </select>
+                                                <select class="col-xs-12 col-sm-4" name="source.id" id="source">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="organization in data4" :value="organization.id">
+                                                        {{organization.orgName}}
+                                                    </option>
+                                                </select>
+                                                <select class="col-xs-12 col-sm-4" name="customer.id" id="customer"
+                                                        style="display:none;">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="customer in data5" :value="customer.id">
+                                                        {{customer.firstName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <center>
+                                <button class="btn btn-info btn-submit" type="button">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>提交</span>
+                                </button>
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-prev" type="reset" id="resetBtn" v-if="data.id==null">
+                                    <i class="fa fa-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+
+
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+        jQuery.validator.addMethod("alnum", function (value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
+        }, "只能包括英文字母和数字");
+    });
+    jQuery(function () {
+//        vue.load("codeRegister/one/", getPama());
+        vue.loadCompany();
+        vue.loadPama1('frozenStore/findBy/'+JSON.parse(localStorage.userInfo).organization.id);
+        vue.loadPama('breed/all');
+        vue.loadPama2('organization/all');
+        vue.loadPama3('contact/findBySupplier');
+        setPama1("frozenEmbryo/registerSave");//为表单传值
+        setPama2("#page/frozenEmbryorEgister/list");//设置提交数据完成的跳转界面
+    })
+
+    function yc() {
+        if ($("#type option:selected").text() == '自产') {
+            $("#source").show();
+            $("#customer").hide();
+            $("#customer").val("");
+        }
+        else {
+            $("#source").hide();
+            $("#customer").show();
+            $("#source").val("");
+        }
+    }
+
+    //获得冻胚编号
+    function getNum(){
+        $("#tubuleCode").val("")
+        po(getUrl("embryoRegistration/getIsUse?breedId="+$("#breedId").val()), function (data) {
+            if(data.code=='100'){
+                $("#tubuleCode").val(data.msg)
+            }
+            else(
+                msg(data.msg)
+            )
+        })
+    }
+</script>

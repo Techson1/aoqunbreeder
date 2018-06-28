@@ -1,0 +1,52 @@
+<title>繁殖参数</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">繁殖参数</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <div class="col-lg-10 col-lg-offset-1">
+
+                                        <div class="col-lg-4 col-lg-offset-1 " v-for="breedParameter in data.content"
+                                             style="height: 50px;line-height: 50px;border-bottom: 1px solid #d5d5d5;">{{breedParameter.name}}
+                                            <input type="hidden" v-model="breedParameter.id">
+                                            <span id="edit" class="pull-right" style="color: black;">
+                                                <a @click="editId('#page/breedParameter/add',breedParameter.id)">
+                                                    <span>{{breedParameter.hint}}{{breedParameter.parameter}}天</span>
+												<i class="ace-icon fa fa-edit"></i></a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+    localStorage.url_list = "breedParameter/list";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

@@ -1,0 +1,175 @@
+<title>羊只出库复核</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>耳号</span> <input type="text" name="code" value=""
+                                                           style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>出库日期</span>
+                                    <input type="text" name="deliveryDateAssistStart" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">&nbsp;到&nbsp;
+                                    <input type="text" name="deliveryDateAssistEnd" value="" class="end" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
+                                </div>
+                                <div class="box">
+                                    <span>复核</span>
+                                    <select name="isAudit" style="height:25px;">
+                                        <option value="1">已复核</option>
+                                        <option value="0">未复核</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>出库类型</span>
+                                    <select name="physiologyStatus" style="height:25px;" id="physiologyStatus">
+                                        <option value="4">死亡</option>
+                                        <option value="3">育种淘汰</option>
+                                        <option value="2">疾病淘汰</option>
+                                    </select>
+                                </div>
+
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                    <a href="javascript:exports('wigth/export?','base.org.id')" class="btn btn-xs btn-success add"
+                                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
+                                </div>
+                                <div>
+                                    <a @click="typeUpdate()" class="btn btn-xs btn-success del"
+                                       style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i class="fa fa-check"></i>
+                                        复核</a>
+                                    <a @click="cancel()" class="btn btn-xs btn-success del"
+                                       style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i class="fa fa-close"></i>
+                                        取消复核</a>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>耳号</th>
+                        <th>品种</th>
+                        <th>性别</th>
+                        <th>出库类型</th>
+                        <th>出库日期</th>
+                        <th>复核状态</th>
+                        <th>复核人</th>
+                        <th>复核日期</th>
+                    </thead>
+                    <tbody>
+                    <tr v-for="baseInfo in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="baseInfo.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{baseInfo.code}}</td>
+                        <td>{{baseInfo.breed.breedName}}</td>
+                        <td>
+                            <span v-if="baseInfo.sex=='1'">公羊</span>
+                            <span v-if="baseInfo.sex=='2'">母羊</span>
+                        </td>
+                        <td>
+                            <span v-if="baseInfo.physiologyStatus=='4'">死亡</span>
+                            <span v-if="baseInfo.physiologyStatus=='3'">育种淘汰</span>
+                            <span v-if="baseInfo.physiologyStatus=='2'">疾病淘汰</span>
+                        </td>
+                        <td>{{baseInfo.deliveryDate!=null?baseInfo.deliveryDate.substring(0,10):""}}</td>
+                        <td>
+                            <span v-if="baseInfo.isAudit=='0'">未复核</span>
+                            <span v-if="baseInfo.isAudit=='1'">已复核</span>
+                        </td>
+                        <td>{{baseInfo.reviewing}}</td>
+                        <td>{{baseInfo.auditDate}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right">
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    localStorage.url_list = "baseInfo/findByAudit?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+    function typeUpdate() {
+        var ids = getIds();
+        if (ids.length == 1) {
+            setPama(ids[0]);
+            $.post(base_url + "baseInfo/audit/" + getIds()+"/"+$("#physiologyStatus").val()+"/"+JSON.parse(localStorage.userInfo).cname, function (data1) {
+                //若果修改成功跳转页面
+                if (data1.code == "100") {
+                    root.load();
+                    $('.ace').attr('checked', false);
+                }
+            })
+        } else if (ids.length > 1) {
+            msg("只能选择一条数据！")
+        } else {
+            msg("请选择数据！")
+        }
+    }
+    function cancel() {
+        var ids = getIds();
+        if (ids.length == 1) {
+            setPama(ids[0]);
+            $.post(base_url + "baseInfo/notAudit/" + getIds()+"/"+$("#physiologyStatus").val(), function (data1) {
+                //若果修改成功跳转页面
+                if (data1.code == "100") {
+                    root.load();
+                    $('.ace').attr('checked', false);
+                }
+            })
+        } else if (ids.length > 1) {
+            msg("只能选择一条数据！")
+        } else {
+            msg("请选择数据！")
+        }
+    }
+
+
+</script>
+<script src="js/base-vue.js"></script>

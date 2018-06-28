@@ -1,0 +1,232 @@
+<title>销售单</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>客户名称</span>
+                                    <input type="text" name="customer.firstName" value="" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>省份</span>
+                                    <select name="city" lay-filter="province">
+                                        <option value="">请选择</option>
+                                        <option value="北京市">北京市</option>
+                                        <option value="天津市">天津市</option>
+                                        <option value="河北省">河北省</option>
+                                        <option value="山西省">山西省</option>
+                                        <option value="内蒙古自治区">内蒙古自治区</option>
+                                        <option value="辽宁省">辽宁省</option>
+                                        <option value="吉林省">吉林省</option>
+                                        <option value="黑龙江省">黑龙江省</option>
+                                        <option value="上海市">上海市</option>
+                                        <option value="江苏省">江苏省</option>
+                                        <option value="浙江省">浙江省</option>
+                                        <option value="安徽省">安徽省</option>
+                                        <option value="福建省">福建省</option>
+                                        <option value="江西省">江西省</option>
+                                        <option value="山东省">山东省</option>
+                                        <option value="河南省">河南省</option>
+                                        <option value="湖北省">湖北省</option>
+                                        <option value="湖南省">湖南省</option>
+                                        <option value="广东省">广东省</option>
+                                        <option value="广西壮族自治区">广西壮族自治区</option>
+                                        <option value="海南省">海南省</option>
+                                        <option value="重庆市">重庆市</option>
+                                        <option value="四川省">四川省</option>
+                                        <option value="贵州省">贵州省</option>
+                                        <option value="云南省">云南省</option>
+                                        <option value="西藏自治区">西藏自治区</option>
+                                        <option value="陕西省">陕西省</option>
+                                        <option value="甘肃省">甘肃省</option>
+                                        <option value="青海省">青海省</option>
+                                        <option value="宁夏回族自治区">宁夏回族自治区</option>
+                                        <option value="新疆维吾尔自治区">新疆维吾尔自治区</option>
+                                        <option value="台湾省">台湾省</option>
+                                        <option value="香港特别行政区">香港特别行政区</option>
+                                        <option value="澳门特别行政区">澳门特别行政区</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>审核日期</span>
+                                    <input type="text" name="dateAssistStart" value="" class="datep" readonly="readonly" ondblclick="clearDate()"
+                                           style="height:25px;width:107px;">&nbsp;到&nbsp;
+                                    <input type="text" name="dateAssistEnd" value="" class="end" readonly="readonly" ondblclick="clearDate()"
+                                           style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/salesSlip/add" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 添加销售订单</a>
+
+                            <a @click="editlayer()" class="btn btn-xs btn-success edit"
+                               style="padding:1px 5px;border-radius:5px;"><i
+                                    class="fa fa-pencil-square-o"></i>修改</a>
+                            <a @click="del()" class="btn btn-xs btn-success del"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i>删除</a>
+                            <ul class="pagination pull-right">
+                                <li><a>共：{{data.totalElements}}</a></li>
+                                <li><a @click="goto('0')">首页</a></li>
+                                <li :class="data.first==true?'disabled':''">
+                                    <a @click="prev">
+                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                    <a @click="goto(n-1)">{{n}}</a>
+                                </li>
+                                <li :class="data.last==true?'disabled':''">
+                                    <a @click="next">
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>销售单编号</th>
+                        <th>客户名称</th>
+                        <th>省份</th>
+                        <th>创建时间</th>
+                        <th>审核日期</th>
+                        <th>出库数量</th>
+                        <th>总金额</th>
+                        <th>状态</th>
+                        <th>业务员</th>
+                        <th>制单人</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="sales in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="sales.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        <td><a @click="children('#page/salesSlip/listxq',sales.id)">{{sales.code}}</a></td>
+                        <td><span v-if="sales.customer!=null">{{sales.customer.firstName}}</span></td>
+                        <td><span v-if="sales.customer!=null">{{sales.customer.provinceCode}}</span></td>
+                        <td>
+                            <span v-if="sales.ctime!=null">{{sales.ctime.substring(0,10)}}</span>
+                         </td>
+                        <td>
+                            <span v-if="sales.date!=null">{{sales.date.substring(0,10)}}</span>
+                        </td>
+                        <td>{{sales.totalCount}}</td>
+                        <td>{{sales.totalPrice}}</td>
+                        <td>
+                            <span v-if="sales.checkFlag=='0'" style="color: red">未复核</span>
+                            <span v-if="sales.checkFlag=='1'" style="color: green">已复核</span>
+                        </td>
+                        <td><span v-if="sales.contact!=null">{{sales.contact.firstName}}</span></td>
+                        <td>{{sales.recorder}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "sales/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.url_del = "sales/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+
+    //实现完成
+    function typeUpdate() {
+        var ids = getIds();
+        if (ids.length == 1) {
+            setPama(ids[0]);
+//            root.loadedit("sales/one/");
+            $.post(base_url + "sales/accomplish/" + getIds(), function (data1) {
+                //若果修改成功跳转页面
+                if (data1.code == "100") {
+                    root.load();
+                    $('.ace').attr('checked', false);
+                }
+            })
+        } else if (ids.length > 1) {
+            msg("只能选择一条数据！")
+        } else {
+            msg("请选择数据！")
+        }
+    }
+
+    //修改
+    function editlayer(){
+        var ids = getIds();
+        if (ids.length == 1) {
+            if(ids[0]=='on'){
+                msg("不能选择标题")
+                $('.ace').attr('checked', false);
+            }else{
+                setPama(ids[0]);
+                $.post(base_url + "sales/accomplistVerify/" + getIds(), function (data1) {
+                    if(!data1){
+                        root.edit('#page/salesSlip/edit');
+                    }else{
+                        msg("该订单已完成，不允许修改")
+                    }
+                })
+            }
+        } else if (ids.length > 1) {
+            msg("只能选择一条数据！")
+        } else {
+            msg("请选择数据！")
+        }
+    }
+</script>
+<script src="js/base-vue.js"></script>

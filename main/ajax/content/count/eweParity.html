@@ -1,0 +1,273 @@
+<title>母羊胎次统计表</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div>
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div>
+                                    <div class="box">
+                                        <span>胎次结束日期</span>
+                                        <input type="text" name="startDate"  class="datep" style="height:25px;width:107px;" ondblclick="clearDate()">
+                                        <span>-</span>
+                                        <input type="text" name="endDate"  class="end" style="height:25px;width:107px;" ondblclick="clearDate()">
+                                    </div>
+                                    <div class="box">
+                                        <span>胎次结束类型</span>
+                                        <select name="" id="">
+                                            <option value="">全部</option>
+                                            <option value="">断奶</option>
+                                            <option value="">流产</option>
+                                        </select>
+                                    </div>
+                                    <div class="box">
+                                        <button style="padding:1px 5px;border-radius:5px;" type="button" onclick="search()"
+                                                type="button" class="btn btn-xs btn-success">
+                                            <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                        </button>
+                                    </div>
+                                    <ul class="pagination pull-right">
+                                        <li><a>共：{{data.totalElements}}</a></li>
+                                        <li><a @click="goto('0')">首页</a></li>
+                                        <li :class="data.first==true?'disabled':''">
+                                            <a @click="prev">
+                                                <i class="ace-icon fa fa-angle-double-left"></i>
+                                            </a>
+                                        </li>
+                                        <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                            <a @click="goto(n-1)">{{n}}</a>
+                                        </li>
+                                        <li :class="data.last==true?'disabled':''">
+                                            <a @click="next">
+                                                <i class="ace-icon fa fa-angle-double-right"></i>
+                                            </a>
+                                        </li>
+                                        <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                        <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div>
+                    <center><h1>母羊胎次统计表</h1></center>
+                </div>
+                <table class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>总胎次</th>
+                        <th>胎次平均天数</th>
+                        <th>产羔合计</th>
+                        <th>活羔合计</th>
+                        <th>畸形合计</th>
+                        <th>死胎合计</th>
+                        <th>平均单胎产羔</th>
+                        <th>平均单胎活羔</th>
+                        <th>61日龄成活数</th>
+                        <th>61日龄成活率</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{data1.sum}}</td>
+                        <td>{{data1.lambingDamNum}}</td>
+                        <td>胎次平均天数</td>
+                        <td>{{data1.bornTimes}}</td>
+                        <td>{{data1.aliveCount}}</td>
+                        <td>{{data1.badCount}}</td>
+                        <td>{{data1.deadCount}}</td>
+                        <td>{{data1.damBornAverage}}</td>
+                        <td>{{data1.damAliveAverage}}</td>
+                        <td>{{data1.parityBornAverage}}</td>
+                        <td>{{data1.parityAliveAverage}}</td>
+                        <td>{{data1.number}}</td>
+                        <td>{{data1.survivalAverage}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <center><h1>母羊胎次明细表</h1></center>
+                </div>
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>羊号</th>
+                        <th>品种</th>
+                        <th>出生日期</th>
+                        <th>总胎次</th>
+                        <th>本胎配种次数</th>
+                        <th>胎次开始日期</th>
+                        <th>胎次结束日期</th>
+                        <th>胎次天数</th>
+                        <th>结束类型</th>
+                        <th>产羔总数</th>
+                        <th>活羔数</th>
+                        <th>死胎数</th>
+                        <th>畸形数</th>
+                        <th>61日龄成活数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="parity in data.content">
+                        <td>{{parity.code}}</td>
+                        <td>{{parity.breedName}}</td>
+                        <td>{{parity.birthDay}}</td>
+                        <td>{{parity.parityMaxNumber}}</td>
+                        <td>{{parity.joiningSql}}</td>
+                        <td>{{parity.startDate }}</td>
+                        <td>{{parity.closedDate  }}</td>
+                        <td>{{parity.day}}</td>
+                        <td>{{parity.closedTyep}}</td>
+                        <td>{{parity.bornTimes}}</td>
+                        <td>{{parity.aliveCount}}</td>
+                        <td>{{parity.deadCount}}</td>
+                        <td>{{parity.badCount}}</td>
+                        <td>{{parity.number}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var vue= new Vue({
+        el: '#app',
+        data: {data: "",data1:""},
+        created:function () {
+            $.post(base_url+'reportForms/parityStatistics?orgId='+JSON.parse(localStorage.userInfo).organization.id,$(".searchForm").serialize(), function (data) {
+                // vue.data=data.detail
+                vue.data1=data.count
+                var se = dispage1(data.detail.number,data.detail.totalPages);
+                data.detail.startPage = se[0];
+                data.detail.endPage = se[1];
+                vue.data = data.detail;
+            })
+        },
+        methods:{
+            load: function () {
+                po(getUrl('reportForms/parityStatistics?orgId='+JSON.parse(localStorage.userInfo).organization.id), $(".searchForm").serialize(), function (data) {
+                    vue.data1=data.count
+                    var se = dispage1(data.detail.number,data.detail.totalPages);
+                    data.detail.startPage = se[0];
+                    data.detail.endPage = se[1];
+                    vue.data = data.detail;
+                });
+            },
+            prev: function () {
+                if (!this.data.first) {
+                    this.pageqq();
+                    this.load();
+                } else {
+                    msg("已经是第一页");
+                }
+            }
+            ,
+            next: function () {
+                if (!this.data.last) {
+                    this.pagepp();
+                    this.load();
+                } else {
+                    msg("已经是最后一页");
+                }
+            }
+            ,
+            goto: function (n) {
+                if ($("#page").val() != n) {
+                    $("#page").val(n)
+                    this.load();
+                }
+            },
+        }
+    });
+
+    //查询
+    function search() {
+        $.post(base_url+'reportForms/parityStatistics?orgId='+JSON.parse(localStorage.userInfo).organization.id,$(".searchForm").serialize(), function (data) {
+            vue.data1=data.count
+            var se = dispage1(data.detail.number,data.detail.totalPages);
+            data.detail.startPage = se[0];
+            data.detail.endPage = se[1];
+            vue.data = data.detail;
+        })
+    }
+
+    /**
+     * 分页计算
+     * @param n 当前页
+     * @param t 总页数
+     */
+    function dispage1(n,t) {
+        var num = n
+        var total = t
+        var step = 5
+        if(total<2*step){
+            return [1,total]
+        }
+        if (num-step<0){
+            return [1,2*step];
+        }else if(num-step>=0){
+            if(num+step>total){
+                return [total - 2 * step , total]
+            }else{
+                return [num - step +1 , num + step]
+            }
+        }
+    }
+
+    function  clearDate() {
+        $(".datep").val("");
+        $(".end").val("");
+    }
+
+    var myDate=new Date();
+    year=myDate.getFullYear()
+    mon=myDate.getMonth()+1
+    day=myDate.getDate()
+    date=year+'-'+mon+'-'+day
+    laydate.render({
+        elem: '.datep',
+        max: date
+    });
+    laydate.render({
+        elem: '.end',
+        max: date
+    });
+    laydate.render({
+        elem: '.end1',
+        max: date
+    });
+    laydate.render({
+        elem: '.start',
+        max: date
+    });
+</script>

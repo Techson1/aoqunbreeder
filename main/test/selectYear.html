@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<<div id="div1" style="width:200px;height:200px;">
+	<input type="text" id="Birthday" value="请输入你的生日！" />
+	<input type="button" value="开始计算" />
+</div>
+<script src="http://cdn.beiqisoft.com/ace1.4/components/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    //根据输入的生日自动获取星座，生肖和年龄。
+    var year = new Array("猪", "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗");
+    jQuery(function () {
+        $("#Birthday").blur(function () {
+            setTimeout(function () {
+                var strHtml = "";
+                var date = new Date($("#Birthday").val().replace(/-/g, "/"));
+//                var con = getxingzuo(date.getMonth() + 1, date.getDate());
+//                strHtml += "你的星座是：" + con;
+//                var zodiac = year[(parseInt(date.getFullYear()) + 9) % 12];
+//                strHtml += "<br/>你的生肖是：" + zodiac;
+                var Age = new Date().getFullYear() - date.getFullYear();
+                strHtml += "<br/>你的年龄是：" + Age;
+                $("#div1").append(strHtml);
+            }, 200);
+        })
+    })
+//    function getxingzuo(month, day) {
+//        var d = new Date(1999, month - 1, day, 0, 0, 0);
+//        var arr = [];
+//        arr.push(["魔羯座", new Date(1999, 0, 1, 0, 0, 0)])
+//        arr.push(["水瓶座", new Date(1999, 0, 20, 0, 0, 0)])
+//        arr.push(["双鱼座", new Date(1999, 1, 19, 0, 0, 0)])
+//        arr.push(["牡羊座", new Date(1999, 2, 21, 0, 0, 0)])
+//        arr.push(["金牛座", new Date(1999, 3, 21, 0, 0, 0)])
+//        arr.push(["双子座", new Date(1999, 4, 21, 0, 0, 0)])
+//        arr.push(["巨蟹座", new Date(1999, 5, 22, 0, 0, 0)])
+//        arr.push(["狮子座", new Date(1999, 6, 23, 0, 0, 0)])
+//        arr.push(["处女座", new Date(1999, 7, 23, 0, 0, 0)])
+//        arr.push(["天秤座", new Date(1999, 8, 23, 0, 0, 0)])
+//        arr.push(["天蝎座", new Date(1999, 9, 23, 0, 0, 0)])
+//        arr.push(["射手座", new Date(1999, 10, 22, 0, 0, 0)])
+//        arr.push(["魔羯座", new Date(1999, 11, 22, 0, 0, 0)])
+//        for (var i = arr.length - 1; i >= 0; i--) {
+//            if (d >= arr[i][1]) return arr[i][0];
+//        }
+//    }
+</script>
+</body>
+</html>

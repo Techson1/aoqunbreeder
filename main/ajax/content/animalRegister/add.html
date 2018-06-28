@@ -1,0 +1,483 @@
+<title>添加羊只登记</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">羊只登记</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="space-2"></div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="code">可视耳号</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <input type="text" name="code" id="code" class="col-xs-12 col-sm-7" required maxlength="14"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="rfid">电子耳号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="rfid" id="rfid" class="col-xs-12 col-sm-7" maxlength="15"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="birthDay">出生日期</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <input type="text" name="birthDay" id="birthDay"
+                                                       class="col-xs-12 col-sm-7 datep" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="enterhDay">入场日期</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="enterhDay" id="enterhDay"
+                                                       class="col-xs-12 col-sm-7 start"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="damCode">母号</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <input type="text" name="damCode" id="damCode"
+                                                       class="col-xs-12 col-sm-7"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="sireCode">父号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="sireCode" id="sireCode"
+                                                       class="col-xs-12 col-sm-7"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right" for="customer">品种</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="breed.id" required
+                                                        id="breed">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="breed in data1" :value="breed.id">
+                                                        {{breed.breedName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="sex">性别</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="sex"  required>
+                                                    <option value="">请选择</option>
+                                                    <option value="1">公羊</option>
+                                                    <option value="2">母羊</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="geneticLevel">基因等级</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="geneticLevel"
+                                                        id="geneticLevel">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">核心群</option>
+                                                    <option value="2">后备级</option>
+                                                    <option value="3">生产级</option>
+                                                    <option value="4">销售级</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="initialWeigh">出生重</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="initialWeigh" id="initialWeigh"
+                                                       class="col-xs-12 col-sm-7"
+                                                       maxlength="20"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="theSameFetus">同胎数</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="theSameFetus"
+                                                        id="theSameFetus">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="sourceType ">羊只来源</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-2" name="sourceType" @change="yc()" required
+                                                        id="type">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">自产</option>
+                                                    <option value="2">购入</option>
+                                                </select>
+                                                <select class="col-xs-12 col-sm-5" name="source.id" id="source">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="organization in data4" :value="organization.id">
+                                                        {{organization.orgName}}
+                                                    </option>
+                                                </select>
+                                                <select class="col-xs-12 col-sm-5" name="customer.id" id="customer"
+                                                        style="display:none;">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="customer in data5" :value="customer.id">
+                                                        {{customer.firstName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="paddockType.name">圈舍</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="paddock.id" required
+                                                        id="paddock.id">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="paddockType in data3" :value="paddockType.id">
+                                                        {{paddockType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="paddockType.name"></label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix" style="height: 80px;">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <center>
+                                <button class="btn btn-info" onclick="tj()" type="button">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>提交</span>
+                                </button>
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-prev" type="reset" id="resetBtn" v-if="data.id==null">
+                                    <i class="fa fa-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </center>
+                        </div>
+                    </form>
+                    <div id="layerr" style="padding:20px;display: none;">
+                        <form id="layer">
+                            <input type="hidden" name="code" id="updateCode">
+                            <input type="hidden" name="sex" id="updateSex">
+                            <input type="text" required name="birthDay" class="col-sm-12 end" id="upbirthDay"
+                                   style="height:35px;margin-bottom: 15px;">
+                            <select name="breed.id" style="height:35px;margin-bottom:15px;" class="col-sm-12" required
+                                    id="breedId">
+                                <option value="">请选择品种</option>
+                                <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                </option>
+                            </select>
+                            <button class="btn btn-xs btn-success col-sm-12" onclick="nameUpdate()"
+                                    type="button"
+                                    style="height:35px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                                确认
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "../../laydate/laydate.js","ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.loadCompany();
+        vue.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+        vue.loadPama('breed/all');
+        vue.loadPama2('organization/all');
+        vue.loadPama3('contact/findBySupplier');
+    })
+
+    //判断羊只来源显示不同数据
+    function yc() {
+        if ($("#type option:selected").text() == '自产') {
+            $("#source").show();
+            $("#customer").hide();
+            $("#customer").val("");
+        }
+        else {
+            $("#source").hide();
+            $("#customer").show();
+            $("#source").val("");
+        }
+    }
+    //完成提交
+    function tj() {
+//        //校验电子耳标和可视耳标
+        if ($(".myform").valid()) {
+            if($("#damCode").val().length==0 && $("#sireCode").val().length==0){
+                add();
+            }
+            else if($("#damCode").val().length==0 && $("#sireCode").val().length>=0){
+                po(getUrl("baseInfo/notCodeVerify?code="+$("#sireCode").val()), function (data) {
+                    if(data.code=='100'){
+                        add()
+                    }
+                    else if(data.code=='101'){
+                        question(0,data.msg)
+                    }
+                    else if(data.code=='103'){
+                        msg(data.msg)
+                    }
+                })
+            }
+            else if($("#damCode").val().length>=0 && $("#sireCode").val().length==0){
+                po(getUrl("baseInfo/notCodeVerify?code="+$("#damCode").val()), function (data) {
+                    if(data.code=='100'){
+                        add()
+                    }
+                    else if(data.code=='101'){
+                        question(1,data.msg)
+                    }
+                    else if(data.code=='103'){
+                        msg(data.msg)
+                    }
+                })
+            }
+            else{
+                po(getUrl("baseInfo/notCodeVerify?code="+$("#damCode").val()), function (data) {
+                    if(data.code=='100'){
+                        po(getUrl("baseInfo/notCodeVerify?code="+$("#sireCode").val()), function (data) {
+                            if(data.code=='100'){
+                                add()
+                            }
+                            else if(data.code=='101'){
+                                question(0,data.msg)
+                            }
+                            else if(data.code=='103'){
+                                msg(data.msg)
+                            }
+                        })
+                    }
+                    else if(data.code=='101'){
+                        question(1,data.msg)
+                    }
+                    else if(data.code=='103'){
+                        msg(data.msg)
+                    }
+                })
+            }
+        }
+    }
+
+    //添加羊只
+    function add(){
+        po(getUrl("baseInfo/codeAndRfid"), $(".myform").serialize(), function (data) {
+            if (data.code == '101') {
+                msg(data.msg)
+            }
+            else if (data.code == '102') {
+                //询问框
+                layer.confirm(data.msg, {
+                    btn: ['确认', '取消'] //按钮
+                }, function () {
+//                    $("#breed").attr("name", "breed.id");
+                    po(getUrl("baseInfo/verify"), $(".myform").serialize(), function (data) {
+                        if (data.code == '101') {
+                            msg(data.msg)
+                        }
+                        else{
+                            po(getUrl("baseInfo/registerAdd"), $(".myform").serialize(), function (data) {
+                                location.href = "#page/animalRegister/list"
+                                layer.closeAll();
+                            })
+                        }
+                    })
+                }, function () {
+                    layer.closeAll();
+                });
+            }
+            else {
+                //校验子代与父代的品种
+//                $("#breed").attr("name", "breed.id");
+                po(getUrl("baseInfo/verify"), $(".myform").serialize(), function (data) {
+                    if (data.code == '101') {
+                        msg(data.msg)
+                    }
+                    else{
+                        po(getUrl("baseInfo/registerAdd"), $(".myform").serialize(), function (data) {
+                            location.href = "#page/animalRegister/list"
+                        })
+                    }
+                })
+
+            }
+        });
+    }
+
+    //添加父羊只
+    function onAddFather() {
+        $("#updateCode").val($("#sireCode").val())
+        $("#updateSex").val("1")
+        if ($("#birthDay").length == 0) {
+            msg("请先输入出生日期")
+        }
+        else {
+            layer.open({
+                type: 1,
+                title: '修改',
+                area: ['300px', '300px'],
+                shadeClose: true,
+                content: $("#layerr")
+            });
+        }
+    }
+
+    //添加母羊只
+    function onAddMonther() {
+        // alert('母羊'+$("#damCode").val())
+        $("#updateCode").val($("#damCode").val())
+        // alert( $("#updateCode").val())
+        $("#updateSex").val("2")
+        if ($("#birthDay").val().length == 0) {
+            msg("请先输入出生日期")
+        }
+        else {
+            layer.open({
+                type: 1,
+                title: '修改',
+                area: ['300px', '300px'],
+                shadeClose: true,
+                content: $("#layerr")
+            });
+        }
+    }
+    //提交弹出框内容（父母亲信息）
+    function nameUpdate() {
+        var parentDate = $("#upbirthDay").val()
+        var chairldDate = $("#birthDay").val()
+        DateDiff(chairldDate, parentDate)
+        if ($("#upbirthDay").val().length == 0 || $("#breedId").val().length == 0) {
+            msg("数据都不能为空")
+        }
+        else if (DateDiff(chairldDate, parentDate) < 395) {
+            msg("出生日期不符合规定，应比该羊只的出生日期早395天")
+        }
+        else {
+            $.post(base_url + "baseInfo/parentAdd?code=" + $("#updateCode").val() + "&birthDay=" + $("#upbirthDay").val() + "&breed.id=" + $("#breedId").val() + "&sex=" + $("#updateSex").val() + "&flag=1"+"&recorder="+$("input[name=recorder]").val(), function (data) {
+                //若果修改成功跳转页面
+                if (data.code == "100") {
+                    msg("添加成功")
+                    tj();
+                    layer.closeAll();
+                }
+                else{
+                    msg(data.msg)
+                }
+            })
+        }
+    }
+    //子代出生日期减父代出生日期
+    function DateDiff(d1, d2) {
+        var day = 24 * 60 * 60 * 1000;
+        try {
+            var dateArr = d1.split("-");
+            var checkDate = new Date();
+            checkDate.setFullYear(dateArr[0], dateArr[1] - 1, dateArr[2]);
+            var checkTime = checkDate.getTime();
+
+            var dateArr2 = d2.split("-");
+            var checkDate2 = new Date();
+            checkDate2.setFullYear(dateArr2[0], dateArr2[1] - 1, dateArr2[2]);
+            var checkTime2 = checkDate2.getTime();
+
+            var cha = (checkTime - checkTime2) / day;
+            return cha;
+        } catch (e) {
+            return false;
+        }
+    }
+
+
+    //询问用户是否添加母羊、父羊
+    function question(type,message){
+        //询问框
+        if(type==1){
+            layer.confirm(message, {
+                btn: ['添加母羊','重新输入'] //按钮
+            }, function(){
+                onAddMonther();
+            }, function(){
+                layer.closeAll();
+            });
+        }else{
+            layer.confirm(message, {
+                btn: ['添加父羊','重新输入'] //按钮
+            }, function(){
+                onAddFather();
+            }, function(){
+                layer.closeAll();
+            });
+        }
+    }
+</script>

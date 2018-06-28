@@ -1,0 +1,179 @@
+<title>精料配方</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <form class="myform">
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <input type="hidden" name="recorder" v-model="data5.cname">
+                        <input type="hidden" name="org.id" v-if="data5.id!=null" v-model="data5.organization.id">
+                        <input type="hidden" name="isUsed" value="1">
+                        <input type="hidden" name="type" value="1">
+                        <div class="box">
+                            <span>配方名称</span>
+                            <input type="text" required maxlength="20" name="materialName" id="materialName"
+                                   style="height:25px;width:107px;">
+                        </div>
+                        <button class="btn btn-xs btn-success " onclick="sx()" type="button"
+                                style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            <span>添加到列表</span>
+                        </button>
+                        <a @click="editlayer()" class="btn btn-xs btn-success edit"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"> 修改</a>
+                        <a @click="typeUpdate('0')" class="btn btn-xs btn-success del"
+                           style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                            存档</a>
+                        <a @click="typeUpdate('1')" class="btn btn-xs btn-success del"
+                        style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                        可用</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div id="layerr" style="padding:20px;display: none;">
+            <form id="layer">
+                <input type="hidden" name="id" v-model="data6.id" id="updataId">
+                <input type="hidden" name="recorder" v-model="data5.cname">
+                <input type="hidden" name="org.id" v-if="data5.id!=null" v-model="data5.organization.id">
+                <input type="hidden" name="isUsed" value="1">
+                <input type="hidden" name="type" value="1">
+                <input type="text" required name="materialName" id="materialName" class="col-sm-12"
+                       v-model="data6.materialName" style="height:35px;margin-bottom: 15px;">
+                <button class="btn btn-xs btn-success  btn-submit col-sm-12" onclick="nameUpdate()" type="button"
+                        style="height:35px;padding:1px 5px;margin-left:0px;">
+                    确认
+                </button>
+            </form>
+        </div>
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>配方名称</th>
+                <th>状态</th>
+                <th>适应羊群</th>
+                <th>操作人</th>
+                <th>更新时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="material in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace" :value="material.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td><a @click="children('#page/concentrate/add',material.id)">{{material.materialName}}</a></td>
+                <td>
+                    <span v-if="material.isUsed=='0'">存档</span>
+                    <span v-if="material.isUsed=='1'">可用</span>
+                </td>
+                <td>未开发</td>
+                <td>{{material.recorder}}</td>
+                <td>{{material.ctime}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "material/list?type="+1+"&org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.url_del = "material/dels/";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadCompany();
+        })
+    });
+    //实现添加
+    function sx() {
+        if ($("input[name=materialName]").val().length == 0) {
+            msg("配方名称不能为空")
+        }
+        else {
+            po(getUrl("material/nameVerify"), $(".myform").serialize(), function (data) {
+                if (!data) {
+                    msg("配方名称已存在")
+                } else {
+                    po(getUrl("material/save"), $(".myform").serialize(), function (data) {
+                        root.load();
+                        $("input[name=materialName]").val("");
+                    });
+                }
+            })
+
+        }
+    }
+    //实现修改
+    function editlayer() {
+        var ids = getIds();
+        if (ids.length == 1) {
+            setPama(ids[0]);
+            root.loadedit("material/one/");
+            po(getUrl("material/isUsedVerify/" + ids), function (data) {
+                if(data){
+                    layer.open({
+                        type: 1,
+                        title: '修改',
+                        area: ['300px', '200px'],
+                        shadeClose: true,
+                        content: $("#layerr")
+                    });
+                }
+                else{
+                    msg("您选择的数据已存档，不允许修改")
+                }
+            })
+        } else if (ids.length > 1) {
+            msg("只能选择一条数据！")
+        } else {
+            msg("请选择数据！")
+        }
+    }
+    //layer弹出框实现修改
+    function nameUpdate() {
+        po(getUrl("material/nameVerify"), $("#layer").serialize(), function (data) {
+            if (!data) {
+                msg("配方名称已存在")
+            } else {
+                $.post(base_url + "material/save",$("#layer").serialize(), function (data1) {
+                    if (data1.code == "100") {
+                        root.load();
+                        layer.closeAll();
+                    }
+                })
+            }
+        })
+    }
+    //实现存档
+    function typeUpdate(flagc) {
+        var ids = getIds();
+        if (ids.length == 1) {
+            setPama(ids[0]);
+            root.loadedit("material/one/");
+            $.post(base_url + "material/isUsedUpdate/" +getIds() +'/'+ flagc, function (data1) {
+                //若果修改成功跳转页面
+                if (data1.code == "100") {
+                    location.reload();
+                }
+            })
+        } else if (ids.length > 1) {
+            msg("只能选择一条数据!")
+        } else {
+            msg("请选择数据！")
+        }
+
+    }
+</script>
+<script src="js/base-vue.js"></script>

@@ -1,0 +1,118 @@
+<title>添加免疫计划</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">免疫计划</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="flag" value="1">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="name">名称</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="name" id="userName" required
+                                                           maxlength="20"
+                                                           class="col-xs-12 col-sm-6 " v-model="data.name"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="project">免疫保健项目</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-sm-6" name="project.id" v-if="data.id==null">
+                                                        <option>请选择</option>
+                                                        <option v-for="immuneHealthProject in data1" :value="immuneHealthProject.id">{{immuneHealthProject.immName}}</option>
+                                                    </select>
+                                                    <select class="col-sm-6" name="project.id" v-else v-model="data.project.id">
+                                                        <option>请选择</option>
+                                                        <option v-for="project in data1" :value="project.id">{{project.immName}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="date">免疫保健日期</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="date" id="date"
+                                                           class="col-xs-12 col-sm-6 datep" required maxlength="11" v-model="data.date"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="paddock">覆盖栏位</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-sm-6" name="paddock.id" v-if="data.id==null">
+                                                        <option>请选择</option>
+                                                        <option v-for="paddock in data3" :value="paddock.id">{{paddock.name}}</option>
+                                                    </select>
+                                                    <select class="col-sm-6" name="paddock.id" v-else v-model="data.paddock.id">
+                                                        <option>请选择</option>
+                                                        <option v-for="paddock in data3" :value="paddock.id">{{paddock.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                    <center>
+                        <button class="btn btn-info btn-submit">
+                            <i class="fa fa-check bigger-110"></i>
+                            <span>提交</span>
+                        </button>
+                        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                        <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                            <i class="fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+                    </center>
+                </div>
+                <div style="clear: both"></div>
+
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.load("immunePlan/one/", getPama());
+        vue.loadPama('immuneHealthProject/findByFlag');
+        vue.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+        vue.loadCompany();
+        setPama1("immunePlan/save");//为表单传值
+        setPama2("#page/immunePlan/list");//设置提交数据完成的跳转界面
+    })
+</script>

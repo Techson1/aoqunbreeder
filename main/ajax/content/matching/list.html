@@ -1,0 +1,227 @@
+<title>选配方案</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                <span>父品种</span>
+                                <select name="sireBreed.id" style="height:25px;">
+                                    <option value="">全部</option>
+                                    <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                    </option>
+                                </select>
+                            </div>
+                                <div class="box">
+                                    <span>母品种</span>
+                                    <select name="damBreed.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>创建日期</span>
+                                    <input type="text" name="startDate" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">&nbsp;到&nbsp;
+                                    <input type="text" name="endDate" value="" class="end" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
+                                </div>
+
+                                <div class="box">
+                                    <button style="padding-top:-2px;padding:0px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/matching/add" class="btn btn-xs btn-success add"
+                            style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 创建选配方案</a>
+                            <a @click="editpd('#page/matching/add')" class="btn btn-xs btn-success edit"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-pencil-square-o"></i> 方案名称修改</a>
+                            <!--<a @click="animalList('#page/matching/ewelist')" class="btn btn-xs btn-success del"-->
+                               <!--style="padding:1px 5px;border-radius:5px;"><i class="fa fa-venus"></i>母羊清单</a>-->
+                            <!--<a @click="animalList('#page/matching/ramlist')" class="btn btn-xs btn-success del"-->
+                               <!--style="padding:1px 5px;border-radius:5px;"><i class="fa fa-mars"></i>公羊清单</a>-->
+                            <a @click="typeUpdate('0')" class="btn btn-xs btn-success del"
+                               style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                                存档</a>
+                            <a @click="typeUpdate('1')" class="btn btn-xs btn-success del"
+                               style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                                可用</a>
+                            <ul class="pagination pull-right">
+                                <li><a>共：{{data.totalElements}}</a></li>
+                                <li><a @click="goto('0')">首页</a></li>
+                                <li :class="data.first==true?'disabled':''">
+                                    <a @click="prev">
+                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                    <a @click="goto(n-1)">{{n}}</a>
+                                </li>
+                                <li :class="data.last==true?'disabled':''">
+                                    <a @click="next">
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>方案名称</th>
+                        <th>方案状态</th>
+                        <th>父品种</th>
+                        <th>母品种</th>
+                        <th>创建日期</th>
+                        <th>第一公羊</th>
+                        <th>第二公羊</th>
+                        <th>第三公羊</th>
+                        <th>第四公羊</th>
+                        <th>母羊数</th>
+                        <th>操作人</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="breedingPlan in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="breedingPlan.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td><a @click="children('#page/matching/xqadd',breedingPlan.id)">{{breedingPlan.name}}</a></td>
+                        <td>
+                            <span v-if="breedingPlan.flag=='1'">可用</span>
+                            <span v-if="breedingPlan.flag=='0'">存档</span>
+                        </td>
+                        <td>
+                            <span v-if="breedingPlan.damBreed!=null">{{breedingPlan.sireBreed.breedName}}</span>
+                        </td>
+                        <td>
+                            <span v-if="breedingPlan.damBreed!=null">{{breedingPlan.damBreed.breedName}}</span>
+                        </td>
+                        <td><span v-if="breedingPlan.ctime!=null">{{breedingPlan.ctime.substring(0,10)}}</span> </td>
+                        <td><span v-if="breedingPlan.one!=null">
+                                <span v-if="breedingPlan.one.sire!=null">{{breedingPlan.one.sire.code}}</span>
+                            </span>
+                        </td>
+                        <td><span v-if="breedingPlan.two!=null">
+                                <span v-if="breedingPlan.two.sire!=null">{{breedingPlan.two.sire.code}}</span>
+                            </span>
+                        </td>
+                        <td><span v-if="breedingPlan.three!=null">
+                                <span v-if="breedingPlan.three.sire!=null">{{breedingPlan.three.sire.code}}</span>
+                            </span>
+                        </td>
+                        <td><span v-if="breedingPlan.four!=null">
+                                <span v-if="breedingPlan.four.sire!=null">{{breedingPlan.four.sire.code}}</span>
+                            </span>
+                        </td>
+                        <td>{{breedingPlan.breedingDamCount}}</td>
+                        <td>{{breedingPlan.recorder}}</td>
+                        <td>{{breedingPlan.lastModifyTime}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "breedingPlan/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.url_del = "breedingPlan/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all");
+        })
+    });
+    //修改
+    function editpd(url_edit){
+            var ids = getIds();
+            if (ids.length == 1) {
+                if(ids[0]=='on'){
+                    msg("不能选择标题")
+                }
+                else{
+                    $.post(base_url + "breedingPlan/one/"+ ids[0], function (data1) {
+                        //若果修改成功跳转页面
+                        if (data1.flag == "1") {
+                            setPama(ids[0]);
+                            location.href = url_edit;
+                        }
+                        else{
+                            msg("该数据已存档，不允许修改")
+                        }
+                    })
+                }
+            } else if (ids.length > 1) {
+                msg("只能选择一条数据！")
+            } else {
+                msg("请选择数据！")
+            }
+
+    }
+    //实现存档
+    function typeUpdate(flagc) {
+        var ids = getIds();
+        if (ids.length == 1) {
+            root.loadedit("fakeTypeDam/one/");
+            $.post(base_url + "breedingPlan/updateFlag/" +ids[0] +'/'+ flagc, function (data1) {
+                //若果修改成功跳转页面
+                if (data1.code == "100") {
+                    location.reload();
+                }
+            })
+        } else if (ids.length > 1) {
+            msg("只能选择一条数据！12313")
+        } else {
+            msg("请选择数据！")
+        }
+
+    }
+</script>
+<script src="js/base-vue.js"></script>

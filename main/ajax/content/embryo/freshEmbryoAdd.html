@@ -1,0 +1,330 @@
+<title>鲜胚移植</title>
+<div id="app">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="operate">
+                <center><h1>冲胚、检胚</h1></center>
+                <div style="margin-top:50px;">
+
+                        <input type="hidden" name="recorder" v-model="data5.cname">
+                        <input type="hidden" name="org.id" v-if="data5.id!=null" v-model="data5.organization.id">
+                        <input type="hidden" name="org.id" value="1">
+                        <input type="hidden" name="embryoFlushId" v-model="data1.id">
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                   for="donor">母羊耳号</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="donor" id="donor" readonly="readonly" v-if="data1.donor!=null" v-model="data1.donor.code"
+                                           class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1"
+                                   for="date">冲胚日期</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="date" id="date" readonly="readonly"  v-model="data1.date"
+                                           class="col-xs-12 col-sm-6" required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                   for="joiningDate">是否冲胚</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <div class="col-sm-3 col-xs-12"
+                                         style="padding-left:0px;padding-right:0px;">
+                                        <input name="accountType" type="radio" required
+                                               id="accountType"  disabled
+                                               v-if="data1.isEmbryoFlush=='1'"  checked="checked"/> <span class="lbl">是</span>
+                                    </div>
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input name="accountType" type="radio" required
+                                               id="accountType"  disabled
+                                              checked="true"/> <span class="lbl">否</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1"
+                                   for="purposeType">基因等级</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <select name="purposeType" id="purposeType" disabled="disabled">
+                                        <option v-if="data1.purposeType=='1'" selected="selected">核心级</option>
+                                        <option v-if="data1.purposeType=='2'" selected="selected">生产级</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border:1px solid #ccc;clear:both;height:320px;padding-top:20px;padding-bottom:20px;">
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                           for="total">总胚胎数</label>
+                                    <div class="col-xs-12 col-sm-7">
+                                        <div class="clearfix">
+                                            <input type="text" name="total" id="total" readonly="readonly"
+                                                   v-model="data1.total"
+                                                   class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1"
+                                           for="usable">可用胚胎数</label>
+                                    <div class="col-xs-12 col-sm-7">
+                                        <div class="clearfix">
+                                            <input type="text" name="usable" id="usable" readonly="readonly"  v-model="data1.usable"
+                                                   class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                       for="alevel">A级胚胎数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="alevel" id="alevel" readonly="readonly"  v-model="data1.alevel"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1"
+                                       for="frozen">冻胚数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="frozen" id="frozen" readonly="readonly"  v-model="data1.frozen"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                       for="blevel">B级胚胎数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="blevel" id="blevel" readonly="readonly"  v-model="data1.blevel"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1"
+                                       for="number">鲜胚数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="number" id="number" readonly="readonly"  v-model="data1.number"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                       for="infertile">未受精数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="infertile" id="infertile" readonly="readonly"  v-model="data1.infertile"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6" style="height:50px;"></div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:70px;"
+                                       for="degenerate">退化胚胎数</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <input type="text" name="degenerate" id="degenerate" readonly="readonly"  v-model="data1.degenerate"
+                                               class="col-xs-12 col-sm-6 " required maxlength="14"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div style="clear:both;">
+            <form class="form-horizontal myform">
+                <input type="hidden" id="page" value="0" name="pageNum">
+                <input type="hidden" name="recorder" v-model="data5.cname">
+                <input type="hidden" name="org.id" v-if="data5.id!=null" v-model="data5.organization.id">
+                <input type="hidden" name="embryoFlushId" v-model="data1.id">
+                <input type="hidden" name="date" v-model="data1.date">
+                <div class="box" style="margin-left:30px;">
+                    <span>移植序号</span> <input type="text" name="sheetCode" style="height:25px;width:107px;padding-left:2px;">
+                </div>
+                <div class="box" style="margin-left:30px;">
+                    <span>移植胚胎数 </span> <input type="text" name="transNum" style="height:25px;width:107px;padding-left:2px;">
+                </div>
+                <div class="box">
+                    <button style="padding:1px 5px;border-radius:5px;" onclick="tj()"
+                            type="button" class="btn btn-xs btn-success"> 添加到列表
+                    </button>
+                    <button style="padding:1px 5px;border-radius:5px;"
+                            type="button" class="btn btn-xs btn-success"
+                            @click="editlayer()"> 绑定受体羊
+                    </button>
+                    <button style="padding:1px 5px;border-radius:5px;"
+                            type="button" class="btn btn-xs btn-success"
+                            @click="delRelation()"> 删除
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-12">
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>移植序号</th>
+                    <th>移植数</th>
+                    <th>受体耳号</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="embryoTransplant in data.content">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace" :value="embryoTransplant.id"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>{{embryoTransplant.sheetCode}}</td>
+                    <td class="transNumber">{{embryoTransplant.transNum}}</td>
+                    <td>
+                        <span v-if="embryoTransplant.receptor!=null"> {{embryoTransplant.receptor.code}}</span>
+                     </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="layerr" style="padding:20px;display: none;">
+            <form id="layer">
+                <input type="hidden" name="id" v-model="data6.id">
+                <input type="text" required maxlength="20" name="code" id="code" class="col-sm-12" style="height:35px;margin-bottom: 15px;" placeholder="请输入受体羊耳号">
+                <button class="btn btn-xs btn-success col-sm-12" onclick="nameUpdate()" type="button"
+                        style="height:35px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                    确认
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+    <script type="text/javascript">
+        var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            myValidate();
+        });
+        var s = localStorage.xdid ;
+        localStorage.url_list = "embryoTransplant/list?embryoFlush.id="+s;
+        localStorage.delRelation = "embryoTransplant/delVerify/";
+
+        var scripts = [null, null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            jQuery(function ($) {
+                initCheckBox();
+                root.loadCompany();
+                root.loadPama("embryoFlush/one/"+s);
+                root.loadCompany();
+            })
+        });
+        //添加
+        function tj(){
+            var t=1;
+            if($("input[name='sheetCode']").val().length>=1 && $("input[name='transNum']").val().length>=1){
+                if($("input[name=transNum]").val()=='0'){
+                    msg("移植胚胎数不能为0")
+                }
+                else{
+                    var fla=0;
+                    $("table").find("tbody").find("tr").each(function(){
+                        var l=$(this).children().eq(1).text();
+                        fla+=parseFloat($(this).children(".transNumber").text());
+                        if ($("input[name='sheetCode']").val()== l){
+                            msg("该移植序号已存在，请重新输入");
+                            $("input[name='sheetCode']").val("")
+                            t=0;
+                        }
+                    });
+                    fla+=parseInt($("input[name=transNum]").val());
+                    if(fla>$("#number").val()){
+                        msg("移植数不能大于鲜胚数")
+                        $("input[name='transNum']").val("")
+                        t=0;
+                    }
+                    if(t==1){
+                        po(getUrl("embryoTransplant/add"), $(".myform").serialize(), function (message) {
+                            if(message.code=='100'){
+                                msg("添加成功");
+                                $("input[name='sheetCode']").val("");
+                                $("input[name='transNum']").val("");
+                            }
+                            root.load();
+                        });
+                    }
+                }
+            }
+            else{
+                msg("移植序号和移植数不能为空")
+            }
+        }
+        //修改
+        function editlayer(){
+            var ids = getIds();
+            if (ids.length == 1) {
+                setPama(ids[0]);
+                root.loadedit("embryoTransplant/one/");
+                layer.open({
+                     type: 1,
+                     title: '修改',
+                     area: ['300px', '200px'],
+                     shadeClose: true,
+                     content: $("#layerr")
+
+                });
+            } else if (ids.length > 1) {
+                msg("只能选择一条数据！")
+            } else {
+                msg("请选择数据！")
+            }
+        }
+
+        //layer弹出框实现绑定母羊耳号
+        function nameUpdate() {
+            $.post(base_url + "embryoTransplant/updateVerify", $("#layer").serialize(),  function (data1) {
+                if (data1.code == "100") {
+                    $.post(base_url + "embryoTransplant/bindingCode", $("#layer").serialize(),  function (data) {
+                        msg("绑定成功");
+                        layer.closeAll();
+                        root.load();
+                    })
+                }
+                else{
+                    msg(data1.msg);
+                    $("#code").val("")
+                }
+            })
+
+        }
+    </script>
+    <script src="js/base-vue.js"></script>

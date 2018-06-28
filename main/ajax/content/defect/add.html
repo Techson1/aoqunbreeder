@@ -1,0 +1,153 @@
+<title>添加缺陷</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">缺陷信息</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data6.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" v-if="data2.id!=null" name="org.id" v-model="data2.organization.id">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="earTag">耳号</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="earTag" id="earTag" required maxlength="20"
+                                                           class="col-xs-12 col-sm-6"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="sex">性别</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="sex" id="sex" required class="col-xs-12 col-sm-6" @change="selectsex()">
+                                                        <option value="1">公羊</option>
+                                                        <option value="2">母羊</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="createTime">登记日期</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="createTime" id="createTime"
+                                                           class="col-xs-12 col-sm-6 datep" required maxlength="20"
+                                                           v-model="data6.createTime"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="userName">缺陷内容</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-xs-12 col-sm-6" name="" required
+                                                            id="damFake" style="display:none">
+                                                        <option value="">请选择</option>
+                                                        <option v-for="fakeTypeDam in data1" :value="fakeTypeDam.name">
+                                                            {{fakeTypeDam.name}}
+                                                        </option>
+                                                    </select>
+                                                    <select class="col-xs-12 col-sm-6" name="" required
+                                                            id="sireFake">
+                                                        <option value="">请选择</option>
+                                                        <option v-for="fakeTypeSire in data3" :value="fakeTypeSire.name">
+                                                            {{fakeTypeSire.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                        <button class="btn btn-info" onclick="tj()" type="button">
+                            <i class="fa fa-check bigger-110"></i>
+                            <span>提交</span>
+                        </button>
+                        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                        <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                            <i class="fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.loadPama('fakeTypeDam/flagList');
+        vue.loadPama1('fakeTypeSire/flagList');
+        vue.loadCompany();
+    })
+
+//根据性别加载不同缺陷
+function selectsex(){
+    if($("#sex").val()=='1'){
+        $("#sireFake").show();
+        $("#damFake").hide();
+        $("#damFake").val("");
+    }
+    else{
+        $("#sireFake").hide();
+        $("#damFake").show();
+        $("#sireFake").val("");
+    }
+}
+//添加缺陷
+    function tj(){
+        if ($(".myform").valid()) {
+            po(getUrl("fake/addVerify"), $(".myform").serialize(), function (data) {
+                if(data.code=='100'){
+                    if($("#sex option:selected").text()=='母羊'){
+                        po(getUrl("fake/addAndEdit?fakeType="+ $("#damFake").val()),$(".myform").serialize(),function (data){
+                            if(data.code=='100'){
+                                to("#page/defect/list")
+                            }
+                        })
+                    }
+                    else{
+                        po(getUrl("fake/addAndEdit?fakeType="+ $("#sireFake").val()),$(".myform").serialize(),function (data){
+                            if(data.code=='100'){
+                                to("#page/defect/list")
+                            }
+                        })
+                    }
+
+                }else{
+                    msg(data.msg)
+                }
+            })
+        }
+
+    }
+</script>

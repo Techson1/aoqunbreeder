@@ -1,0 +1,161 @@
+<title>鲜胚移植查询</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <center><h1>{{data1.projectName}}</h1></center>
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <div>
+                        <a @click="childrenurl('#page/embryo/donorGroup')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-sitemap"></i>&nbsp;供体组群</a>
+                        <a @click="childrenurl('#page/embryo/receptorGroup')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-bullseye"></i>&nbsp;受体组群</a>
+                        <a @click="childrenurl('#page/embryo/AI')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-venus-mars"></i>&nbsp;供体AI</a>
+                        <a @click="childrenurl('#page/embryo/embryoSet')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-retweet"></i>&nbsp;供体冲胚、鲜胚移植、冻胚制作</a>
+                        <a @click="childrenurl('#page/embryo/freshEmbryo')"
+                           class="btn btn-xs" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-life-ring"></i>&nbsp;鲜胚移植查询</a>
+                        <a @click="childrenurl('#page/embryo/frozenEmbryo')"
+                           class="btn btn-xs btn-success" style="margin-right:5px;"
+                           style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-asterisk"></i>&nbsp;冻胚制作查询</a>
+                    </div>
+                    <div>
+                        <!--<a href="#page/embryo/freshEmbryo" class="btn btn-xs btn-success add"-->
+                           <!--style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">-->
+                            <!--<i class="icon-sitemap fa fa-plus"></i>&nbsp; 添加冻胚制作</a>-->
+                        <!--<a @click="edit('#page/embryo/add')" class="btn btn-xs btn-success edit"-->
+                           <!--style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i-->
+                                <!--class="fa fa-pencil-square-o"></i> 修改</a>-->
+                        <!--<a @click="del()" class="btn btn-xs btn-success del"-->
+                           <!--style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i-->
+                                <!--class="fa fa-trash-o"></i>-->
+                            <!--删除</a>-->
+                    </div>
+                    <form class="myform">
+
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <input type="hidden" name="flag" value="1">
+                        <div class="box">
+                            <span>细管号</span>
+                            <input type="text" name="name" v-model="data.name" id="ewename"
+                                   style="height:25px;width:107px;">
+                        </div>
+                        <div class="box">
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="search">
+                                <i class="icon-search fa fa-search"></i>&nbsp;查询
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div id="layerr" style="padding:20px;display: none;">
+            <form id="layer">
+                <input type="hidden" name="id" v-model="data6.id" id="updataId">
+                <input type="text" value="" required maxlength="20" name="name" id="updateName" class="col-sm-12"
+                       v-model="data6.name"
+                       style="height:35px;margin-bottom: 15px;">
+                <button class="btn btn-xs btn-success  btn-submit col-sm-12" onclick="nameUpdate()"
+                        style="height:35px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                    确认
+                </button>
+            </form>
+        </div>
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>细管号</th>
+                <th>供体母羊号</th>
+                <th>供体公羊号</th>
+                <th>胚胎品种</th>
+                <th>冷冻胚胎数</th>
+                <th>细管颜色</th>
+                <th>套管颜色</th>
+                <th>操作人</th>
+                <th>更新时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="fakeTypeDam in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace" :value="fakeTypeDam.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>{{fakeTypeDam.tubuleCode}}</td>
+                <td>{{fakeTypeDam.embryoFlush.joining.dam.code}}</td>
+                <td>{{fakeTypeDam.embryoFlush.joining.sire.code}}</td>
+                <td>{{fakeTypeDam.name}}</td>
+                <td>{{fakeTypeDam.usableNumber}}</td>
+                <td>
+                    <span v-if="fakeTypeDam.tubuleColor=='bule'">蓝色</span>
+                    <span v-if="fakeTypeDam.tubuleColor=='yellow'">黄色</span>
+                    <span v-if="fakeTypeDam.tubuleColor=='white'">白色</span>
+                    <span v-if="fakeTypeDam.tubuleColor=='pink'">粉色</span>
+                    <span v-if="fakeTypeDam.tubuleColor=='red'">红色</span>
+                </td>
+                <td>
+                    <span v-if="fakeTypeDam.drivepipeColor=='bule'">蓝色</span>
+                    <span v-if="fakeTypeDam.drivepipeColor=='yellow'">黄色</span>
+                    <span v-if="fakeTypeDam.drivepipeColor=='white'">白色</span>
+                    <span v-if="fakeTypeDam.drivepipeColor=='pink'">粉色</span>
+                    <span v-if="fakeTypeDam.drivepipeColor=='red'">红色</span>
+                </td>
+                <td>{{fakeTypeDam.recorder}}</td>
+                <td>{{fakeTypeDam.ctime}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination pull-right">
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var s = localStorage.deathDisposalReasonId;
+    //从列表种选择的codes
+    var ids;
+    localStorage.url_list = "frozenEmbryo/list?project.id="+s;
+
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadCompany();
+            root.loadPama("embryoProject/one/"+s);
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

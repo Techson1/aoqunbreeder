@@ -1,0 +1,139 @@
+<title>产羔情况统计表</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <center><h1>自然繁殖产羔情况统计表</h1></center>
+                        </div>
+                        <div>
+                            <form class="searchForm">
+                                <div class="box">
+                                    <span>日期</span>
+                                    <input type="text" name="date"  class="datep" style="height:25px;width:107px;">
+                                    <span>-</span>
+                                    <input type="text" name="date"  class="datep" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            onclick="getData()">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                                <ul class="pagination pull-right">
+                                    <li><a>共：{{data88.totalElements}}</a></li>
+                                    <li><a @click="goto('0')">首页</a></li>
+                                    <li :class="data88.first==true?'disabled':''">
+                                        <a @click="prev">
+                                            <i class="ace-icon fa fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li v-for="n in data88.endPage" :class="data88.number+1 == n?'active':''" v-if="n>=data88.startPage">
+                                        <a @click="goto(n-1)">{{n}}</a>
+                                    </li>
+                                    <li :class="data88.last==true?'disabled':''">
+                                        <a @click="next">
+                                            <i class="ace-icon fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                    <li><a @click="goto(data88.totalPages-1)">末页</a></li>
+                                    <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                                </ul>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>繁殖方式</th>
+                        <th>日均能繁母羊数</th>
+                        <th>产羔胎数</th>
+                        <th>产羔母羊数</th>
+                        <th>产羔总数</th>
+                        <th>正常活羔数</th>
+                        <th>畸形</th>
+                        <th>死胎</th>
+                        <th>单只母羊产羔数</th>
+                        <th>单只母羊产活羔数</th>
+                        <th>单胎产羔总数</th>
+                        <th>单胎产活羔总数</th>
+                        <th>0-2月龄死亡数</th>
+                        <th>0-2月龄疾淘数</th>
+                        <th>0-2月龄育淘数</th>
+                        <th>羔羊3月龄成活数</th>
+                        <th>3月龄成活率</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="house in data88.content">
+                        <td>{{house.paddock.name}}</td>
+                        <td>{{house.num}}</td>
+                        <td>{{house.num}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data88.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data88.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data88.endPage" :class="data88.number+1 == n?'active':''" v-if="n>=data88.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data88.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data88.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "user/list";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            // $('h1').html(show()+"圈舍存栏")
+            root.getCount("onHand/list?paddock.org.id="+JSON.parse(localStorage.userInfo).organization.id)
+        })
+    });
+
+    function getData() {
+        var date=$("input[name=date]").val();
+        // $('h1').html(date.substring(0,4)+'年'+date.substring(5,7)+'月'+date.substring(8,10)+'日'+"圈舍存栏")
+        root.getCount("onHand/list?paddock.org.id="+JSON.parse(localStorage.userInfo).organization.id+'&date='+$("input[name=date]").val())
+        // root.load()
+    }
+    function show(){
+        var mydate = new Date();
+        var str = "" + mydate.getFullYear()+"年";
+        if(mydate.getMonth()+1>10){
+            str += (mydate.getMonth()+1)+"月";
+        }
+        else{
+            str+='0';
+            str += (mydate.getMonth()+1)+"月";
+        }
+        str += mydate.getDate()+"日";
+        return str;
+    }
+</script>
+<script src="js/base-vue.js"></script>

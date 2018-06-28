@@ -1,0 +1,166 @@
+<title>销售单添加</title>
+<div id="app">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="operate" style="margin-bottom:0px;">
+                <div>
+                    <center><h1>{{data12.code}}</h1></center>
+                </div>
+                <div>
+                    <a style="padding:1px 5px;border-radius:5px;" type="button" class="btn btn-xs btn-success" id="dangAn" onclick="dangAn('print/printdangan.html')">打印档案
+                    </a>
+                    <a style="padding:1px 5px;border-radius:5px;" type="button" class="btn btn-xs btn-success" id="saleSlip" onclick="saleSlip('print/printSales.html')" target="_blank">打印销售单据
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>耳号</th>
+                    <th>品种</th>
+                    <th>性别</th>
+                    <th>生长阶段</th>
+                    <th>繁殖状态</th>
+                    <th>定价</th>
+                    <th>折扣</th>
+                    <th>成交价</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="salesDatail in data11">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace prid" :value="salesDatail.id"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">{{salesDatail.item.code}}</span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">{{salesDatail.item.breed.breedName}}</span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">
+                            <span v-if="salesDatail.item.sex=='1'">公羊</span>
+                            <span v-if="salesDatail.item.sex=='2'">母羊</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">
+                            <span v-if="salesDatail.item.bornStatus=='2'">羔羊</span>
+                            <span v-if="salesDatail.item.bornStatus=='3'">青年羊</span>
+                            <span v-if="salesDatail.item.bornStatus=='4'">成年羊</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item.breedingState=='--'">无状态</span>
+                        <span v-if="salesDatail.item.breedingState=='10'">空怀</span>
+                        <span v-if="salesDatail.item.breedingState=='111'">一配</span>
+                        <span v-if="salesDatail.item.breedingState=='112'">二配</span>
+                        <span v-if="salesDatail.item.breedingState=='113'">三配</span>
+                        <span v-if="salesDatail.item.breedingState=='114'">四配</span>
+                        <span v-if="salesDatail.item.breedingState=='115'">五配</span>
+                        <span v-if="salesDatail.item.breedingState=='116'">六配</span>
+                        <span v-if="salesDatail.item.breedingState=='117'">七配</span>
+                        <span v-if="salesDatail.item.breedingState=='118'">八配</span>
+                        <span v-if="salesDatail.item.breedingState=='119'">九配</span>
+                        <span v-if="salesDatail.item.breedingState=='1110'">十配</span>
+                        <span v-if="salesDatail.item.breedingState=='131'">未孕一</span>
+                        <span v-if="salesDatail.item.breedingState=='132'">未孕二</span>
+                        <span v-if="salesDatail.item.breedingState=='133'">未孕三</span>
+                        <span v-if="salesDatail.item.breedingState=='134'">未孕四</span>
+                        <span v-if="salesDatail.item.breedingState=='135'">未孕五</span>
+                        <span v-if="salesDatail.item.breedingState=='136'">未孕六</span>
+                        <span v-if="salesDatail.item.breedingState=='137'">未孕七</span>
+                        <span v-if="salesDatail.item.breedingState=='137'">未孕八</span>
+                        <span v-if="salesDatail.item.breedingState=='139'">未孕九</span>
+                        <span v-if="salesDatail.item.breedingState=='1310'">未孕十</span>
+                        <span v-if="salesDatail.item.breedingState=='141'">妊娠一</span>
+                        <span v-if="salesDatail.item.breedingState=='142'">妊娠二</span>
+                        <span v-if="salesDatail.item.breedingState=='143'">妊娠三</span>
+                        <span v-if="salesDatail.item.breedingState=='144'">妊娠四</span>
+                        <span v-if="salesDatail.item.breedingState=='145'">妊娠五</span>
+                        <span v-if="salesDatail.item.breedingState=='146'">妊娠六</span>
+                        <span v-if="salesDatail.item.breedingState=='147'">妊娠七</span>
+                        <span v-if="salesDatail.item.breedingState=='148'">妊娠八</span>
+                        <span v-if="salesDatail.item.breedingState=='149'">妊娠九</span>
+                        <span v-if="salesDatail.item.breedingState=='1410'">妊娠十</span>
+                        <span v-if="salesDatail.item.breedingState=='15'">哺乳</span>
+                        <span v-if="salesDatail.item.breedingState=='20'">供体准备</span>
+                        <span v-if="salesDatail.item.breedingState=='21'">受体准备</span>
+                        <span v-if="salesDatail.item.breedingState=='22'">AI</span>
+                        <span v-if="salesDatail.item.breedingState=='23'">供体恢复期</span>
+                        <span v-if="salesDatail.item.breedingState=='24'">已移植</span>
+                    </td>
+                    <td>{{salesDatail.rankPrice}}</td>
+                    <td>{{salesDatail.discount}}</td>
+                    <td>{{salesDatail.price}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+    <script type="text/javascript">
+        var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            myValidate();
+        });
+        var s=localStorage.deathDisposalReasonId
+        var scripts = [null, null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            jQuery(function ($) {
+                initCheckBox();
+                root.loadPama4("sales/one/"+s);
+                root.loadCompany();
+                root.loadPama("customer/all")
+                // root.loadPama2("contact/findBySalesman")
+                root.loadPama3("salesDatail/findByList?sales.id="+s)
+            })
+        });
+        //打印档案
+        function dangAn(url) {
+            var ids = getIds();
+            if (ids.length ==1) {
+                if(ids[0]=='on'){
+                    msg("不能选择标题")
+                }else{
+                    po(getUrl("salesDatail/one/" + ids) , function (data) {
+                        localStorage.earTag=data.item.code
+                        localStorage.salieID=data.sales.org.orgName
+                        $("#dangAn").attr("href",url)
+                        $("#dangAn").attr("target",'_blank')
+                        // $("#dangAn").click();
+                        // document.getElementById("dangAn").click();
+                        // window.open('print/printdangan.html','打印档案')
+                    });
+                }
+            }
+            else if(ids.length>1){
+                msg("只能选择一条数据")
+            }
+            else {
+                msg("请选择数据")
+            }
+        }
+        //打印销售单
+        function saleSlip(url) {
+            localStorage.saleSlip=s
+            $("#saleSlip").attr("href",url)
+        }
+    </script>
+    <script src="js/base-vue.js"></script>

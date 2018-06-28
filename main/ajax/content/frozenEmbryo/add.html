@@ -1,0 +1,185 @@
+<title>添加方案名称</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">方案名称</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="flag" value="1">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data.id!=null" v-model="data2.organization.id">
+                                    <input type="hidden" name="introduceFlag" value="2">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="userName">请选择年月</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-sm-1" style="width:100px;" id="year"
+                                                            @change="jtyear()">
+                                                    </select><span class="col-sm-1" style="font-size:14px;">年</span>
+                                                    <select class="col-sm-1" style="width:80px;" id="month" onchange="refresh()">
+                                                    </select>
+                                                    <span class="col-sm-1" style="font-size:14px;">月</span>
+                                                </div>
+                                                <input type="hidden" name="createdTime" id="createdTime">
+                                            </div>
+                                        </div>
+
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="phone">品种</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-xs-12 col-sm-6" name="breed.id" required onchange="refresh()"
+                                                            id="sireBreed">
+                                                        <option value="">请选择</option>
+                                                        <option v-for="breed in data1" :value="breed.id">
+                                                            {{breed.breedName}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="userName"></label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    命名规范：年份+月份+品种+项目名称
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="projectName">方案名称</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="projectName" id="projectName"
+                                                           class="col-xs-12 col-sm-6" required maxlength="30" v-model="data.projectName"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group" v-if="data.id==null">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="createDate">创建日期</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="createDate" id="createDate"
+                                                           class="col-xs-12 col-sm-6 datep" required maxlength="30"
+                                                           :value="data.ctime"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="phone">技术服务团队</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-xs-12 col-sm-6" name="customer.id" required
+                                                            id="sireBreed">
+                                                        <option value="">请选择</option>
+                                                        <option v-for="customer in data3" :value="customer.id">
+                                                            {{customer.firstName}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group" >
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="leader">负责人</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="leader" id="leader"
+                                                           class="col-xs-12 col-sm-6" required maxlength="30"
+                                                           :value="data.leader"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                            <button class="btn btn-info" type="button" onclick="tj()">
+                                <i class="fa fa-check bigger-110"></i>
+                                <span>提交</span>
+                            </button>
+                            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                            <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                                <i class="fa fa-undo bigger-110"></i>
+                                重置
+                            </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script src="js/myUtils.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.load("embryoProject/one/", getPama());
+        vue.loadPama('breed/all');
+        vue.loadPama1('customer/all');
+        vue.loadCompany();
+
+        renderingYear(5,"year");
+        renderingMonth(getMonth(),"month");
+    })
+
+    //判断年份不是当前年份，则月份显示1-12，若是当前年份，则显示当前月份到1月
+    function jtyear() {
+        renderingMonth(getMonth($("#year option:selected").text()),"month");
+        refresh();
+    }
+
+    function refresh(){
+        $("#projectName").val($("#year option:selected").text()+"年"
+            +$("#month option:selected").text()+"月"
+            +$.trim($("#sireBreed option:selected").text()));
+    }
+
+    function tj(){
+        $.post(base_url + "embryoProject/projectNameVerify",$(".myform").serialize(), function (message) {
+            if (!message) {
+                msg("重复");
+            }
+            else{
+                $.post(base_url + "embryoProject/save" ,$(".myform").serialize(), function (data1) {
+                    //若果修改成功跳转页面
+                    if (data1.code == "100") {
+                        location.href ="#page/frozenEmbryo/list";
+                    }
+                })
+            }
+        });
+    }
+</script>

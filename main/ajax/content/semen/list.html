@@ -1,0 +1,280 @@
+<title>采精调教</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>耳号</span>
+                                    <input type="text" name="ram.code" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>品种</span>
+                                    <select name="ram.breed.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>整体评价</span>
+                                    <select name="assess" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option value="好">好</option>
+                                        <option value="中">中</option>
+                                        <option value="差">差</option>
+                                        <option value="不爬羊">不爬羊</option>
+                                        <option value="本交成功">本交成功</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>采精日期</span>
+                                    <input type="text" name="dateAssistStart" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">&nbsp;到&nbsp;
+                                    <input type="text" name="dateAssistEnd" value="" class="end" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
+                                </div>
+                                <div class="box">
+                                    <span>羊只范围</span>
+                                    <select name="accountType" style="height:25px;" onchange="range(this,'ramTraining','ram')">
+                                        <option value="1">在本场羊只</option>
+                                        <option value="2">本场调教</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+
+                                </div>
+                                <ul class="pagination pull-right">
+                                    <li><a>共：{{data.totalElements}}</a></li>
+                                    <li><a @click="goto('0')">首页</a></li>
+                                    <li :class="data.first==true?'disabled':''">
+                                        <a @click="prev">
+                                            <i class="ace-icon fa fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                        <a @click="goto(n-1)">{{n}}</a>
+                                    </li>
+                                    <li :class="data.last==true?'disabled':''">
+                                        <a @click="next">
+                                            <i class="ace-icon fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                    <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                                </ul>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/semen/add" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 添加采精记录</a>
+                            <a href="#page/phaseDetermination/add" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 添加冻精记录</a>
+                            <a class="btn btn-xs btn-success add" @click="copyToGroup()"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-copyright"></i> 复制到群组</a>
+                            <a href="javascript:exports('ramTraining/export?','ram.org.id')" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
+                            <a @click="edit('#page/semen/edit')" class="btn btn-xs btn-success edit"
+                               style="padding:1px 5px;border-radius:5px;"><i
+                                    class="fa fa-pencil-square-o"></i> 修改</a>
+                            <a @click="delet()" class="btn btn-xs btn-success del"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 删除</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>耳号</th>
+                        <th>品种</th>
+                        <th>出生日期</th>
+                        <th>采精日期</th>
+                        <th>采精月龄</th>
+                        <th>现在圈舍</th>
+                        <th>整体评价</th>
+                        <th>精液量</th>
+                        <th>精液密度</th>
+                        <th>颜色</th>
+                        <th>气味</th>
+                        <th>精子活力</th>
+                        <th>操作场区</th>
+                        <th>操作人</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="ramTraining in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="ramTraining.id"/>
+                                <!--<input type="text" :value="ramTraining.ram.code" style="display: none;"/>-->
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{ramTraining.ram.code}}</td>
+                        <td>{{ramTraining.ram.breed.breedName}}</td>
+                        <td>{{ramTraining.ram.birthDay!=null?ramTraining.ram.birthDay.substring(0,10):""}}</td>
+                        <td>{{ramTraining.date.substring(0,10)}}</td>
+                        <td>{{ramTraining.moonAge}}</td>
+                        <td> <span v-if="ramTraining.ram.paddock!=null"> {{ramTraining.ram.paddock.name}}</span></td>
+                        <td>{{ramTraining.assess}}</td>
+                        <td>
+                        	<span v-if="ramTraining.amount.length<=0">--</span>
+							<span v-else>{{ramTraining.amount}}</span>
+                        </td>
+                        <td>
+                        	<span v-if="ramTraining.density.length<=0">--</span>
+							<span v-else>{{ramTraining.density}}</span>
+                        </td>
+                        <td>
+                        	<span v-if="ramTraining.color.length<=0">--</span>
+							<span v-else>{{ramTraining.color}}</span>
+                        </td>
+                        <td>
+                        	<span v-if="ramTraining.smell.length<=0">--</span>
+							<span v-else>{{ramTraining.smell}}</span>
+                        </td>
+                        <td>
+                        	<span v-if="ramTraining.activity.length<=0">--</span>
+							<span v-else>{{ramTraining.activity}}</span>
+                        <td>
+                            <span v-if="ramTraining.org!=null">{{ramTraining.org.brief}}</span>
+                        </td>
+                        <td>{{ramTraining.recorder}}</td>
+                        <td>{{ramTraining.ctime}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div id="layerr" style="padding:20px;display: none;">
+                    <input type="text" class="col-sm-12" id="copyGroupName" style="height: 35px;">
+                    <button class="btn btn-xs btn-success  btn-submit col-sm-12" type="button" onclick="copy()"
+                            style="height:35px;padding:1px 5px;margin-top:10px;margin-left:0px;border-radius:5px;">确认
+                    </button>
+                </div>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "ramTraining/list?ram.org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    // localStorage.url_del = "ramTraining/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all")
+        })
+    });
+
+    //复制到群组
+    var copyids="";
+    function copyToGroup() {
+        var ids=getIds()
+        if (ids.length>=1) {
+            if(ids.length==1){
+                if(ids[0]=='on'){
+                    msg("不能选择标题")
+                    $('.ace').attr('checked', false);
+                }
+                else{
+                    layerOut();
+                    $.each(ids,function(index,value){
+                        po(getUrl('ramTraining/one/'+value),function (data) {
+                            copyids=copyids+data.ram.id+','
+                        })
+                    });
+                }
+            }else{
+                $.each(ids,function(index,item){
+                    if(item=='on'){
+                        ids.splice(index,1);
+                    }
+                });
+                layerOut();
+                $.each(ids,function(index,value){
+                    po(getUrl('ramTraining/one/'+value),function (data) {
+                        copyids=copyids+data.ram.id+','
+                    })
+                });
+            }
+
+        }else {
+            msg("请选择数据！")
+        }
+    }
+
+    //复制到群组
+    function copy() {
+        po(getUrl('baseGroup/verify?name='+$('#copyGroupName').val()),function (data) {
+            if(data.code=='100'){
+                po(getUrl('baseGroup/copy?name='+$('#copyGroupName').val()+'&org.id='+JSON.parse(localStorage.userInfo).organization.id+'&ids='+copyids+"&recorder="+JSON.parse(localStorage.userInfo).cname),function (data) {
+                    layer.closeAll();
+                    msg('提交成功')
+                    $('.ace').attr('checked', false);
+                })
+            }else{
+                $('#copyGroupName').val('')
+                msg('该群组名称已存在')
+            }
+        })
+    }
+
+    function delet() {
+        var ids = getIds();
+        if (ids.length == 1) {
+            if(ids[0]=='on'){
+                msg("不能选择标题")
+                $('.ace').attr('checked', false);
+            }
+            else{
+               po(getUrl('ramTraining/delete/'+ids[0]),function (data) {
+                   msg(data.msg)
+                   root.load();
+               })
+            }
+        } else if (ids.length > 1) {
+            msg("只能选择一条数据！")
+            $('.ace').attr('checked', false);
+        } else {
+            msg("请选择数据！")
+        }
+    }
+</script>
+<script src="js/base-vue.js"></script>

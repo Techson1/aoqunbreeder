@@ -1,0 +1,155 @@
+<title>产品列表</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>耳号</span> <input type="text" name="userName" value=""
+                                                             style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>品种</span>
+                                    <select name="breed.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>性别</span>
+                                    <select name="accountType" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option value="1">公羊</option>
+                                        <option value="2">母羊</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>产品定级日期</span>
+                                    <input type="text" name="startDate" value="" class="datep" readonly="readonly" style="height:25px;width:107px;">&nbsp;到&nbsp;
+                                    <input type="text" name="endDate" value="" class="end" readonly="readonly" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/product/add" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 添加定级</a>
+                            <!--<a href="#page/defect/add" class="btn btn-xs btn-success add"-->
+                               <!--style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>-->
+                            <!--<a @click="edit('#page/defect/add')" class="btn btn-xs btn-success edit"-->
+                               <!--style="padding:1px 5px;border-radius:5px;"><i-->
+                                    <!--class="fa fa-pencil-square-o"></i> 修改</a>-->
+                            <!--<a @click="del()" class="btn btn-xs btn-success del"-->
+                               <!--style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 删除</a>-->
+                            <ul class="pagination pull-right">
+                                <li><a>共：{{data.totalElements}}</a></li>
+                                <li><a @click="goto('0')">首页</a></li>
+                                <li :class="data.first==true?'disabled':''">
+                                    <a @click="prev">
+                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                    <a @click="goto(n-1)">{{n}}</a>
+                                </li>
+                                <li :class="data.last==true?'disabled':''">
+                                    <a @click="next">
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>耳号</th>
+                        <th>品种</th>
+                        <th>性别</th>
+                        <th>从</th>
+                        <th>到</th>
+                        <th>定级日期</th>
+                        <th>审核状态</th>
+                        <th>操作场区</th>
+                        <th>操作人</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="user in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="user.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{user.userName}}</td>
+                        <td>{{user.ctime}}</td>
+                        <td>{{user.accountScope}}</td>
+                        <td>{{user.accountType}}</td>
+                        <td>{{user.role.name}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    localStorage.url_list = "user/list";
+    localStorage.url_del = "user/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all");
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

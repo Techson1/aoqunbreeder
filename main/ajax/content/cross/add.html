@@ -1,0 +1,278 @@
+<title>配种添加</title>
+<div id="app">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="operate">
+                <div style="margin-top:50px;">
+                    <form class="form-horizontal myform">
+                        <input type="hidden" name="recorder" v-model="data5.cname">
+                        <input type="hidden" v-if="data5.id!=null" name="org.id" v-model="data5.organization.id">
+                        <input type="hidden" id="idsValue" name="damCodes">
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:60px;"
+                                   for="sireCode">公羊耳号</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="sireCode" id="sireCode"
+                                           class="col-xs-12 col-sm-6" required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1" style="width:60px;"
+                                   for="joiningDate">配种日期</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input type="text" name="joiningDate" id="joiningDate"
+                                           class="col-xs-12 col-sm-6 datep" required maxlength="14"/>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:60px;"
+                                       for="joiningType">配种方式</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <select name="joiningType" class="col-sm-6" required  id="joiningType">
+                                            <option value="">请选择</option>
+                                            <option value="4">本交</option>
+                                            <option value="3">鲜精-阴道</option>
+                                            <option value="2">鲜精-子宫角</option>
+                                            <option value="6">冻精-阴道</option>
+                                            <option value="5">冻精-子宫角</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1" style="width:60px;"
+                                       for="sexStatus">发情方式</label>
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="clearfix">
+                                        <select name="sexStatus" class="col-sm-6" required id="sexStatus">
+                                            <option value="">请选择</option>
+                                            <option value="2">未知</option>
+                                            <option value="3">自然发情</option>
+                                            <option value="4">主动辅助-发情</option>
+                                            <option value="5">主动辅助-未发</option>
+                                            <option value="6">被动辅助-发情</option>
+                                            <option value="7">被动辅助-未发</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:60px;"
+                                   for="joiningType">转至圈舍</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <select class="col-xs-12 col-sm-6" name="paddock.id" id="paddock.id">
+                                        <option value="">请选择</option>
+                                        <option v-for="paddockType in data8" :value="paddockType.id">
+                                            {{paddockType.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="border-bottom: #ddd 1px solid;margin-bottom:30px;margin-top:20px; "></div>
+                        <div style="clear:both;">
+                            <input type="hidden" id="page" value="0" name="pageNum">
+                            <div class="box" style="margin-left:30px;">
+                                <span>母羊耳号</span> <input type="text" name="damCode1" style="height:25px;width:107px;">
+                            </div>
+                            <div class="box">
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        @click="damAdd()"> 添加到列表
+                                </button>
+                                <button style="padding:1px 5px;border-radius:5px;" type="button" class="btn btn-xs btn-success"
+                                        @click="select()"> 从列表选择
+                                </button>
+
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        onclick="delet()"> 删除
+                                </button>
+                            </div>
+                            <div class="box" v-if="data99.length>=1">
+                                <button style="padding:1px 5px;border-radius:5px;" type="button" class="btn btn-xs">
+                                    共：{{data99.length}}只
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>母羊耳号</th>
+                    <th>品种</th>
+                    <th>出生日期</th>
+                    <th>错误原因</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="baseInfo in data99">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace prid" :value="baseInfo.code"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>{{baseInfo.code}}</td>
+                    <td>{{baseInfo.breed.breedName}}</td>
+                    <td>{{baseInfo.birthDay}}</td>
+                    <td class="tdEd"></td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+            <center>
+                <button class="btn btn-info" type="button" id="save" onclick="tj()">
+                    <i class="fa fa-check bigger-110"></i>
+                    <span>提交</span>
+                </button>
+                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                <!--<button class="btn btn-prev" type="reset" v-if="data.id==null">-->
+                    <!--<i class="fa fa-undo bigger-110"></i>-->
+                    <!--保存并下一个-->
+                <!--</button>-->
+            </center>
+        </div>
+    </div>
+    <script src="js/myUtils.js"></script>
+    <script type="text/javascript">
+        var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            myValidate();
+        });
+        var scripts = [null, null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            jQuery(function ($) {
+                initCheckBox();
+                root.loadCompany();
+                root.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+            })
+        });
+        //母羊从列表中选择
+        function adds(getids){
+            var codes=getids.split(",")
+            for (var code in codes){
+                $("input[name='damCode1']").val(codes[code])
+                damAdd();
+                $("input[name='damCode1']").val("")
+//                root.location.reload();
+            }
+        }
+        //母羊单只添加
+        function damAdd() {
+            var t=1;
+            if($("input[name='damCode1']").val().length>=1){
+                $("table").find("tr").each(function(){
+                    var l=$(this).children().eq(1).text();
+                    if ($("input[name='damCode1']").val()== l){
+                        msg("该羊已添加到列表,请重新输入");
+                        $("input[name='damCode1']").val("")
+                        t=0;
+                    }
+                });
+                if(t==1){
+                    po(getUrl("baseInfo/findByCode?code=" + $("input[name='damCode1']").val() + "&type=1"+"&orgId="+JSON.parse(localStorage.userInfo).organization.id), function (data) {
+                        if(data==null){
+                            msg("该羊不存在")
+                        }
+                        else{
+                            root.data99.push(data)
+                        }
+                    });
+                    $("input[name='damCode1']").val("")
+                }
+            }
+            else{
+                msg("耳号不能为空")
+            }
+        }
+
+        function tj(){
+            if ($(".myform").valid()) {
+                var ids = getIds();
+                $.each(ids,function(index,item){
+                    if(item=='on'){
+                        ids.splice(index,1);
+                    }
+                });
+                var saveVerifyUrl=base_url+"joining/verifys?damCodes=" + ids+"&sireCode="+ $("input[id='sireCode']").val()+"&joiningDate="+ $("input[id='joiningDate']").val()+'&joiningType='+$("#joiningType").val()+'&sexStatus='+$("#sexStatus").val()+"&orgId="+JSON.parse(localStorage.userInfo).organization.id;
+                var saveUrl=base_url + "joining/adds";
+                //该方法在myUtils.js下
+                po(getUrl("joining/sireVerify?sireCode=" + $("#sireCode").val()), function (data) {
+                    if(data.code=='100'){
+                        utilsSubmit(saveVerifyUrl,saveUrl,ids,true,'#page/cross/list');
+                    }
+                    else if(data.code=='102'){
+                        layer.confirm(data.msg+'，是否确认添加？', {
+                            btn: ['确定','取消'] //按钮
+                        }, function(){
+                            utilsSubmit(saveVerifyUrl,saveUrl,ids,true,'#page/cross/list');
+                            layer.closeAll();
+                        }, function(){
+                            layer.closeAll();
+                        });
+                    }
+                    else if(data.code=='101'){
+                        msg(data.msg)
+                    }
+                });
+            }
+        }
+
+        //删除母羊
+        function delet(){
+            var ids = getIds();
+            for(var i in ids) {
+                $("table").find("tr").each(function(){
+                    var l=$(this).children().eq(1).text();
+                    if (ids[i]== l){
+                        $(this).remove();
+                        po(getUrl("baseInfo/findByCode?code=" + ids[i] + "&type=1"), function (data) {
+                            root.data99.splice(data,0)
+                        });
+                    }
+                });
+            }
+        }
+
+        //从列表中选择
+        function select(){
+             layer.open({
+                   type: 2,
+                   title: '从列表中选择',
+                   shadeClose:false,
+                   shade: false,
+                   maxmin: true, //开启最大化最小化按钮
+                   area: ['100%', '100%'],
+                   content: '#page/animal/listSelecttest'
+              });
+        }
+
+        function close(){
+            layer.closeAll();
+            adds(localStorage.selectID);
+        }
+    </script>
+    <script src="js/base-vue.js"></script>

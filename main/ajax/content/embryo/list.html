@@ -1,0 +1,166 @@
+<title>胚胎移植及冻胚制作</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>创建日期</span>
+                                    <input type="text" name="startDate" value="" class="datep" readonly="readonly" style="height:25px;width:107px;">&nbsp;到&nbsp;
+                                    <input type="text" name="endDate" value="" class="end" readonly="readonly" style="height:25px;width:107px;">
+                                </div>
+
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/embryo/add" class="btn btn-xs btn-success add"
+                            style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 创建胚移项目</a>
+                            <a @click="edit('#page/embryo/edit')" class="btn btn-xs btn-success edit"
+                               style="padding:1px 5px;border-radius:5px;"><i
+                                    class="fa fa-pencil-square-o"></i>修改</a>
+                            <a @click="del()" class="btn btn-xs btn-success del"
+                               style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i
+                                    class="fa fa-trash-o"></i>
+                                删除</a>
+                            <a @click="typeUpdate('0')" class="btn btn-xs btn-success del"
+                               style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+                                完成</a>
+                            <ul class="pagination pull-right">
+                                <li><a>共：{{data.totalElements}}</a></li>
+                                <li><a @click="goto('0')">首页</a></li>
+                                <li :class="data.first==true?'disabled':''">
+                                    <a @click="prev">
+                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                    <a @click="goto(n-1)">{{n}}</a>
+                                </li>
+                                <li :class="data.last==true?'disabled':''">
+                                    <a @click="next">
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>项目名称</th>
+                        <th>状态</th>
+                        <th>创建日期</th>
+                        <th>技术团队</th>
+                        <th>负责人</th>
+                        <th>供体总数</th>
+                        <th>冲胚供体数</th>
+                        <th>胚胎总数</th>
+                        <th>可用胚数</th>
+                        <th>鲜胚数</th>
+                        <th>冻胚数</th>
+                        <th>受体总数</th>
+                        <th>移植受体数</th>
+                        <th>怀孕受体数</th>
+                        <th>怀孕率</th>
+                        <th>产羔受体数</th>
+                        <th>产羔总数</th>
+                        <th>成羔率</th>
+                        <th>操作人</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="embryoProject in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="embryoProject.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td><a @click="children('#page/embryo/donorGroup',embryoProject.id)">{{embryoProject.projectName}}</a></td>
+                        <td>{{embryoProject.status}}</td>
+                        <td>{{embryoProject.ctime}}</td>
+                        <td>
+                            <span v-if="embryoProject.customer!=null">{{embryoProject.customer.firstName}}</span>
+                        </td>
+                        <td>{{embryoProject.leader}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{embryoProject.recorder}}</td>
+                        <td>{{embryoProject.ctime}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "embryoProject/list?introduceFlag=1&org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.url_del = "embryoProject/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all");
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

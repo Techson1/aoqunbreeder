@@ -1,0 +1,181 @@
+<title>添加客户</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">客户信息</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="firstName">客户名称</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="firstName" id="firstName" required maxlength="20"
+                                                           class="col-xs-12 col-sm-6 "
+                                                           :value="data.firstName"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="surName">联系人</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="surName" id="surName"
+                                                           class="col-xs-12 col-sm-6"  maxlength="20"
+                                                           :value="data.surName"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="provinceCode">省份</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="provinceCode" lay-filter="province">
+                                                        <option  value="">请选择</option>
+                                                        <option v-if="data.provinceCode=='北京市'" selected="selected" value="北京市">北京市</option>
+                                                        <option v-else value="北京市">北京市</option>
+                                                        <option v-if="data.provinceCode=='天津市'" selected="selected" value="天津市">天津市</option>
+                                                        <option v-else value="天津市">天津市</option>
+                                                        <option v-if="data.provinceCode=='河北省'" selected="selected" value="河北省">河北省</option>
+                                                        <option v-else value="河北省">河北省</option>
+                                                        <option v-if="data.provinceCode=='山西省'" selected="selected" value="山西省">山西省</option>
+                                                        <option v-else value="山西省">山西省</option>
+                                                        <option v-if="data.provinceCode=='内蒙古自治区'" selected="selected" value="内蒙古自治区">内蒙古自治区</option>
+                                                        <option v-else value="内蒙古自治区">内蒙古自治区</option>
+                                                        <option v-if="data.provinceCode=='辽宁省'" selected="selected" value="辽宁省">辽宁省</option>
+                                                        <option v-else value="辽宁省">辽宁省</option>
+                                                        <option v-if="data.provinceCode=='吉林省'" selected="selected" value="吉林省">吉林省</option>
+                                                        <option v-else value="吉林省">吉林省</option>
+                                                        <option v-if="data.provinceCode=='黑龙江省'" selected="selected" value="黑龙江省">黑龙江省</option>
+                                                        <option v-else value="黑龙江省">黑龙江省</option>
+                                                        <option v-if="data.provinceCode=='上海市'" selected="selected" value="上海市">上海市</option>
+                                                        <option v-else value="上海市">上海市</option>
+                                                        <option v-if="data.provinceCode=='江苏省'" selected="selected" value="江苏省">江苏省</option>
+                                                        <option v-else value="江苏省">江苏省</option>
+                                                        <option v-if="data.provinceCode=='浙江省'" selected="selected" value="浙江省">浙江省</option>
+                                                        <option v-else value="浙江省">浙江省</option>
+                                                        <option v-if="data.provinceCode=='安徽省'" selected="selected" value="安徽省">安徽省</option>
+                                                        <option v-else value="安徽省">安徽省</option>
+                                                        <option v-if="data.provinceCode=='福建省'" selected="selected" value="福建省">福建省</option>
+                                                        <option v-else value="福建省">福建省</option>
+                                                        <option v-if="data.provinceCode=='江西省'" selected="selected" value="江西省">江西省</option>
+                                                        <option v-else value="江西省">江西省</option>
+                                                        <option v-if="data.provinceCode=='山东省'" selected="selected" value="山东省">山东省</option>
+                                                        <option v-else value="山东省">山东省</option>
+                                                        <option v-if="data.provinceCode=='河南省'" selected="selected" value="河南省">河南省</option>
+                                                        <option v-else value="河南省">河南省</option>
+                                                        <option v-if="data.provinceCode=='湖北省'" selected="selected" value="湖北省">湖北省</option>
+                                                        <option v-else value="湖北省">湖北省</option>
+                                                        <option v-if="data.provinceCode=='湖南省'" selected="selected" value="湖南省">湖南省</option>
+                                                        <option v-else value="湖南省">湖南省</option>
+                                                        <option v-if="data.provinceCode=='广东省'" selected="selected" value="广东省">广东省</option>
+                                                        <option v-else value="广东省">广东省</option>
+                                                        <option v-if="data.provinceCode=='广西壮族自治区'" selected="selected" value="广西壮族自治区">广西壮族自治区</option>
+                                                        <option v-else value="广西壮族自治区">广西壮族自治区</option>
+                                                        <option v-if="data.provinceCode=='海南省'" selected="selected" value="海南省">海南省</option>
+                                                        <option v-else value="海南省">海南省</option>
+                                                        <option v-if="data.provinceCode=='重庆市'" selected="selected" value="重庆市">重庆市</option>
+                                                        <option v-else value="重庆市">重庆市</option>
+                                                        <option v-if="data.provinceCode=='四川省'" selected="selected" value="四川省">四川省</option>
+                                                        <option v-else value="四川省">四川省</option>
+                                                        <option v-if="data.provinceCode=='贵州省'" selected="selected" value="贵州省">贵州省</option>
+                                                        <option v-else value="贵州省">贵州省</option>
+                                                        <option v-if="data.provinceCode=='云南省'" selected="selected" value="云南省">云南省</option>
+                                                        <option v-else value="云南省">云南省</option>
+                                                        <option v-if="data.provinceCode=='西藏自治区'" selected="selected" value="西藏自治区">西藏自治区</option>
+                                                        <option v-else value="西藏自治区">西藏自治区</option>
+                                                        <option v-if="data.provinceCode=='陕西省'" selected="selected" value="陕西省">陕西省</option>
+                                                        <option v-else value="陕西省">陕西省</option>
+                                                        <option v-if="data.provinceCode=='甘肃省'" selected="selected" value="甘肃省">甘肃省</option>
+                                                        <option v-else value="甘肃省">甘肃省</option>
+                                                        <option v-if="data.provinceCode=='青海省'" selected="selected" value="青海省">青海省</option>
+                                                        <option v-else value="青海省">青海省</option>
+                                                        <option v-if="data.provinceCode=='宁夏回族自治区'" selected="selected" value="宁夏回族自治区">宁夏回族自治区</option>
+                                                        <option v-else value="宁夏回族自治区">宁夏回族自治区</option>
+                                                        <option v-if="data.provinceCode=='新疆维吾尔自治区'" selected="selected" value="新疆维吾尔自治区">新疆维吾尔自治区</option>
+                                                        <option v-else value="新疆维吾尔自治区">新疆维吾尔自治区</option>
+                                                        <option v-if="data.provinceCode=='台湾省'" selected="selected" value="台湾省">台湾省</option>
+                                                        <option v-else value="台湾省">台湾省</option>
+                                                        <option v-if="data.provinceCode=='香港特别行政区'" selected="selected" value="香港特别行政区">香港特别行政区</option>
+                                                        <option v-else value="香港特别行政区">香港特别行政区</option>
+                                                        <option v-if="data.provinceCode=='澳门特别行政区'" selected="selected" value="澳门特别行政区">澳门特别行政区</option>
+                                                        <option v-else value="澳门特别行政区">澳门特别行政区</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="address">地址</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="address" id="address"
+                                                           class="col-xs-12 col-sm-6 " maxlength="20"
+                                                           :value="data.address"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="phone">电话</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="phone" id="phone" class="col-xs-12 col-sm-6 digits" maxlength="11" minlength="11" digits="true" :value="data.phone"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                        <button class="btn btn-info btn-submit">
+                            <i class="fa fa-check bigger-110"></i>
+                            <span>提交</span>
+                        </button>
+                        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                        <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                            <i class="fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.load("customer/one/",getPama());
+        setPama1("customer/save");//为表单传值
+        setPama2("#page/customer/list");//设置提交数据完成的跳转界面
+    })
+</script>

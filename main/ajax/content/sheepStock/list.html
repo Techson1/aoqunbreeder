@@ -1,0 +1,180 @@
+<title>羊只库存</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>耳号</span> <input type="text" name="code" value=""
+                                                           style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>品种</span>
+                                    <select name="breed.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>性别</span>
+                                    <select name="sex" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option value="1">公羊</option>
+                                        <option value="2">母羊</option>
+                                    </select>
+                                </div>
+
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                    <a href="javascript:exports('wigth/export?','base.org.id')" class="btn btn-xs btn-success add"
+                                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
+                                </div>
+                                <ul class="pagination pull-right">
+                                    <li><a>共：{{data.totalElements}}</a></li>
+                                    <li><a @click="goto('0')">首页</a></li>
+                                    <li :class="data.first==true?'disabled':''">
+                                        <a @click="prev">
+                                            <i class="ace-icon fa fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                        <a @click="goto(n-1)">{{n}}</a>
+                                    </li>
+                                    <li :class="data.last==true?'disabled':''">
+                                        <a @click="next">
+                                            <i class="ace-icon fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                    <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                                </ul>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+
+
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>可视耳号</th>
+                    <th>电子耳号</th>
+                    <th>品种</th>
+                    <th>性别</th>
+                    <th>出生日期</th>
+                    <th>月龄</th>
+                    <th>定级</th>
+                    <th>生理状态</th>
+                    <th>圈舍</th>
+                    <th>圈舍管理员</th>
+
+                </thead>
+                <tbody>
+                <tr v-for="baseInfo in data.content">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace prid" :value="baseInfo.id" @change="monthYear()"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>{{baseInfo.code}}</td>
+                    <td>{{baseInfo.rfid}}</td>
+                    <td>{{baseInfo.breed.breedName}}</td>
+                    <td>
+                        <span v-if="baseInfo.sex=='1'">公羊</span>
+                        <span v-if="baseInfo.sex=='2'">母羊</span>
+                    </td>
+                    <td>{{baseInfo.birthDay==null?"":baseInfo.birthDay.substring(0,10)}}</td>
+                    <td>{{baseInfo.moonAge}}</td>
+                    <td>
+                        <span v-if="baseInfo.rank!=null">{{baseInfo.rank.name}}</span>
+                    </td>
+                    <td>
+                         <span v-if="baseInfo.bornStatus=='2'">羔羊</span>
+                         <span v-if="baseInfo.bornStatus=='3'">青年羊</span>
+                         <span v-if="baseInfo.bornStatus=='4'">成年羊</span>
+                    </td>
+                    <td>
+                        <span v-if="baseInfo.paddock!=null">{{baseInfo.paddock.name}}</span>
+                    </td>
+                    <td>
+                        <span v-if="baseInfo.paddock!=null">
+                            <span v-if="baseInfo.paddock.contact!=null">{{baseInfo.paddock.contact.firstName}}</span>
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+//    localStorage.url_del = "baseInfo/dels";
+    localStorage.url_list = "baseInfo/inventory?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        initCheckBox();
+        root.loadCompany();
+        root.loadPama("breed/all");
+//        root.loadPamaWithCallback("baseInfo/inventory",function(){
+//            monthYear();
+//        })
+        root.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+//        monthYear();
+    });
+
+    //计算月龄
+    function monthYear() {
+        $("#simple-table").find("tr").each(function () {
+            var date = new Date($(this).children('td:eq(5)').text());
+            var years = (new Date().getFullYear() - date.getFullYear())
+            var months = new Date().getMonth() - date.getMonth()
+            var days = new Date().getDate() - date.getDate()
+            var monthYear = parseInt((years * 12 + months * 30.4 + days) / 30.4)
+            $(this).children('td:eq(6)').text(monthYear)
+        })
+    }
+
+</script>
+<script src="js/base-vue.js"></script>

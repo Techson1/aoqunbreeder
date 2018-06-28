@@ -1,0 +1,181 @@
+<title>群组详情</title>
+<div id="app">
+    <div class="row">
+        <div class="col-xs-12">
+            <center><h1>{{data8.name}}</h1></center>
+            <div class="operate">
+                <div style="margin-top:50px;">
+                    <form class="searchForm">
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                    </form>
+                    <form class="form-horizontal myform">
+                        <input type="hidden" name="recorder" v-model="data5.cname">
+                        <div class="col-sm-12">
+                            <div class="box">
+                                <span>耳号</span>
+                                <input type="text" name="code" style="height:25px;width:107px">
+                            </div>
+                            <div class="box">
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        @click="add()"> 添加到列表
+                                </button>
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        @click="selectList('#page/animal/listSelect','#page/myGroup/xqadd')"> 从列表选择
+                                </button>
+                                <a @click="del()" class="btn btn-xs btn-success del"
+                                   style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 删除</a>
+
+                            </div>
+                            <div class="box">
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success" onclick="baseSearch()">
+                                    <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                </button>
+                            </div>
+                            <div class="pull-right">
+                                <ul class="pagination pull-right">
+                                    <li><a>共：{{data.totalElements}}</a></li>
+                                    <li><a @click="goto('0')">首页</a></li>
+                                    <li :class="data.first==true?'disabled':''">
+                                        <a @click="prev">
+                                            <i class="ace-icon fa fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                        <a @click="goto(n-1)">{{n}}</a>
+                                    </li>
+                                    <li :class="data.last==true?'disabled':''">
+                                        <a @click="next">
+                                            <i class="ace-icon fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                    <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>耳号</th>
+                    <th>品种</th>
+                    <th>性别</th>
+                    <th>月龄</th>
+                    <th>现在场区</th>
+                    <th>库存状态</th>
+                    <th>操作人</th>
+                    <th>更新时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="group in data.content">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace prid" :value="group.id"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>{{group.base.code}}</td>
+                    <td>
+                        <span v-if="group.base.breed!=null">{{group.base.breed.breedName}}</span>
+                    </td>
+                    <td>
+                        <span v-if="group.base.sex=='1'">公羊</span>
+                        <span v-if="group.base.sex=='2'">母羊</span>
+                    </td>
+                    <td>{{group.base.moonAge}}</td>
+                    <td>{{group.base.org==null?"":group.base.org.brief}}</td>
+                    <td>
+                        <span v-if="group.base.physiologyStatus=='1' && group.base.flag=='0'">在库</span>
+                        <span v-if="group.base.physiologyStatus=='2'">已疾淘</span>
+                        <span v-if="group.base.physiologyStatus=='3'">已育淘</span>
+                        <span v-if="group.base.physiologyStatus=='4'">已死亡</span>
+                        <span v-if="group.base.physiologyStatus=='5'">病淘待审</span>
+                        <span v-if="group.base.physiologyStatus=='6'">育淘待审</span>
+                        <span v-if="group.base.physiologyStatus=='7'">死亡待审</span>
+                        <span v-if="group.base.physiologyStatus=='9'">销售待审</span>
+                        <span v-if="group.base.physiologyStatus=='10'">已销售</span>
+                        <span v-if="group.base.physiologyStatus=='11'">调拨待审</span>
+                        <span v-if="group.base.physiologyStatus=='12'">已调拨</span>
+                        <span v-if="group.base.flag=='1'">存档</span>
+                    </td>
+                    <td>{{group.recorder}}</td>
+                    <td>{{group.ctime}}</td>
+                </tr>
+
+                </tbody>
+            </table>
+            <ul class="pagination pull-right" id="pagemd">
+                <li><a>共：{{data.totalElements}}</a></li>
+                <li><a @click="goto('0')">首页</a></li>
+                <li :class="data.first==true?'disabled':''">
+                    <a @click="prev">
+                        <i class="ace-icon fa fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                    <a @click="goto(n-1)">{{n}}</a>
+                </li>
+                <li :class="data.last==true?'disabled':''">
+                    <a @click="next">
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+                    </a>
+                </li>
+                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+            </ul>
+        </div>
+
+    <script type="text/javascript">
+        localStorage.url_list = "baseGroupDetail/list?baseGroup.id="+localStorage.deathDisposalReasonId;
+        localStorage.url_del = "baseGroupDetail/dels";
+        var scripts = [null, null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            jQuery(function ($) {
+                initCheckBox();
+                root.loadCompany();
+                root.loadPama1("baseGroup/one/"+localStorage.deathDisposalReasonId)
+            })
+        });
+        var getids =getPama();
+        if(getids!=''){
+            adds(getids);
+        }
+        function adds(getids){
+            var codes=getids.split(",")
+            for (var code in codes){
+                $("input[name='code']").val(codes[code])
+                add();
+                $("input[name='code']").val("")
+            }
+        }
+
+        function add() {
+            $.post(base_url + "baseGroupDetail/add?code="+$("input[name=code]").val()+"&orgId="+JSON.parse(localStorage.userInfo).organization.id+"&baseGroup.id="+localStorage.deathDisposalReasonId+'&recorder='+JSON.parse(localStorage.userInfo).cname,
+                function (data) {
+                if(data.code=='101'){
+                    msg(data.msg)
+                }
+                else{
+                    root.load();
+                    $("input[name=code]").val("")
+                }
+            })
+        }
+    </script>
+    <script src="js/base-vue.js"></script>

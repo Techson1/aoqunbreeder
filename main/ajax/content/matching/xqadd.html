@@ -1,0 +1,261 @@
+<title>方案详情</title>
+<div id="app">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="operate">
+                <center><h1>{{data1.name}}</h1></center>
+                <div style="margin-top:50px;"  >
+                    <form class="form-horizontal myform">
+                        <input type="hidden" name="recorder" v-model="data5.cname">
+                        <input type="hidden" name="org.id" v-if="data5.id!=null" v-model="data5.organization.id">
+                        <input type="hidden" v-model="data1.id" id="breedingPlanId">
+                        <div class="form-group col-sm-6" >
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:60px;"
+                                   for="phone">第一只羊</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix" >
+                                    <!-- v-bind 可以使用表达式-->
+                                    <input class="col-xs-12 col-sm-6 " type="text" id="oneCode" :value="data1.one!=null?data1.one.sire.code:''"/>
+                                    <button class="btn btn-xs btn-success" type="button" @click="saveOne('#oneCode',0)"
+                                            style="border-radius:5px;margin-left:10px;padding-top:1px;">保存
+                                    </button>
+                                    <button class="btn btn-xs btn-success"
+                                            style="border-radius:5px;padding-top:1px;" onclick="delectRam('#oneCode')">移除
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1" style="width:60px;"
+                                   for="phone">第二只羊</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input class="col-xs-12 col-sm-6 " type="text" id="twoCode" :value="data1.two!=null?data1.two.sire.code:''"/>
+                                    <button class="btn btn-xs btn-success"
+                                            style="border-radius:5px;margin-left:10px;padding-top:1px;" type="button"
+                                            @click="saveOne('#twoCode',1)">保存
+                                    </button>
+                                    <button class="btn btn-xs btn-success"
+                                            style="border-radius:5px;padding-top:1px;" onclick="delectRam('#twoCode')">移除
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-3" style="width:60px;"
+                                   for="phone">第三只羊</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input class="col-xs-12 col-sm-6" type="text" id="threeCode" :value="data1.three!=null?data1.three.sire.code:''"/>
+                                    <button class="btn btn-xs btn-success"
+                                            style="border-radius:5px;margin-left:10px;padding-top:1px;" type="button"
+                                            @click="saveOne('#threeCode',2)">保存
+                                    </button>
+                                    <button class="btn btn-xs btn-success"
+                                            style="border-radius:5px;padding-top:1px;" onclick="delectRam('#threeCode')">移除
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-2 col-sm-offset-1" style="width:60px;"
+                                   for="phone">第四只羊</label>
+                            <div class="col-xs-12 col-sm-7">
+                                <div class="clearfix">
+                                    <input class="col-xs-12 col-sm-6" type="text" id="fourCode" :value="data1.four!=null?data1.four.sire.code:''"/>
+                                    <button class="btn btn-xs btn-success"
+                                            style="border-radius:5px;margin-left:10px;padding-top:1px;" type="button"
+                                            @click="saveOne('#fourCode',3)">保存
+                                    </button>
+                                    <button class="btn btn-xs btn-success"
+                                            style="border-radius:5px;padding-top:1px;" onclick="delectRam('#fourCode')">移除
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-10 col-sm-offset-1"
+                             style="border-bottom: #ddd 1px solid;margin-bottom:30px;margin-top:20px; "></div>
+                        <div class="box" style="margin-left:30px;">
+                            <span>母羊耳号</span> <input type="text" name="code" style="height:25px;width:107px;">
+                        </div>
+                        <div class="box">
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="tj()"> 添加到列表
+                            </button>
+                            <button style="padding:1px 5px;border-radius:5px;" disabled="disabled"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="selectList('#page/animal/listSelect','#page/matching/xqadd')"> 从列表选择
+                            </button>
+                            <button style="padding:1px 5px;border-radius:5px;" disabled="disabled"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="seletMartch()"> 从已有选配方案选择
+                            </button>
+                            <a @click="delet()" class="btn btn-xs btn-success del"
+                               style="padding:1px 5px;border-radius:5px;"> 删除</a>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="height: 400px;overflow: auto;">
+        <div class="col-xs-12">
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>母羊耳号</th>
+                    <th>品种</th>
+                    <th>出生日期</th>
+                    <th>月龄</th>
+                    <th>总胎次</th>
+                    <th>总产羔数</th>
+                    <th>操作人</th>
+                    <th>更新时间</th>
+                    <th id="error">错误原因</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item,index) in data1.breedingPlanDetailDams">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace prid" :value="item.id"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>{{item.dam.code}}</td>
+                    <td>{{item.dam.breed.breedName}}</td>
+                    <td>{{item.dam.birthDay==null?"":item.dam.birthDay.substring(0,10)}}</td>
+                    <td>月龄</td>
+                    <td>总胎次</td>
+                    <td>总产羔数</td>
+                    <td>{{item.recorder}}</td>
+                    <td>{{item.ctime}}</td>
+                    <td class="tdEd"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--<div id="layerr" style="padding:20px;display: none;">-->
+                <!--<select name="breedingPlan.id" class="col-sm-12" style="height:35px;" id="breedID" onchange="gaveplanID()">-->
+                    <!--<option>请先选择选配方案</option>-->
+                    <!--<option v-for="breedingPlan in data9" :value="breedingPlan.id">{{breedingPlan.name}}-->
+                    <!--</option>-->
+                <!--</select>-->
+                <!--<input id="planid" type="hidden">-->
+                <!--<button class="btn btn-xs btn-success  btn-submit col-sm-12"  @click="selectListplan('#page/matching/planEwelist',$('#planid').val())" type="button"-->
+                        <!--style="height:35px;padding:1px 5px;margin-top:10px;margin-left:0px;border-radius:5px;">-->
+                    <!--确认-->
+                <!--</button>-->
+            <!--</div>-->
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        localStorage.url_del = "breedingPlanDetailDam/dels";
+        var s = localStorage.deathDisposalReasonId;
+        var getids =getPama();
+        if(getids.length>=1){
+            adds();
+        }
+        var scripts = [null, null]
+        $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+            jQuery(function ($) {
+                initCheckBox();
+                root.loadPama("breedingPlan/planOne/" + s);
+                root.loadCompany();
+            })
+        });
+
+        function saveOne(id,type) {
+            $.post(base_url + "breedingPlanDetailSire/verify?code=" + $(""+id).val()+"&breedingPlanId=" + $("input[id='breedingPlanId']").val(), function (data1) {
+                if (data1.code == "100") {
+                    $.post(base_url + "breedingPlanDetailSire/saves?code=" + $(""+id).val() +"&sireType="+type +"&breedingPlan.id=" + $("input[id='breedingPlanId']").val(), function (data1) {
+                        if (data1.code == "100") {
+                            msg("添加成功")
+                        }
+                    })
+                }
+                else {
+                    msg("您输入的耳号不存在，请重新输入")
+                }
+            })
+        }
+
+        //删除母羊
+        function delet(){
+            var ids = getIds();
+            if (ids.length != 0) {
+                if(ids[0]=='on'){
+                    msg("不能选择标题")
+                }else{
+                    var index = layer.confirm('您确定要删除此数据？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        layer.close(index);
+                        po(getUrl("breedingPlanDetailDam/dels"), 'ids=' + ids + "&" + getAuthorization(), function (data) {
+                            if (data.code == 100) {
+                                root.load();
+                                $('.ace').attr('checked', false);
+                                root.loadPama("breedingPlan/planOne/" + s);
+                            } else {
+                                msg("删除出现错误！原因：有关联数据。")
+                            }
+                        });
+                    }, function () {
+                        layer.close(index);
+                    });
+                }
+            } else {
+                msg("请选择数据！")
+            }
+        }
+
+        //删除公羊
+        function delectRam(num){
+            var code = $(""+num).val();
+            $.post(base_url + "breedingPlanDetailSire/deleteSire?sireCode=" + code + "&breedingPlanId=" + $("input[id='breedingPlanId']").val(), function (data1) {
+                if (data1.code == "100") {
+                    //删除成功清除格式
+                    $(""+num).val("");
+                    msg("移除成功")
+                }
+            })
+        }
+
+        //直接提交到后台?校验是否需要穿选配方案ID
+        function tj(){
+            if($('input[name=code]').val().length>=1){
+                $.post(base_url + "breedingPlanDetailDam/verify?codes=" +$("input[name=code]").val()+"&breedingPlan.id="+$("input[id='breedingPlanId']").val(), function (data1) {
+                    if(data1[0].code=='101'){
+                        msg(data1[0].msg)
+                        $("input[name=code]").val("")
+                    }else{
+                        $.post(base_url + "breedingPlanDetailDam/saves?codes=" + $("input[name=code]").val() + "&breedingPlan.id=" + $("input[id='breedingPlanId']").val() + "&recorder=" + $("input[name='recorder']").val(), function (data) {
+                            if(data.code=='100'){
+                                // root.loadPama("breedingPlan/planOne/" + s);
+                                $("input[name=code]").val("")
+                                root.loadPama("breedingPlan/planOne/" + s);
+                            }
+                        })
+                    }
+                })
+            }else{
+                msg('母羊耳号不能为空')
+            }
+
+        }
+    </script>
+    <script src="js/base-vue.js"></script>
+

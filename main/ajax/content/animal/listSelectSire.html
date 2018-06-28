@@ -1,0 +1,198 @@
+<title>羊只档案</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <form class="searchForm">
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <!--<input type="" name="organization.id" v-model="data5.organization.id" id="org">-->
+                        <div class="box">
+                            <span>耳号</span> <input type="text" name="code" value=""
+                                                   style="height:25px;width:107px;">
+                        </div>
+                        <div class="box">
+                            <span>品种</span>
+                            <select name="breed.id" style="height:25px;">
+                                <option value="">全部</option>
+                                <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="box">
+                            <span>出生日期</span>
+                            <input type="text" name="startDate" value="" class="datep" readonly="readonly"
+                                   style="height:25px;width:107px;">&nbsp;到&nbsp;
+                            <input type="text" name="endDate" value="" class="datep" readonly="readonly"
+                                   style="height:25px;width:107px;">
+                        </div>
+
+
+                        <div class="box">
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="search">
+                                <i class="icon-search fa fa-search"></i>&nbsp;查询
+                            </button>
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="search">
+                                <i class="icon-search fa fa-search"></i>&nbsp;筛选器
+                            </button>
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="search">
+                                <i class="icon-search fa fa-search"></i>&nbsp;从群组查询
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <a @click="add()" class="btn btn-xs btn-success add"
+                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i>添加到列表</a>
+                    <a href="" class="btn btn-xs btn-success add"
+                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-copyright"></i>复制到群组</a>
+                    <a href="" class="btn btn-xs btn-success add"
+                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i>数据导出</a>
+                    <a @click="edit('#page/animal/add')" class="btn btn-xs btn-success edit"
+                       style="padding:1px 5px;border-radius:5px;"><i
+                            class="fa fa-pencil-square-o"></i> 修改</a>
+                    <ul class="pagination pull-right">
+                        <li><a>共：{{data.totalElements}}</a></li>
+                        <li><a @click="goto('0')">首页</a></li>
+                        <li :class="data.first==true?'disabled':''">
+                            <a @click="prev">
+                                <i class="ace-icon fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                            <a @click="goto(n-1)">{{n}}</a>
+                        </li>
+                        <li :class="data.last==true?'disabled':''">
+                            <a @click="next">
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                        <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                        <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>可视耳号</th>
+                <th>电子耳号</th>
+                <th>品种</th>
+                <th>性别</th>
+                <th>出生日期</th>
+                <th>月龄</th>
+                <th>父号</th>
+                <th>母号</th>
+                <th>生长阶段</th>
+                <th>定级标志</th>
+                <th>用途</th>
+                <th>定级</th>
+                <th>圈舍</th>
+                <th>生理状态</th>
+                <th>库存状态</th>
+                <th>来源</th>
+                <th>操作人</th>
+                <th>更新时间</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="baseInfo in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace prid" :value="baseInfo.code"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>{{baseInfo.code}}</td>
+                <td>{{baseInfo.rfid}}</td>
+                <td>{{baseInfo.breed.breedName}}</td>
+                <td>
+                    <span v-if="baseInfo.sex=='1'">公羊</span>
+                    <span v-if="baseInfo.sex=='2'">母羊</span>
+                </td>
+                <td>{{baseInfo.birthDay}}</td>
+                <td>月龄需要计算</td>
+                <td>{{baseInfo.sireCode}}</td>
+                <td>{{baseInfo.damCode}}</td>
+                <td>未开发</td>
+                <td>未开发</td>
+                <td>未开发</td>
+                <td>未开发</td>
+                <td>未开发</td>
+                <td>未开发</td>
+                <td>未开发</td>
+                <td>{{baseInfo.sheepSource}}</td>
+                <td>{{baseInfo.recorder}}</td>
+                <td>{{baseInfo.ctime}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination pull-right" id="pagemd">
+            <li><a>共：{{data.totalElements}}</a></li>
+            <li><a @click="goto('0')">首页</a></li>
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+            <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "baseInfo/findList?sex=2&breedingState=10";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadCompany();
+            root.loadPama("breed/all");
+            root.loadPama1("customer/all");
+            root.loadPama2("paddockType/all");
+        })
+    });
+    //从列表中选择，传递ids
+    function add(){
+        var ids = getIds();
+        if (ids.length == 0) {
+            msg("请选择数据！")
+        }
+        else if(ids.length>20){
+            msg("最多允许添加20条数据")
+        }
+        else {
+            location.href = getPama();
+            setPama(ids);
+//            localStorage.sireId = ids;
+        }
+    }
+</script>
+<script src="js/base-vue.js"></script>

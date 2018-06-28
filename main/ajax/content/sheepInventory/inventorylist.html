@@ -1,0 +1,199 @@
+<title>羊只盘点</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <center><h1>{{data1.name}}</h1></center>
+                <div>
+                    <form class="searchForm">
+                        <input type="hidden" id="page" value="0" name="pageNum">
+
+                        <div>
+                            <div class="box">
+                                <button style="padding:1px 5px;border-radius:5px;" onclick="check1()" id="checkButton"
+                                        type="button" class="btn btn-xs btn-success">
+                                    <i class="icon-search fa fa-check"></i>&nbsp;核对
+                                </button>
+                            </div>
+                            <div class="box">
+                                <button style="padding:1px 5px;border-radius:5px;" onclick="finish()" id="complete" disabled="true"
+                                        type="button" class="btn btn-xs btn-success">
+                                    <i class="icon-search fa fa-check"></i>&nbsp;完成
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <a @click="children('#page/sheepInventory/inventorylist',data1.id)"
+                               class="btn btn-xs" style="margin-right:5px;"
+                               style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-sitemap"></i>&nbsp;已盘到详单</a>
+                            <a @click="children('#page/sheepInventory/differencelist',data1.id)"
+                               class="btn btn-xs btn-success" style="margin-right:5px;"
+                               style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-bullseye"></i>&nbsp;未盘到详单</a>
+                            <a @click="children('#page/sheepInventory/houstlist',data1.id)"
+                               class="btn btn-xs btn-success" style="margin-right:5px;"
+                               style="padding:1px 5px;border-radius:5px;"><i class="icon-sitemap fa fa-venus-mars"></i>&nbsp;圈舍不符详单</a>
+
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <div class="box">
+                                <span>耳号</span>
+                                <input type="text" name="base.code" value="" style="height:25px;width:107px;">
+                            </div>
+                            <div class="box">
+                                <span>盘点后圈舍</span>
+                                <select name="toPaddock.id" style="height:25px;">
+                                    <option value="">全部</option>
+                                    <option v-for="paddock in data8" :value="paddock.id">{{paddock.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="box">
+                                <button style="padding:1px 5px;border-radius:5px;"
+                                        type="button" class="btn btn-xs btn-success"
+                                        @click="search">
+                                    <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                </button>
+                                <a @click="del()" class="btn btn-xs btn-success del"
+                                   style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 删除</a>
+
+                            </div>
+                            <ul class="pagination pull-right">
+                                <li><a>共：{{data.totalElements}}</a></li>
+                                <li><a @click="goto('0')">首页</a></li>
+                                <li :class="data.first==true?'disabled':''">
+                                    <a @click="prev">
+                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                    <a @click="goto(n-1)">{{n}}</a>
+                                </li>
+                                <li :class="data.last==true?'disabled':''">
+                                    <a @click="next">
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>耳号</th>
+                <th>性别</th>
+                <th>出生日期</th>
+                <th>盘点前圈舍</th>
+                <th>盘点后圈舍</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="inventoryDetail in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace prid" :value="inventoryDetail.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>{{inventoryDetail.base.code}}</td>
+                <td>
+                    <span v-if="inventoryDetail.base.sex=='1'">公羊</span>
+                    <span v-if="inventoryDetail.base.sex=='2'">母羊</span>
+                </td>
+                <td>{{inventoryDetail.base.birthDay==null?"":inventoryDetail.base.birthDay.substring(0,10)}}</td>
+                <td>
+                    <span v-if="inventoryDetail.fromPaddock!=null">{{inventoryDetail.fromPaddock.name}}</span>
+                </td>
+                <td>
+                    <span v-if="inventoryDetail.toPaddock!=null">{{inventoryDetail.toPaddock.name}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination pull-right" id="pagemd">
+            <li><a>共：{{data.totalElements}}</a></li>
+            <li><a @click="goto('0')">首页</a></li>
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+            <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "inventoryDetail/list?inventory.id="+localStorage.deathDisposalReasonId;
+    localStorage.url_del = "inventoryDetail/mydels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            po(getUrl('inventory/falgVerify/'+localStorage.deathDisposalReasonId),function (data) {
+                if(!data){
+                    $("#complete").attr('disabled', true);
+                    $("#checkButton").attr('disabled',true);
+                }
+            })
+            root.loadPama('inventory/one/'+localStorage.deathDisposalReasonId)
+            root.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+        })
+    });
+    //实现完成
+    function finish(){
+        //询问框
+        layer.confirm('完成后不能修改，是否确认完成？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $.post(base_url + "inventory/flagUpdate/"+localStorage.deathDisposalReasonId+'/0', function (data1) {
+                if (data1.code == "100") {
+                    msg(data1.msg);
+                }
+                $("#complete").attr('disabled', true);
+                $("#checkButton").attr('disabled',true);
+            })
+        }, function(){
+            layer.closeAll();
+        });
+
+    }
+    //复核
+    function check1(){
+        var index = layer.load(0, {shade: false});
+        $("#checkButton").attr('disabled',true);
+        $.post(base_url + "inventory/check?id="+localStorage.deathDisposalReasonId, function (data1) {
+            if (data1.code == "100") {
+                layer.closeAll();
+                msg(data1.msg)
+                $("#complete").attr('disabled', false);
+                $("#checkButton").attr('disabled',false);
+            }
+        })
+    }
+</script>
+<script src="js/base-vue.js"></script>

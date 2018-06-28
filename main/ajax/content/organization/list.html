@@ -1,0 +1,133 @@
+<title>分场管理</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 8px;">
+                <div>
+                    <a href="#page/organization/add" class="btn btn-xs btn-success add" style="padding:1px 5px;border-radius:5px;"><i
+                            class="fa fa-plus"></i> 添加分场</a>
+                    <a @click="edit('#page/organization/add')" class="btn btn-xs btn-success edit"
+                       style="padding:1px 5px;border-radius:5px;"><i
+                            class="fa fa-pencil-square-o"></i> 修改</a>
+                    <a onclick="reset()" class="btn btn-xs btn-success edit"
+                       style="padding:1px 5px;border-radius:5px;"><i
+                            class="fa fa-pencil-square-o"></i>重置密码</a>
+                    <ul class="pagination pull-right">
+                        <li><a>共：{{data.totalElements}}</a></li>
+                        <li><a @click="goto('0')">首页</a></li>
+                        <li :class="data.first==true?'disabled':''">
+                            <a @click="prev">
+                                <i class="ace-icon fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                            <a @click="goto(n-1)">{{n}}</a>
+                        </li>
+                        <li :class="data.last==true?'disabled':''">
+                            <a @click="next">
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                        <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+
+
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>分场全称</th>
+                <th>简称</th>
+                <th>地址</th>
+                <th>分场管理员账号</th>
+                <th>分场管理员姓名</th>
+                <th>备注</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="organization in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace" :value="organization.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>{{organization.orgName}}</td>
+                <td>{{organization.brief}}</td>
+                <td>{{organization.address}}</td>
+                <td>{{organization.userName}}</td>
+                <td>{{organization.cname}}</td>
+                <td>{{organization.ramarks}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination pull-right">
+            <li><a>共：{{data.totalElements}}</a></li>
+            <li><a @click="goto('0')">首页</a></li>
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+        </ul>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "organization/list";
+    localStorage.url_del = "organization/dels";
+    var scripts = [null, null];
+    var aa;
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+
+    function reset() {
+        var ids = getIds();
+        localStorage.editId = ids;
+        if (ids.length == 1) {
+            if(ids[0]=='on'){
+                msg("不能选择标题")
+                $('.ace').attr('checked', false);
+            }
+            else{
+                po(getUrl('organization/resetPassWord?id='+ids[0]),function (data) {
+                    msg(data.msg)
+                })
+            }
+        } else if (ids.length > 1) {
+            msg("只能选择一条数据！")
+            $('.ace').attr('checked', false);
+        } else {
+            msg("请选择数据！")
+        }
+
+    }
+</script>
+<script src="js/base-vue.js"></script>

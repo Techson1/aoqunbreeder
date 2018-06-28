@@ -1,0 +1,162 @@
+<title>添加羊只品种</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <style type="text/css">
+            input {
+                height: 28px;
+            }
+        </style>
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">品种信息</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="breedName">品种名称</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="breedName" id="breedName"
+                                                       class="col-xs-12 col-sm-4 " required maxlength="20"
+                                                       v-model="data.breedName"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;"> 品种类型</label>
+                                        <div class="col-sm-8">
+                                            <select name="breedType" id="breedType" class="col-xs-10 col-sm-4" required
+                                                    @click="printTest()">
+                                                <option value="" v-if="data.breedType==null" selected="selected">请选择
+                                                </option>
+                                                <option value="15" v-if="data.breedType=='15'" selected="selected">纯种
+                                                </option>
+                                                <option value="16" v-if="data.breedType=='16'" selected="selected">杂交
+                                                </option>
+                                                <option value="17" v-if="data.breedType=='17'" selected="selected">杂种
+                                                </option>
+                                                <option value="15">纯种</option>
+                                                <option value="16">杂交</option>
+                                                <option value="17">杂种</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="hide" style="display: none">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;">血统</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <div class="col-sm-3" v-for="breed in data1">
+                                                <label class="line-height-1 blue">
+                                                    <input v-if="checked='checked'" onclick="clickT()" name="breed.id"
+                                                           :value="breed.id" type="checkbox" class="ace"/> <span
+                                                        class="lbl black">{{breed.breedName}}</span>
+                                                </label>
+                                            </div>
+                                            <input name="breedIds" id="breedIds" class="hidden">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix form-actions">
+                            <div class="col-md-12">
+                                <center>
+                                <button name="sub" class="btn btn-info" onclick="panduan()" type="button">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>提交</span>
+                                </button>
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-prev" type="reset" v-if="data.id=null">
+                                    <i class="fa fa-undo bigger-110"></i>
+                                    重置
+                                </button>
+                                </center>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+
+    jQuery(function () {
+        printTest();
+        vue.load("breed/oneT/", getPama());
+        vue.loadPama('breed/breedType');
+        vue.loadCompany();
+    })
+
+    function printTest() {
+        var oSelect = document.getElementById('breedType');
+        var tex = oSelect.options[oSelect.selectedIndex].text;
+        if (tex == "杂交") {
+            $("#hide").show();
+        } else {
+            $("#hide").hide();
+            str1 = "";
+        }
+    }
+    var s = 0;
+    var str1;
+    function clickT() {
+        s = 0;
+        str1 = "";
+        $("input[name='breed.id']").each(function () {
+            if ($(this).is(":checked")) {
+                s++;
+                str1 = str1 + $(this).val() + ",";
+            }
+        });
+    }
+//判断勾选血统最好5个以下
+    function panduan() {
+
+        str1 = str1.substring(0, str1.length - 1);
+        printTest();
+        $("input[name='breedIds']").val(str1);
+        if (s >= 5) {
+            msg("最好选5个以下");
+        }
+        else {
+            if ($(".myform").valid()) {
+                $(".btn-submit i").removeClass().addClass("fa fa-spin fa-spinner  bigger-110");
+                $(".btn-submit span").html("正在提交...");
+                $(".btn-submit").attr('disabled', true);
+                po(getUrl("breed/bloodVerify"), $(".myform").serialize(), function (data) {
+                   if(!data){
+                       alert("1")
+                   }
+                   else{
+                       po(getUrl("breed/save"), $(".myform").serialize(), function (data) {
+                           to("#page/varieties/list");
+                       });
+                   }
+                });
+
+            }
+        }
+    }
+
+</script>

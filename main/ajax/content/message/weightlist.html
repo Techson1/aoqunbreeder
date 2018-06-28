@@ -1,0 +1,119 @@
+<title>称重提示警告</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <div class="tabbable" style="margin-bottom:10px;">
+                                    <ul id="inbox-tabs"
+                                        class="inbox-tabs nav nav-tabs tab-size-bigger tab-space-1">
+                                        <li class="active"><a href="#"
+                                                              style="border-left:0px;border-right:0px;"><i
+                                                class="orange ace-icon fa fa-bullhorn bigger-180"></i>
+                                            <span class="bigger-50">提示</span> </a></li>
+                                        <li><a href="#"
+                                               style="border-left:0px;border-right:0px;"> <i
+                                                class="blue ace-icon fa fa-flash bigger-180"></i>
+                                            <span class="bigger-50">警告</span>
+                                        </a></li>
+
+                                    </ul>
+                                    <button
+                                            class="aside-trigger btn btn-info btn-app btn-xs ace-settings-btn visible-xs"
+                                            data-target="#right-menu" data-toggle="modal"
+                                            type="button" style="margin-top: -110px;">
+                                        <i data-icon1="fa-search" data-icon2="fa-search"
+                                           class="ace-icon fa fa-search icon-only"></i>
+                                    </button>
+                                </div>
+
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>耳号</span> <input type="text" name="userName" value=""
+                                                             style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>耳号</th>
+                        <th>品种</th>
+                        <th>性别</th>
+                        <th>判断指标</th>
+                        <th>数值</th>
+                        <th>圈舍</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="user in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="user.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{user.userName}}</td>
+                        <td>{{user.ctime}}</td>
+                        <td>{{user.accountScope}}</td>
+                        <td>{{user.accountType}}</td>
+                        <td>{{user.role.name}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right">
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in (data.number<5?(10<data.totalPages?10:data.totalPages):(data.number+5>data.totalPages?data.totalPages:data.number+5))" :class="data.number+1 == n?'active':''">
+                        <a @click="goto(n-1)"  v-if="data.number-5 < n || (data.totalPages-data.number<5 && n>data.totalPages-10)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    localStorage.url_list = "user/list";
+    localStorage.url_del = "user/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

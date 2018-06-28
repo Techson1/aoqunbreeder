@@ -1,0 +1,417 @@
+<title>羊只档案</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <form class="searchForm">
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <input type="hidden" value="1" name="physiologyStatus">
+                        <div class="box">
+                            <span>耳号</span>
+                            <input type="text" name="code" style="height:25px;width:107px;">
+                        </div>
+                        <div class="box">
+                            <span>性别</span>
+                            <select name="sex" style="height:25px;">
+                                <option value="">全部</option>
+                                <option value="1">公羊</option>
+                                <option value="2">母羊</option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>品种</span>
+                            <select name="breed.id" style="height:25px;">
+                                <option value="">全部</option>
+                                <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>圈舍</span>
+                            <select name="paddock.id" style="height:25px;">
+                                <!--<option value="">全部</option>-->
+                                <option v-for="paddock in data8" :value="paddock.id">{{paddock.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>出生日期</span>
+                            <input type="text" name="birthDayAssistStart" value="" class="end" readonly="readonly"
+                                   style="height:25px;width:107px;">&nbsp;到&nbsp;
+                            <input type="text" name="birthDayAssistEnd" value="" class="datep" readonly="readonly"
+                                   style="height:25px;width:107px;">
+                        </div>
+                        <div class="box">
+                            <span>月龄</span>
+                            <input type="text" name="startMoonAge" style="height:25px;width:50px;">
+                            <span>-</span>
+                            <input type="text" name="endMoonAge" style="height:25px;width:50px;">
+                        </div>
+                        <div class="box">
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success" onclick="baseSearch()">
+                                <i class="icon-search fa fa-search"></i>&nbsp;查询
+                            </button>
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="search">
+                                <i class="icon-search fa fa-search"></i>&nbsp;筛选器
+                            </button>
+                            <button style="padding:1px 5px;border-radius:5px;" onclick="groupSearch()"
+                                    type="button" class="btn btn-xs btn-success">
+                                <i class="icon-search fa fa-search"></i>&nbsp;从群组查询
+                            </button>
+                            <a @click="add()" class="btn btn-xs btn-info add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i>添加到列表</a>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <ul class="pagination pull-right">
+                        <li><a>共：{{data.totalElements}}</a></li>
+                        <li><a @click="goto('0')">首页</a></li>
+                        <li :class="data.first==true?'disabled':''">
+                            <a @click="prev">
+                                <i class="ace-icon fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                            <a @click="goto(n-1)">{{n}}</a>
+                        </li>
+                        <li :class="data.last==true?'disabled':''">
+                            <a @click="next">
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                        <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                        <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                    </ul>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>可视耳号</th>
+                <th>电子耳号</th>
+                <th>品种</th>
+                <th>性别</th>
+                <th>出生日期</th>
+                <th>月龄</th>
+                <th>父号</th>
+                <th>母号</th>
+                <th>生长阶段</th>
+                <th>定级</th>
+                <th>圈舍</th>
+                <th>繁殖状态</th>
+                <th>库存状态</th>
+                <th>来源</th>
+                <th>操作人</th>
+                <th>更新时间</th>
+            </tr>
+            </thead>
+            <tbody id="baseDate">
+            <tr v-for="baseInfo in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace prid" :value="baseInfo.code"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td><a @click="getxp(baseInfo.code)">{{baseInfo.code}}</a></td>
+                <td>{{baseInfo.rfid}}</td>
+                <td>
+                    <span v-if="baseInfo.breed!=null">
+                       {{baseInfo.breed.breedName}}
+                    </span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.sex=='1'">公羊</span>
+                    <span v-if="baseInfo.sex=='2'">母羊</span>
+                </td>
+                <td>{{baseInfo.birthDay==null?"":baseInfo.birthDay.substring(0,10)}}</td>
+                <td>{{baseInfo.moonAge}}</td>
+                <td>
+                    <span v-if="baseInfo!=null">{{baseInfo.sireCode}}</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo!=null">{{baseInfo.damCode}}</span></td>
+                <td>
+                    <span v-if="baseInfo.bornStatus=='2'">羔羊</span>
+                    <span v-if="baseInfo.bornStatus=='3'">青年羊</span>
+                    <span v-if="baseInfo.bornStatus=='4'">成年羊</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.rank!=null">{{baseInfo.rank.name}}</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.paddock!=null">{{baseInfo.paddock.name}}</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.breedingState=='--'">无状态</span>
+                    <span v-if="baseInfo.breedingState=='10'">空怀</span>
+                    <span v-if="baseInfo.breedingState=='111'">一配</span>
+                    <span v-if="baseInfo.breedingState=='112'">二配</span>
+                    <span v-if="baseInfo.breedingState=='113'">三配</span>
+                    <span v-if="baseInfo.breedingState=='114'">四配</span>
+                    <span v-if="baseInfo.breedingState=='115'">五配</span>
+                    <span v-if="baseInfo.breedingState=='116'">六配</span>
+                    <span v-if="baseInfo.breedingState=='117'">七配</span>
+                    <span v-if="baseInfo.breedingState=='118'">八配</span>
+                    <span v-if="baseInfo.breedingState=='119'">九配</span>
+                    <span v-if="baseInfo.breedingState=='1110'">十配</span>
+                    <span v-if="baseInfo.breedingState=='131'">未孕一</span>
+                    <span v-if="baseInfo.breedingState=='132'">未孕二</span>
+                    <span v-if="baseInfo.breedingState=='133'">未孕三</span>
+                    <span v-if="baseInfo.breedingState=='134'">未孕四</span>
+                    <span v-if="baseInfo.breedingState=='135'">未孕五</span>
+                    <span v-if="baseInfo.breedingState=='136'">未孕六</span>
+                    <span v-if="baseInfo.breedingState=='137'">未孕七</span>
+                    <span v-if="baseInfo.breedingState=='138'">未孕八</span>
+                    <span v-if="baseInfo.breedingState=='139'">未孕九</span>
+                    <span v-if="baseInfo.breedingState=='1310'">未孕十</span>
+                    <span v-if="baseInfo.breedingState=='141'">妊娠一</span>
+                    <span v-if="baseInfo.breedingState=='142'">妊娠二</span>
+                    <span v-if="baseInfo.breedingState=='143'">妊娠三</span>
+                    <span v-if="baseInfo.breedingState=='144'">妊娠四</span>
+                    <span v-if="baseInfo.breedingState=='145'">妊娠五</span>
+                    <span v-if="baseInfo.breedingState=='146'">妊娠六</span>
+                    <span v-if="baseInfo.breedingState=='147'">妊娠七</span>
+                    <span v-if="baseInfo.breedingState=='148'">妊娠八</span>
+                    <span v-if="baseInfo.breedingState=='149'">妊娠九</span>
+                    <span v-if="baseInfo.breedingState=='1410'">妊娠十</span>
+                    <span v-if="baseInfo.breedingState=='15'">哺乳</span>
+                    <span v-if="baseInfo.breedingState=='20'">供体准备</span>
+                    <span v-if="baseInfo.breedingState=='21'">受体准备</span>
+                    <span v-if="baseInfo.breedingState=='22'">AI</span>
+                    <span v-if="baseInfo.breedingState=='23'">供体恢复期</span>
+                    <span v-if="baseInfo.breedingState=='24'">已移植</span>
+                    <span v-if="baseInfo.breedingState=='25'">未调教</span>
+                    <span v-if="baseInfo.breedingState=='26'">好</span>
+                    <span v-if="baseInfo.breedingState=='27'">中</span>
+                    <span v-if="baseInfo.breedingState=='28'">差</span>
+                    <span v-if="baseInfo.breedingState=='29'">不爬羊</span>
+                    <span v-if="baseInfo.breedingState=='30'">本交成功</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.physiologyStatus=='1'">在库</span>
+                    <span v-if="baseInfo.physiologyStatus=='2'">已疾淘</span>
+                    <span v-if="baseInfo.physiologyStatus=='3'">已育淘</span>
+                    <span v-if="baseInfo.physiologyStatus=='4'">已死亡</span>
+                    <span v-if="baseInfo.physiologyStatus=='5'">病淘待审</span>
+                    <span v-if="baseInfo.physiologyStatus=='6'">育淘待审</span>
+                    <span v-if="baseInfo.physiologyStatus=='7'">死亡待审</span>
+                    <span v-if="baseInfo.physiologyStatus=='9'">销售待审</span>
+                    <span v-if="baseInfo.physiologyStatus=='10'">已销售</span>
+                    <span v-if="baseInfo.physiologyStatus=='11'">调拨待审</span>
+                    <span v-if="baseInfo.physiologyStatus=='12'">已调拨</span>
+                    <span v-if="baseInfo.physiologyStatus=='13'">旧死淘</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.org!=null">{{baseInfo.org.brief}}</span>
+                </td>
+                <td>{{baseInfo.recorder}}</td>
+                <td>{{baseInfo.ctime}}</td>
+            </tr>
+            </tbody>
+            <tbody id="groupDate" style="display: none">
+            <tr v-for="baseInfo in data99.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace prid" :value="baseInfo.base.code"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td><a @click="getxp(baseInfo.base.code)">{{baseInfo.base.code}}</a></td>
+                <td>{{baseInfo.base.rfid}}</td>
+                <td>{{baseInfo.base.breed.breedName}}</td>
+                <td>
+                    <span v-if="baseInfo.base.sex=='1'">公羊</span>
+                    <span v-if="baseInfo.base.sex=='2'">母羊</span>
+                </td>
+                <td>{{baseInfo.base.birthDay==null?"":baseInfo.base.birthDay.substring(0,10)}}</td>
+                <td>{{baseInfo.base.moonAge}}</td>
+                <td>{{baseInfo.base.sireCode}}</td>
+                <td>{{baseInfo.base.damCode}}</td>
+                <td>
+                    <span v-if="baseInfo.base.bornStatus=='2'">羔羊</span>
+                    <span v-if="baseInfo.base.bornStatus=='3'">青年羊</span>
+                    <span v-if="baseInfo.base.bornStatus=='4'">成年羊</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.base.rank!=null">{{baseInfo.base.rank.name}}</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.base.paddock!=null">{{baseInfo.base.paddock.name}}</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.base.breedingState=='--'">无状态</span>
+                    <span v-if="baseInfo.base.breedingState=='10'">空怀</span>
+                    <span v-if="baseInfo.base.breedingState=='111'">一配</span>
+                    <span v-if="baseInfo.base.breedingState=='112'">二配</span>
+                    <span v-if="baseInfo.base.breedingState=='113'">三配</span>
+                    <span v-if="baseInfo.base.breedingState=='114'">四配</span>
+                    <span v-if="baseInfo.base.breedingState=='115'">五配</span>
+                    <span v-if="baseInfo.base.breedingState=='116'">六配</span>
+                    <span v-if="baseInfo.base.breedingState=='117'">七配</span>
+                    <span v-if="baseInfo.base.breedingState=='118'">八配</span>
+                    <span v-if="baseInfo.base.breedingState=='119'">九配</span>
+                    <span v-if="baseInfo.base.breedingState=='1110'">十配</span>
+                    <span v-if="baseInfo.base.breedingState=='131'">未孕一</span>
+                    <span v-if="baseInfo.base.breedingState=='132'">未孕二</span>
+                    <span v-if="baseInfo.base.breedingState=='133'">未孕三</span>
+                    <span v-if="baseInfo.base.breedingState=='134'">未孕四</span>
+                    <span v-if="baseInfo.base.breedingState=='135'">未孕五</span>
+                    <span v-if="baseInfo.base.breedingState=='136'">未孕六</span>
+                    <span v-if="baseInfo.base.breedingState=='137'">未孕七</span>
+                    <span v-if="baseInfo.base.breedingState=='137'">未孕八</span>
+                    <span v-if="baseInfo.base.breedingState=='139'">未孕九</span>
+                    <span v-if="baseInfo.base.breedingState=='1310'">未孕十</span>
+                    <span v-if="baseInfo.base.breedingState=='141'">妊娠一</span>
+                    <span v-if="baseInfo.base.breedingState=='142'">妊娠二</span>
+                    <span v-if="baseInfo.base.breedingState=='143'">妊娠三</span>
+                    <span v-if="baseInfo.base.breedingState=='144'">妊娠四</span>
+                    <span v-if="baseInfo.base.breedingState=='145'">妊娠五</span>
+                    <span v-if="baseInfo.base.breedingState=='146'">妊娠六</span>
+                    <span v-if="baseInfo.base.breedingState=='147'">妊娠七</span>
+                    <span v-if="baseInfo.base.breedingState=='148'">妊娠八</span>
+                    <span v-if="baseInfo.base.breedingState=='149'">妊娠九</span>
+                    <span v-if="baseInfo.base.breedingState=='1410'">妊娠十</span>
+                    <span v-if="baseInfo.base.breedingState=='15'">哺乳</span>
+                    <span v-if="baseInfo.base.breedingState=='20'">供体准备</span>
+                    <span v-if="baseInfo.base.breedingState=='21'">受体准备</span>
+                    <span v-if="baseInfo.base.breedingState=='22'">AI</span>
+                    <span v-if="baseInfo.base.breedingState=='23'">供体恢复期</span>
+                    <span v-if="baseInfo.base.breedingState=='24'">已移植</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.base.physiologyStatus=='1'">在库</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='2'">已疾淘</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='3'">已育淘</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='4'">已死亡</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='5'">病淘待审</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='6'">育淘待审</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='7'">死亡待审</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='9'">销售待审</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='10'">已销售</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='11'">调拨待审</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='12'">已调拨</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='13'">旧死淘</span>
+                </td>
+                <td>
+                    <span v-if="baseInfo.base.org!=null">{{baseInfo.base.org.brief}}</span>
+                </td>
+                <td>{{baseInfo.base.recorder}}</td>
+                <td>{{baseInfo.base.ctime}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="layerr" style="padding:20px;display: none;">
+            <select id="groupId" class="col-sm-12" style="height:35px;">
+                <option>请选择群组</option>
+                <option v-for="group in data11" :value="group.id">{{group.name}}
+                </option>
+            </select>
+            <button class="btn btn-xs btn-success  btn-submit col-sm-12" type="button" onclick="getGroupDate()"
+                    style="height:35px;padding:1px 5px;margin-top:10px;margin-left:0px;border-radius:5px;">确认
+            </button>
+        </div>
+        <ul class="pagination pull-right" id="pagemd">
+            <li><a>共：{{data.totalElements}}</a></li>
+            <li><a @click="goto('0')">首页</a></li>
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+            <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    localStorage.url_list = "";
+    // localStorage.url_list = "baseInfo/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadCompany();
+            root.loadPama("breed/all");
+            root.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+            root.loadPama2("paddockType/all");
+            root.loadPama3('baseGroup/findByList?org.id='+JSON.parse(localStorage.userInfo).organization.id);
+
+        })
+    });
+    //从列表中选择，传递ids
+    function add(){
+        var ids = getIds();
+        $.each(ids,function(index,item){
+            if(item=='on'){
+                ids.splice(index,1);
+            }
+        });
+        if (ids.length == 0) {
+            msg("请选择数据！")
+        }
+        // else if(ids.length>20){
+        //     msg("最多允许添加20条数据")
+        // }
+        else {
+            location.href = getPama();
+            setPama(ids);
+            localStorage.selectID = ids;
+//            parent.close();
+        }
+    }
+
+    //从组群查询
+    function groupSearch() {
+        layer.open({
+            type: 1,
+            title: '修改',
+            area: ['300px', '200px'],
+            shadeClose: true,
+            content: $("#layerr")
+
+        });
+    }
+
+    function getGroupDate() {
+        $('#baseDate').hide();
+        $('#groupDate').show();
+        layer.closeAll();
+        po(getUrl('baseGroupDetail/list?baseGroup='+$("#groupId").val()),function (data) {
+            root.data99=data
+        })
+    }
+
+    //普通查询
+    function baseSearch() {
+        localStorage.url_list = "baseInfo/listNotPage?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+        $('#baseDate').show();
+        $('#groupDate').hide();
+        $("#page").val("0");
+        root.load();
+    }
+</script>
+<script src="js/base-vue.js"></script>

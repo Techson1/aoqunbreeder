@@ -1,0 +1,218 @@
+<title>耳标登记</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 20px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <form class="searchForm">
+                        <!--<input type="hidden" name="recorder" v-if="data5.id!=null" v-model="data5.cname" id="org">-->
+                        <!--<input type="hidden" name="org.id" v-if="data5.id!=null" v-model="data5.organization.id" id="org">-->
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <div class="box">
+                            <span>类型</span>
+                            <select name="type" style="height:25px;" id="s" onchange="yc()">
+                                <option value="">全部</option>
+                                <option value="3">电子耳标</option>
+                                <option value="2">可视耳标</option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>耳号</span>
+                            <input type="text" name="visualCode"  style="height:25px;width:150px;" placeholder="电子耳号">
+                            <input type="text" name="code" style="height:25px;width:150px;" placeholder="可视耳号">
+                        </div>
+                        <div class="box">
+                            <span>性别</span>
+                            <select name="sex" style="height:25px;">
+                                <option value="">全部</option>
+                                <option value="1">公羊</option>
+                                <option value="2">母羊</option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>品种</span>
+                            <select name="breed.id" style="height:25px;">
+                                <option value="">全部</option>
+                                <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>出生状态</span>
+                            <select name="state" style="height:25px;">
+                                <option value="">全部</option>
+                                <option value="2">正常</option>
+                                <option value="3">死胎</option>
+                                <option value="4">畸形</option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>使用状态</span>
+                            <select name="useState" style="height:25px;">
+                                <option value="">全部</option>
+                                <option value="0">未使用</option>
+                                <option value="1">已使用</option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>供应商</span>
+                            <select name="customer.id" style="height:25px;">
+                                <option value="">全部</option>
+                                <option v-for="customer in data8" :value="customer.id">{{customer.firstName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>入库日期</span>
+                            <input type="text" name="warehousingDateAssistStart" value="" digits="true" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">&nbsp;到&nbsp;
+                            <input type="text" name="warehousingDateAssistEnd" value="" class="end" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
+                        </div>
+
+                        <div class="box">
+                            <button style="padding:1px 5px;border-radius:5px;"
+                                    type="button" class="btn btn-xs btn-success"
+                                    @click="search">
+                                <i class="icon-search fa fa-search"></i>&nbsp;查询
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <a href="#page/earTage/add" class="btn btn-xs btn-success add"
+                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 批量添加</a>
+
+                    <a @click="delRelation()" class="btn btn-xs btn-success del"
+                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-trash-o"></i> 删除</a>
+                    <ul class="pagination pull-right">
+                        <li><a>共：{{data.totalElements}}</a></li>
+                        <li><a @click="goto('0')">首页</a></li>
+                        <li :class="data.first==true?'disabled':''">
+                            <a @click="prev">
+                                <i class="ace-icon fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                            <a @click="goto(n-1)">{{n}}</a>
+                        </li>
+                        <li :class="data.last==true?'disabled':''">
+                            <a @click="next">
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                        <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                        <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>耳号</th>
+                <th>对应品种</th>
+                <th>性别</th>
+                <th>出生状态</th>
+                <th>入库日期</th>
+                <th>供货商</th>
+                <th>类型</th>
+                <th>颜色</th>
+                <th>使用状态</th>
+                <th>使用日期</th>
+                <th>操作人</th>
+                <th>更新时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="codeRegister in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace prid" :value="codeRegister.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>
+                    <span v-if="codeRegister.type=='2'">{{codeRegister.code}}</span>
+                    <span v-if="codeRegister.type=='3'">{{codeRegister.visualCode}}</span>
+                </td>
+                <td>
+                    <span v-if="codeRegister.breed!=null">{{codeRegister.breed.breedName}}</span>
+                </td>
+                <td>
+                    <span v-if="codeRegister.sex=='1'">公羊</span>
+                    <span v-if="codeRegister.sex=='2'">母羊</span>
+                </td>
+                <td>
+                    <span v-if="codeRegister.state=='2'">正常</span>
+                    <span v-if="codeRegister.state=='3'">死胎</span>
+                    <span v-if="codeRegister.state=='4'">畸形</span>
+                </td>
+                <td>{{codeRegister.warehousingDate==null?"":codeRegister.warehousingDate.substring(0,10)}}</td>
+                <td>{{codeRegister.customer.firstName}}</td>
+                <td>
+                    <span v-if="codeRegister.type=='3'">电子耳标</span>
+                    <span v-if="codeRegister.type=='2'">可视耳标</span>
+                </td>
+                <td>
+                    <span v-if="codeRegister.color=='blue'">蓝</span>
+                    <span v-if="codeRegister.color=='yellow'">黄</span>
+                    <span v-if="codeRegister.color=='white'">白</span>
+                    <span v-if="codeRegister.color=='pink'">粉</span>
+                    <span v-if="codeRegister.color=='red'">红</span>
+                </td>
+                <td>
+                    <span v-if="codeRegister.useState=='0'">未使用</span>
+                    <span v-if="codeRegister.useState=='1'">已使用</span>
+                </td>
+                <td>
+                    <span v-if="codeRegister.useDate!=null">{{codeRegister.useDate.substring(0,10)}}</span>
+                </td>
+                <td>{{codeRegister.recorder}}</td>
+                <td>{{codeRegister.ctime}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination pull-right" id="pagemd">
+            <li><a>共：{{data.totalElements}}</a></li>
+            <li><a @click="goto('0')">首页</a></li>
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+            <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    localStorage.url_list = "codeRegister/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.delRelation = "codeRegister/delete/";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadCompany();
+            root.loadPama("breed/all");
+            root.loadPama1("contact/findBySupplier");
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

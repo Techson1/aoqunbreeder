@@ -1,0 +1,119 @@
+<title>繁殖预算</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <select class="col-sm-1" style="width:80px;" id="year"
+                                            @change="jtyear()">
+                                    </select><span>年</span>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                                <div class="box">
+                                    <a href="#page/breedBudget/add" class="btn btn-xs btn-success add"
+                                       style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 新建预算</a>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-upload"></i>&nbsp;数据导出
+                                    </button>
+                                </div>
+                                <div>
+                                    <center>
+                                        <h4>2017繁殖预算表</h4>
+                                    </center>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th rowspan="2">项目</th>
+                        <th rowspan="2">月份</th>
+                        <th colspan="3" class="center">配种指标(本月配种)</th>
+                        <th colspan="3" class="center">受孕指标(-2月配种)</th>
+                        <th colspan="3" class="center">流产指标(-5月配种)</th>
+                        <th colspan="5" class="center">产羔指标(-5月配种)</th>
+                    </tr>
+                    <tr>
+                        <th>可配母羊数</th>
+                        <th>配种母羊数</th>
+                        <th>母羊参配率</th>
+                        <th>应测孕数</th>
+                        <th>测孕怀孕数</th>
+                        <th>测孕怀孕率</th>
+                        <th>怀孕数</th>
+                        <th>流产数</th>
+                        <th class="color2">流产率</th>
+
+                        <th>产羔母羊数</th>
+                        <th>产羔数</th>
+                        <th>产羔率</th>
+                        <th>正常活羔数</th>
+                        <th>正常活羔率</th>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>本月累计</td>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                        <th>0</th>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    localStorage.url_list = "user/list";
+    localStorage.url_del = "user/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            var mydate = new Date();
+            for (var i = mydate.getFullYear(); i >= mydate.getFullYear() - 3; i--) {
+                $("#year").append("<option value='" + i + "'>" + i + "</option>");
+            }
+
+        })
+    });
+
+</script>
+<script src="js/base-vue.js"></script>

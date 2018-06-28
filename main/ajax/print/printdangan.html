@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>打印档案</title>
+    <link rel="stylesheet" href="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/assets/css/bootstrap.css"/>
+    <script src="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/components/jquery/dist/jquery.js"></script>
+    <script src="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/components/layer/layer.js"></script>
+    <script src="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/assets/js/src/vue.min.js"></script>
+    <script src="../js/common.js"></script>
+
+    <style>
+        body{
+            font-size: 16px;
+        }
+        h3{
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        center{
+            clear: both;
+            margin-top: 30px;
+        }
+        ul{
+            list-style-type: none;
+            width: 800px;
+        }
+        ul li{
+            margin-bottom: 10px;
+        }
+        .gao{
+            height: 30px;
+        }
+        table,table tr th, table tr td { border:1px solid black; text-align: center}
+        table { width: 200px; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;}
+    </style>
+</head>
+<body>
+<div class="col-xs-12" style="width: 800px;" id="app">
+        <center><h2>{{data1.org.id}}种羊档案</h2></center>
+        <ul class="col-xs-12" style="padding-top: 30px;">
+            <li class="col-xs-6">羊号：{{data.code}}</li>
+            <li class="col-xs-6">出生日期：{{data.birthDay.substring(0,10)}}</li>
+            <li class="col-xs-6">品种：<span v-if="data.breed!=null">{{data.breed.breedName}}</span></li>
+            <li class="col-xs-6">出生重：{{data.initialWeigh}}
+                <span v-if="data.initialWeigh!=null">(kg)</span>
+            </li>
+            <li class="col-xs-6">性别：<span v-if="data.sex=='1'">公羊</span><span v-if="data.sex=='2'">母羊</span></li>
+            <li class="col-xs-6">断奶重：{{data.weaningWeight}}
+                <span v-if="data.weaningWeight!=null">(kg)</span>
+            </li>
+        </ul>
+        <div class="gao" style="height:100px;clear:both;padding-top: 30px;padding-left: 200px;">
+            <div style="height: 70px;line-height: 70px;float: left;margin-top: 2px;"><span>{{data.code}}</span></div>
+            <div  style="height: 70px;line-height: 70px;padding-left: 10px;float:left;">—</div>
+            <div style="border:1px solid black;border-right: 0px;width: 30px;height: 70px;float:left;"></div>
+            <div>
+                <div style="margin-top: -5px;">&nbsp;&nbsp;父号：<span v-if="data.sire!=null">{{data.sire.code}}</span></div>
+                <div style="margin-top: 45px;">&nbsp;&nbsp;母号：<span v-if="data.dam!=null">{{data.dam.code}}</span></div>
+            </div>
+        </div>
+</div>
+<script  type="text/javascript">
+   var vue= new Vue({
+        el: '#app',
+        data: {data: "",data1:""},
+        created:function () {
+            $.post(base_url+'baseInfo/baseRecord?code='+localStorage.earTag, function (data) {
+                vue.data=data
+            })
+            $('h2').html(localStorage.salieID)
+        }
+    });
+</script>
+</body>
+</html>

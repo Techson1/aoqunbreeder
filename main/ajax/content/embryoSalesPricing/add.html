@@ -1,0 +1,138 @@
+<title>添加胚胎销售定价</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">胚胎销售定价信息</h4>
+            </div>
+            <div class="widget-body" style="padding-bottom: 50px;">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="breed.id">品种</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-5" name="breed.id" id="breed.id" v-if="data.id!=null"  v-model="data.breed.id"
+                                                        required>
+                                                    <option value="">请选择</option>
+                                                    <option v-for="breed in data1" :value="breed.id" :value="breed.breedName">{{breed.breedName}}
+                                                    </option>
+                                                </select>
+                                                <select class="col-xs-12 col-sm-5" name="breed.id" id="breed.id" v-else
+                                                        required>
+                                                    <option value="">请选择</option>
+                                                    <option v-for="breed in data1" :value="breed.id" :value="breed.breedName">{{breed.breedName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="qualityGrade">质量等级</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-5" name="qualityGrade" id="qualityGrade"
+                                                        required>
+                                                    <option value="" v-if="data.id==null">请选择</option>
+                                                    <option value="A级" v-if="data.qualityGrade=='A级'" selected="selected">A级</option>
+                                                    <option value="A级" v-else>A级</option>
+
+                                                    <option value="B级" v-if="data.qualityGrade=='B级'" selected="selected">B级</option>
+                                                    <option value="B级" v-else>B级</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="geneGrade">基因等级</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-5" name="geneGrade" id="geneGrade"
+                                                        required>
+                                                    <option value="" v-if="data.id==null">请选择</option>
+                                                    <option value="核心级" v-if="data.geneGrade=='核心级'" selected="selected">核心级</option>
+                                                    <option value="核心级" v-else>核心级</option>
+
+                                                    <option value="生产级" v-if="data.geneGrade=='生产级'" selected="selected">生产级</option>
+                                                    <option value="生产级" v-else>生产级</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="salesPricing">销售定价</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="salesPricing" id="salesPricing"
+                                                       class="col-xs-12 col-sm-5 " required maxlength="20"
+                                                       v-model="data.salesPricing"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <center>
+                            <button class="btn btn-info" onclick="tj()" type="button" v-if="data.id==null">
+                                <i class="fa fa-check bigger-110"></i>
+                                <span>提交</span>
+                            </button>
+                                <button class="btn btn-info" onclick="tj()" type="button" v-if="data.id!=null">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>修改</span>
+                                </button>
+                            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                            <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                                <i class="fa fa-undo bigger-110"></i>
+                                重置
+                            </button>
+                            </center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.loadPama('breed/all');
+        vue.loadCompany();
+        vue.load("embryoGrading/one/", getPama());
+//        setPama1("embryoGrading/save");//为表单传值
+//        setPama2("#page/embryoSalesPricing/list");//设置提交数据完成的跳转界面
+    })
+    function tj(){
+        $.post(base_url + "embryoGrading/verify",$(".myform").serialize(), function (message) {
+            if (!message) {
+                msg("数据重复");
+            }
+            else{
+                $.post(base_url + "embryoGrading/save" ,$(".myform").serialize(), function (data1) {
+                    //若果修改成功跳转页面
+                    if (data1.code == "100") {
+                        location.href ="#page/embryoSalesPricing/list";
+                    }
+                })
+            }
+        });
+    }
+
+</script>

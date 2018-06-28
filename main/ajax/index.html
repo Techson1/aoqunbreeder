@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <title>奥群物联网育种管理系统</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <!--[if !IE]> -->
+    <!-- <link rel="stylesheet" href="ace1.4/assets/css/pace.css" />
+    <script data-pace-options='{ "ajax": true, "document": true, "eventLag": false, "elements": false }' src="ace1.4/components/PACE/pace.js"></script> -->
+    <!-- <![endif]-->
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="ace1.4/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="ace1.4/components/font-awesome/css/font-awesome.css"/>
+    <!-- text fonts -->
+    <link rel="stylesheet" href="ace1.4/assets/css/ace-fonts.css"/>
+    <!-- ace styles -->
+    <link rel="stylesheet" href="css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="ace1.4/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+    <link rel="stylesheet" href="css/ace-skins.css"/>
+    <link rel="stylesheet" href="ace1.4/assets/css/ace-rtl.css"/>
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="ace1.4/assets/css/ace-ie.css"/>
+    <![endif]-->
+    <link rel="stylesheet" href="css/common.css"/>
+
+    <!-- ace settings handler -->
+    <script src="ace1.4/assets/js/ace-extra.js"></script>
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="ace1.4/components/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="ace1.4/components/respond/dest/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="skin-2">
+<!-- #section:basics/navbar.layout -->
+<div id="navbar" class="navbar navbar-default  ace-save-state">
+    <div class="navbar-container ace-save-state" id="navbar-container">
+        <!-- #section:basics/sidebar.mobile.toggle -->
+        <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+            <span class="sr-only">Toggle sidebar</span>
+
+            <span class="icon-bar"></span>
+
+            <span class="icon-bar"></span>
+
+            <span class="icon-bar"></span>
+        </button>
+
+        <!-- /section:basics/sidebar.mobile.toggle -->
+        <div  id="navapp" >
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-binoculars"></i>
+                        <span v-if="data.organization!=null">{{data.organization.brief}}</span>
+                        <span v-else>奥群集团</span>
+                        物联网育种管理系统
+                    </small>
+                </a>
+            </div>
+            <div class="navbar-buttons navbar-header pull-right" role="navigation" style="width:250px;">
+                <ul class="nav ace-nav" style="width: 250px;">
+                    <!-- #section:basics/navbar.user_menu -->
+                    <li class="light-blue dropdown-modal" style="width: 250px;">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle" style="width: 250px;">
+                            <i class="ace-icon fa fa-user bigger-140" style="width: 20px;"></i>
+                            <span class="user-info" style="width:200px;padding-top:10px;">
+									欢迎&nbsp;,&nbsp;{{data.userName}}&nbsp;&nbsp;
+									{{data.cname}}
+								</span>
+
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a @click="editPassWord(data.id)">
+                                    <i class="ace-icon fa fa-cog"></i>
+                                    修改密码
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="login.html">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div><!-- /.navbar-container -->
+</div>
+
+<!-- /section:basics/navbar.layout -->
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+    <!-- #section:basics/sidebar -->
+    <div id="sidebar" class="sidebar responsive ace-save-state">
+        <script type="text/javascript">
+            try {
+                ace.settings.loadState('sidebar')
+            } catch (e) {
+            }
+        </script>
+
+        <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+            <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+                <span class="btn btn-success"></span>
+
+                <span class="btn btn-info"></span>
+
+                <span class="btn btn-warning"></span>
+
+                <span class="btn btn-danger"></span>
+            </div>
+        </div><!-- /.sidebar-shortcuts -->
+
+        <ul class="nav nav-list" id="nav">
+            <li v-for="pvg in even(pvgs.allPvgs)">
+                <a href="#" class="dropdown-toggle" v-if="pvg.children.length != 0">
+                    <i :class="'menu-icon fa '+pvg.icon" style="color: white;font-size: 13px;"></i>
+                    <span class="menu-text">{{pvg.name}}</span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <a :data-url="'page/'+pvg.url" :href="'#page/'+ pvg.url" v-if="pvg.children.length == 0">
+                    <i :class="'menu-icon fa '+pvg.icon" style="color: white;font-size: 13px;"></i>
+                    <span class="menu-text"> {{pvg.name}}</span>
+                </a>
+                <ul class="submenu" v-if="pvg.children.length > 0">
+                    <li class="" v-for="child in even(pvg.children)" v-if="child.type == 1">
+                        <a :data-url="'page/'+child.url" :href="'#page/'+child.url" v-if="child.children.length <= 0">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{child.name}}
+                        </a>
+                        <a href="#" class="dropdown-toggle" v-if="child.children.length > 0">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{child.name}}
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+                        <ul class="submenu" v-if="child.children.length > 0">
+                            <li class="" v-for="cld in even(child.children)">
+                                <a :data-url="'page/'+cld.url" :href="'#page/'+cld.url">
+                                    {{cld.name}}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+            <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state"
+               data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+        </div>
+    </div>
+
+    <!-- /section:basics/sidebar -->
+    <div class="main-content">
+        <div class="main-content-inner">
+            <!-- #section:basics/content.breadcrumbs -->
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="ace-icon fa fa-home home-icon"></i>
+                        当前位置
+                    </li>
+                </ul><!-- /.breadcrumb -->
+                <!-- #section:basics/content.searchbox -->
+            </div>
+
+            <div class="page-content">
+                <div class="page-content-area" data-ajax-content="true">
+                </div>
+            </div><!-- /.page-content -->
+        </div>
+    </div><!-- /.main-content -->
+
+    <div class="footer">
+        <div class="footer-inner">
+            <!-- #section:basics/footer -->
+            <div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">天津奥群牧业有限公司</span>
+
+						</span>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
+</div><!-- /.main-container -->
+
+<div id="layerr1" style="padding:20px;display: none;">
+    <form id="layer">
+        <input type="text" name="passWorded" id="passWordold" class="col-sm-12" style="height:35px;margin-bottom: 15px;" placeholder="原密码">
+        <input type="text" name="passWord" id="passWordnew1" class="col-sm-12" style="height:35px;margin-bottom: 15px;" placeholder="新密码">
+        <input type="text" name="editPassWord" id="passWordnew2" class="col-sm-12" style="height:35px;margin-bottom: 15px;" placeholder="新密码确认">
+        <button class="btn btn-xs btn-success col-sm-12" onclick="editPassWordadd()" type="button"
+                style="height:35px;padding:1px 5px;margin-left:0px;border-radius:5px;">
+            确认
+        </button>
+    </form>
+</div>
+<!-- basic scripts -->
+<!--[if !IE]> -->
+<span>
+    <!--<script src="//code.jquery.com/jquery-1.9.1.js"></script>-->
+
+		<script src="ace1.4/components/jquery/dist/jquery.js"></script>
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="ace1.4/components/jquery.1x/dist/jquery.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+			if ('ontouchstart' in document.documentElement) document.write("<script src='ace1.4/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
+		</script>
+		<script src="ace1.4/components/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="ace1.4/components/layer/layer.js"></script>
+		<script src="ace1.4/assets/js/src/vue.min.js"></script>
+    <!-- ace scripts -->
+
+		<script src="ace1.4/assets/js/src/elements.scroller.js"></script>
+		<script src="ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+		<script src="ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+		<script src="ace1.4/assets/js/src/elements.colorpicker.js"></script>
+		<script src="ace1.4/assets/js/src/elements.fileinput.js"></script>
+		<script src="ace1.4/assets/js/src/elements.typeahead.js"></script>
+		<script src="ace1.4/assets/js/src/elements.wysiwyg.js"></script>
+		<script src="ace1.4/assets/js/src/elements.spinner.js"></script>
+		<script src="ace1.4/assets/js/src/elements.treeview.js"></script>
+		<script src="ace1.4/assets/js/src/elements.wizard.js"></script>
+		<script src="ace1.4/assets/js/src/elements.aside.js"></script>
+		<script src="ace1.4/assets/js/src/ace.js"></script>
+		<script src="ace1.4/assets/js/src/ace.basics.js"></script>
+		<script src="ace1.4/assets/js/src/ace.scrolltop.js"></script>
+		<script src="ace1.4/assets/js/src/ace.ajax-content.js"></script>
+		<script src="ace1.4/assets/js/src/ace.touch-drag.js"></script>
+		<script src="ace1.4/assets/js/src/ace.sidebar.js"></script>
+		<script src="ace1.4/assets/js/src/ace.sidebar-scroll-1.js"></script>
+		<script src="ace1.4/assets/js/src/ace.submenu-hover.js"></script>
+		<script src="ace1.4/assets/js/src/ace.widget-box.js"></script>
+		<script src="ace1.4/assets/js/src/ace.settings.js"></script>
+		<script src="ace1.4/assets/js/src/ace.settings-rtl.js"></script>
+		<script src="ace1.4/assets/js/src/ace.settings-skin.js"></script>
+		<script src="ace1.4/assets/js/src/ace.widget-on-reload.js"></script>
+		<script src="ace1.4/assets/js/src/ace.searchbox-autocomplete.js"></script>
+		<script src="js/common.js"></script>
+		<script src="js/Chart.js"></script>
+        <script src="laydate/laydate.js"></script>
+
+</span>
+<script>
+    new Vue({
+        el: '#nav', data: {pvgs: ""},
+        created: function () {
+            this.pvgs = JSON.parse(localStorage.pvgs);
+        },
+        methods: {
+            even: function (pama) {
+                var _selfPvgs = this.pvgs.selfPvgs;
+                return pama.filter(function (pvg) {
+                    return _selfPvgs.indexOf(pvg.id) >= 0;
+                })
+            }
+        }
+    });
+    new Vue({
+        el: '#navapp', data: {data: ""},
+        created: function () {
+            this.data = JSON.parse(localStorage.userInfo);
+        }
+    });
+
+    function editPassWord(userid) {
+        localStorage.userId=userid
+        layer.open({
+            type: 1,
+            title: '修改密码',
+            area: ['300px', '300px'],
+            shadeClose: true,
+            content: $("#layerr1")
+        });
+    }
+
+    function editPassWordadd() {
+        if($("#passWordold").val().length>1 && $("#passWordnew1").val().length>1 && $("#passWordnew2").val().length>1){
+            po(getUrl('user/resetPassWord?id='+localStorage.userId), $("#layer").serialize(),function (data) {
+                if(data.code=='100'){
+                    msg(data.msg)
+                    layer.closeAll()
+                }else{
+                    msg(data.msg)
+                }
+            })
+        }else{
+            msg("不能有空数据")
+        }
+    }
+</script>
+
+</body>
+</html>

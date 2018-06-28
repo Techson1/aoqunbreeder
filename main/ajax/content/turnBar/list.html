@@ -1,0 +1,187 @@
+<title>转栏管理</title>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <form class="searchForm">
+                                <input type="hidden" id="page" value="0" name="pageNum">
+                                <div class="box">
+                                    <span>耳号</span> <input type="text" name="base.code" value=""
+                                                             style="height:25px;width:107px;">
+                                </div>
+
+                                <div class="box">
+                                    <span>方向</span>
+                                    <select name="type" style="height:25px;" onchange="paddockChange(this)">
+                                        <option value="0">全部</option>
+                                        <option value="1">转出</option>
+                                        <option value="2">转入</option>
+                                    </select>
+                                </div>
+                                <div class="box" style="margin-left:10px;">
+                                    <span id="padockId">圈舍</span>
+                                    <select id="paddcokIdChange" name="fromPaddock.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="paddock in data1" :value="paddock.id">{{paddock.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>转栏日期</span>
+                                    <input type="text" name="startDate" value="" class="datep" readonly="readonly"
+                                           style="height:25px;width:107px;" ondblclick="clearDate(this)">&nbsp;到&nbsp;
+                                    <input type="text" name="endDate" value="" class="end" readonly="readonly"
+                                           style="height:25px;width:107px;" ondblclick="clearDate(this) ">
+                                           	
+                                </div>
+
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            @click="search">
+                                        <i class="icon-search fa fa-search"></i>&nbsp筛选器
+                                    </button>
+
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="#page/turnBar/add" class="btn btn-xs btn-success add"
+                               style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 添加转栏记录</a>
+                            <ul class="pagination pull-right">
+                                <li><a>共：{{data.totalElements}}</a></li>
+                                <li><a @click="goto('0')">首页</a></li>
+                                <li :class="data.first==true?'disabled':''">
+                                    <a @click="prev">
+                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                    <a @click="goto(n-1)">{{n}}</a>
+                                </li>
+                                <li :class="data.last==true?'disabled':''">
+                                    <a @click="next">
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                                <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>耳号</th>
+                        <th>品种</th>
+                        <th>性别</th>
+                        <th>转出圈舍</th>
+                        <th>转入圈舍</th>
+                       <!-- <th>转栏日期</th>-->
+                        <th>操作场区</th>
+                        <th>操作人</th>
+                        <th>更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="paddockChange in data.content">
+                        <td class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace" :value="paddockChange.id"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>{{paddockChange.base.code}}</td>
+                        <td>{{paddockChange.base.breed.breedName}}</td>
+                        <td>
+                            <span v-if="paddockChange.base.sex=='2'">母羊</span>
+                            <span v-if="paddockChange.base.sex=='1'">公羊</span>
+                        </td>
+                        <td>
+                            <span v-if="paddockChange.fromPaddock!=null">{{paddockChange.fromPaddock.name}}</span>
+                        </td>
+                        <td>
+                            <span v-if="paddockChange.toPaddock!=null">{{paddockChange.toPaddock.name}}</span>
+                        </td>
+                       <!-- <td><span v-if="paddockChange.date!=null">{{paddockChange.date.substring(0,10)}}</span> </td>-->
+                        <td>{{paddockChange.org.brief}}</td>
+                        <td>{{paddockChange.recorder}}</td>
+                        <td>{{paddockChange.ctime}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
+                    <li :class="data.first==true?'disabled':''">
+                        <a @click="prev">
+                            <i class="ace-icon fa fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                        <a @click="goto(n-1)">{{n}}</a>
+                    </li>
+                    <li :class="data.last==true?'disabled':''">
+                        <a @click="next">
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "paddockChange/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.url_del = "paddockChange/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id)
+        })
+    });
+    
+    function paddockChange(t){
+    	if ($(t).val=="0"){
+    		$("#paddcokIdChange").attr("name","fromPaddock.id");
+    		$("#padockId").html("圈舍")
+    	}
+    	if($(t).val()=='1'){
+    		$("#paddcokIdChange").attr("name","fromPaddock.id");
+    		$("#padockId").html("转出圈舍")
+    	}
+    	else{
+    		$("#paddcokIdChange").attr("name","toPaddock.id");
+    		$("#padockId").html("转入圈舍")
+    	}
+    }
+    
+    function clearDate(t){
+    	$(t).val("");
+    }
+
+</script>
+<script src="js/base-vue.js"></script>

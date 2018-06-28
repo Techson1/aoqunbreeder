@@ -1,0 +1,151 @@
+<title>疾病诊疗</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <form class="form-horizontal myform" id="validation-form">
+                <div class="widget-header widget-header-blue widget-header-flat">
+                    <h4 class="widget-title lighter">疾病诊疗</h4>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data6.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="earTag">耳号</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="earTag" id="earTag" required
+                                                           maxlength="20" readonly="readonly"
+                                                           class="col-xs-12 col-sm-6 "
+                                                         v-if="data6.base!=null" v-model="data6.base.code"/>
+                                                    <input type="text" name="earTag" id="earTag" required
+                                                           maxlength="20"
+                                                           class="col-xs-12 col-sm-6 "
+                                                           v-else/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="date">诊疗日期</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <input type="text" name="date" id="date"
+                                                           class="col-xs-12 col-sm-6 datep" required maxlength="20" v-model="data6.date"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="phone">疾病类型</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select class="col-xs-12 col-sm-3" name="fatherReason.id" required id="fatherID" onchange="getchirld()" v-if="data6.fatherReason!=null" v-model="data6.fatherReason.id">
+                                                        <option value="">请选择</option>
+                                                        <option v-for="reason in data1" :value="reason.id">{{reason.name}}</option>
+                                                    </select>
+                                                    <select class="col-xs-12 col-sm-3" name="reason.id" required id="reason"  v-if="data6.reason!=null" v-model="data6.reason.id">
+                                                        <option value="">请选择</option>
+                                                        <option v-for="reason in data3" :value="reason.id">{{reason.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="space-2"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="phone">治疗结果</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <select name="result" id="s" class="col-xs-10 col-sm-6" required>
+                                                        <option value="">请选择</option>
+                                                        <option value="治愈" v-if="data6.result=='治愈'"selected="selected">治愈</option>
+                                                        <option value="治愈" v-else>治愈</option>
+                                                        <option value="未治愈" v-if="data6.result=='未治愈'"selected="selected">未治愈</option>
+                                                        <option value="未治愈" v-else>未治愈</option>
+                                                        <option value="放弃治疗" v-if="data6.result=='放弃治疗'"selected="selected">放弃治疗</option>
+                                                        <option value="放弃治疗" v-else>放弃治疗</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-5 no-padding-right"
+                                                   for="remark">处理措施</label>
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="clearfix">
+                                                    <textarea type="text" name="remark" id="remark" required
+                                                           class="col-xs-12 col-sm-6 " style="height:150px;"
+                                                              v-model="data6.remark"></textarea></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 30px;margin-bottom: 20px;">
+                        <center>
+                            <button class="btn btn-info" type="button" onclick="tj()">
+                                <i class="fa fa-check bigger-110"></i>
+                                <span>提交</span>
+                            </button>
+                            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                            <button class="btn btn-prev" type="reset" v-if="data.id==null">
+                                <i class="fa fa-undo bigger-110"></i>
+                                重置
+                            </button>
+                        </center>
+                    </div>
+                    <div style="clear: both"></div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.loadPamaWithCallback1('generalVeternary/one/'+localStorage.editID,function(){
+            getchirld(vue.data6.fatherReason.id)
+        });
+        vue.loadCompany();
+        vue.loadPama('deathDisposalReason/parentFlagList/2')
+    })
+    //获取子淘汰原因
+    function getchirld(id){
+        if(id==null){
+            id=$("#fatherID").val()
+        }
+        vue.loadPama1('deathDisposalReason/parentIdList?parentId='+id);
+    }
+    //提交按钮
+    function tj() {
+        if ($(".myform").valid()) {
+            $.post(base_url+"generalVeternary/update",$(".myform").serialize(),function(date){
+                if(date.code=='100'){
+                    location.href = "#page/diseaseTreatment/list"
+                }
+            })
+        }
+    }
+</script>

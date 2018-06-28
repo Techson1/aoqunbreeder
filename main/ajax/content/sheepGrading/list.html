@@ -1,0 +1,148 @@
+<title>羊只定级</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 10px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                <div>
+                    <form class="searchForm">
+
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <div class="box">
+                            <span>耳号</span>
+                            <input type="text" name="base.code" value="" style="height:25px;width:107px;">
+                        </div>
+                        <div class="box">
+                            <span>性别</span>
+                            <select name="base.sex" style="height:25px;">
+                                <option value="">全部</option>
+                                <option value="1">公羊</option>
+                                <option value="2">母羊</option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>品种</span>
+                            <select name="base.breed.id" style="height:30px;">
+                                <option value="">全部</option>
+                                <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <button @click="search" type="button" class="btn btn-xs btn-success"
+                                style="height：30px;padding:1px 2px;margin-left:0px;border-radius:5px;">
+                            <i class="fa fa-search"></i>查询
+                        </button>
+                    </form>
+                </div>
+                <div>
+                    <a href="#page/sheepGrading/add" class="btn btn-xs btn-success add"
+                       style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i class="fa fa-plus"></i>
+                        添加羊只定级</a>
+                    <ul class="pagination pull-right" id="pagemd">
+                        <li><a>共：{{data.totalElements}}</a></li>
+                        <li><a @click="goto('0')">首页</a></li>
+                        <li :class="data.first==true?'disabled':''">
+                            <a @click="prev">
+                                <i class="ace-icon fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                            <a @click="goto(n-1)">{{n}}</a>
+                        </li>
+                        <li :class="data.last==true?'disabled':''">
+                            <a @click="next">
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                        <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                        <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12" style="padding-left:0px;">
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>耳号</th>
+                <th>品种</th>
+                <th>性别</th>
+                <th>从</th>
+                <th>到</th>
+                <th>操作场区</th>
+                <th>操作人</th>
+                <th>更新时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="groupChange in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace" :value="groupChange.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>
+                    <span v-if="groupChange.base!=null">{{groupChange.base.code}}</span>
+                </td>
+                <td>
+                    <span v-if="groupChange.base.breed!=null">{{groupChange.base.breed.breedName}}</span>
+                </td>
+                <td>
+                    <span v-if="groupChange.base.sex=='1'">公羊</span>
+                    <span v-if="groupChange.base.sex=='2'">母羊</span>
+                </td>
+                <!--<td>-->
+                    <!--<span v-if="groupChange.toRank!=null">{{groupChange.toRank.name}}</span>-->
+                <!--</td>-->
+                <td><span v-if="groupChange.formRank!=null">{{groupChange.formRank.name}}</span></td>
+                <td> <span v-if="groupChange.toRank!=null">{{groupChange.toRank.name}}</span></td>
+                <td>{{groupChange.org.brief}}</td>
+                <td>{{groupChange.recorder}}</td>
+                <td>{{groupChange.ctime}}</td>
+
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination pull-right" id="pagemd">
+            <li><a>共：{{data.totalElements}}</a></li>
+            <li><a @click="goto('0')">首页</a></li>
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+            <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    localStorage.url_list = "groupChange/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.url_del = "groupChange/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all");
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>jQuery UI 日期选择器（Datepicker） - 限制日期范围</title>
+    <script src="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/components/jquery/dist/jquery.js"></script>
+    <script src="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <script src="https://beiqi-static.oss-cn-shanghai.aliyuncs.com/ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+
+    <script>
+        $(function() {
+            // var mydate = new Date();
+            // var month=mydate.getMonth()+1;
+            // $(".datep").val(mydate.getFullYear()+'-'+month+'-'+mydate.getDate());
+            //创建并校验日期
+            $('.datep').datepicker({
+                format: 'yyyy-mm-dd',
+                language: 'zh-CN',
+                // autoclose: true,
+                // minView: "month",
+                // defaultDate: +7,
+                maxDate:new Date()
+            })
+        });
+    </script>
+</head>
+<body>
+<p>日期：<input type="text" class="datep"></p>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<title>羊只销售定价管理</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="operate">
+            <div style="background-color: #F2F2F2;padding-top: 10px;padding-left: 10px;padding-bottom: 10px;">
+                <div>
+                    <form class="searchForm">
+
+                        <input type="hidden" id="page" value="0" name="pageNum">
+                        <div class="box">
+                            <span>品种</span>
+                            <select name="breed.id" style="height:30px;">
+                                <option value="">全部</option>
+                                <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            <span>性别</span>
+                            <select name="sex" style="height:30px;">
+                                <option value="" selected>全部</option>
+                                <option value="2">母羊</option>
+                                <option value="1">公羊</option>
+                            </select>
+                        </div>
+                        <button @click="search" type="button" class="btn btn-xs btn-success"
+                                style="height：30px;padding:1px 2px;margin-left:0px;border-radius:5px;">
+                            <i class="fa fa-search"></i>查询
+                        </button>
+                    </form>
+                </div>
+                <div>
+                    <a href="#page/grading/add" class="btn btn-xs btn-success add"
+                       style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i class="fa fa-plus"></i>
+                        添加羊只定级定价</a>
+                    <a @click="edit('#page/grading/edit')" class="btn btn-xs btn-success edit"
+                       style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i
+                            class="fa fa-pencil-square-o"></i> 修改</a>
+                    <a @click="del()" class="btn btn-xs btn-success del"
+                       style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i
+                            class="fa fa-trash-o"></i>
+                        删除</a>
+                    <ul class="pagination pull-right">
+                        <li><a>共：{{data.totalElements}}</a></li>
+                        <li><a @click="goto('0')">首页</a></li>
+                        <li :class="data.first==true?'disabled':''">
+                            <a @click="prev">
+                                <i class="ace-icon fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                            <a @click="goto(n-1)">{{n}}</a>
+                        </li>
+                        <li :class="data.last==true?'disabled':''">
+                            <a @click="next">
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                        <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                        <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace"/>
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>品种</th>
+                <th>性别</th>
+                <!--<th>标志</th>-->
+                <th>定级名称</th>
+                <th>定价</th>
+                <th>操作人</th>
+                <th>更新时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="groupType in data.content">
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace" :value="groupType.id"/>
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td>
+                    <span v-if="groupType.breed!=null">{{groupType.breed.breedName}}</span>
+                </td>
+                <td>
+                    <span v-if="groupType.sex=='1'">公羊</span>
+                    <span v-if="groupType.sex=='2'">母羊</span>
+                </td>
+                <td>{{groupType.name}}</td>
+                <td>{{groupType.price}}</td>
+                <td>{{groupType.recorder}}</td>
+                <td>{{groupType.ctime}}</td>
+
+
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination pull-right" id="pagemd">
+            <li><a>共：{{data.totalElements}}</a></li>
+            <li><a @click="goto('0')">首页</a></li>
+            <li :class="data.first==true?'disabled':''">
+                <a @click="prev">
+                    <i class="ace-icon fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                <a @click="goto(n-1)">{{n}}</a>
+            </li>
+            <li :class="data.last==true?'disabled':''">
+                <a @click="next">
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                </a>
+            </li>
+            <li><a @click="goto(data.totalPages-1)">末页</a></li>
+            <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+//    localStorage.url_list = "groupType/list";
+//    localStorage.url_del = "groupType/dels";
+    localStorage.url_list = "rankTest/list";
+    localStorage.url_del = "rankTest/dels";
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama("breed/all");
+        })
+    });
+</script>
+<script src="js/base-vue.js"></script>

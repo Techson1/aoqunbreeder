@@ -1,0 +1,134 @@
+<title>添加羊只定级</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">羊只定级信息</h4>
+            </div>
+            <div class="widget-body" style="padding-bottom: 50px;">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="earTag">耳号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="earTag" id="earTag"
+                                                       class="col-xs-6 col-sm-4" required maxlength="20"/>
+                                                <button class="btn btn-success col-xs-6 col-sm-1" style="height:30px;padding:1px;" type="button" onclick="dingji()">获取定级</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="breed.id">定级</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-5" name="rankId" id="rank"
+                                                        required>
+                                                    <option value=""  v-if="data.id==null">请选择</option>
+                                                    <option v-for="getRank in data3" :value="getRank.id">{{getRank.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="breed.id">转至圈舍</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-5" name="toPaddock.id">
+                                                    <option value="" v-if="data.id==null">请选择</option>
+                                                    <option v-for="paddock in data1" :value="paddock.id">{{paddock.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" style="padding-bottom: 20px">
+                            <center>
+                            <button class="btn btn-info" type="button" onclick="tj()">
+                                <i class="fa fa-check bigger-110"></i>
+                                <span>提交</span>
+                            </button>
+                            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                            <button class="btn btn-prev" type="reset"  v-if="data.id==null">
+                                <i class="fa fa-undo bigger-110"></i>
+                                重置
+                            </button>
+                            </center>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.loadPama('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+        vue.loadCompany();
+        vue.load("groupType/one/", getPama());
+
+    })
+
+
+    //定级
+    function dingji(){
+        if($("#earTag").val().length>1){
+            vue.loadPama1('groupChange/getRank?earTag='+$("#earTag").val());
+        }else{
+            msg("耳号不能为空")
+        }
+
+    }
+    function tj(){
+        if ($(".myform").valid()) {
+            $.post(base_url + "groupChange/verify",$(".myform").serialize(), function (data) {
+                if (data.code=='102') {
+                    var index = layer.confirm('该羊已定级，是否要再次定级？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        add();
+                        layer.close(index);
+                    }, function () {
+                        layer.close(index);
+                    });
+                }
+                else  if(data.code=='101'){
+                    msg(data.msg)
+                }
+                else{
+                    add()
+                }
+            });
+        }
+
+    }
+
+    function add(){
+//        $("#rank").attr('name','toRank.id');
+        $.post(base_url + "groupChange/add" ,$(".myform").serialize(), function (data1) {
+            if (data1.code == "100") {
+                to("#page/sheepGrading/list")
+            }
+        })
+    }
+</script>

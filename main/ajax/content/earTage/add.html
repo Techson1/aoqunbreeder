@@ -1,0 +1,285 @@
+<title>添加耳标登记</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">耳标订购单</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="id" v-model="data.id">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="WarehousingDate">入库日期</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="WarehousingDate" id="WarehousingDate"
+                                                       class="col-xs-12 col-sm-6 datep"
+                                                       required maxlength="20" v-model="data.WarehousingDate"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="customer">供应商</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-6" name="customer.id" required
+                                                        id="customer">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="customer in data3" :value="customer.id">
+                                                        {{customer.firstName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"
+                                               style="padding-top:5px;">类型</label>
+                                        <div class="col-sm-8">
+                                            <div class="clearfix">
+                                                <select name="type" id="s" class="col-xs-10 col-sm-3"
+                                                        required onchange="yc()">
+                                                    <option value="2" v-if="data.type=='2'"
+                                                            selected="selected">
+                                                        电子耳标
+                                                    </option>
+                                                    <option value="3" v-if="data.type=='3'"
+                                                            selected="selected">
+                                                        可视耳标
+                                                    </option>
+                                                    <option value="3">电子耳标</option>
+                                                    <option value="2">可视耳标</option>
+                                                </select>
+                                                <span class="col-sm-1 no-padding-right">颜色</span>
+                                                <select name="color" id="color" class="col-xs-10 col-sm-2"
+                                                        required>
+                                                    <option value="" v-if="data.color==null" selected="selected">请选择
+                                                    </option>
+                                                    <option value="blue">蓝</option>
+                                                    <option value="yellow">黄</option>
+                                                    <option value="white">白</option>
+                                                    <option value="pink">粉</option>
+                                                    <option value="red">红</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group" id="keshi" style="display: none;">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right" for="breed">供对应品种</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-6" name="breed.id" required
+                                                        id="breed">
+                                                    <option value="">请选择</option>
+                                                    <option v-for="breed in data1" :value="breed.id">
+                                                        {{breed.breedName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="keshi1" style="display: none">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="state">出生状态</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select name="state" id="state" class="col-xs-10 col-sm-6"
+                                                        required>
+                                                    <option value="" v-if="data.state==null" selected="selected">请选择
+                                                    </option>
+                                                    <option value="2" v-if="data.state=='2'" selected="selected">正常
+                                                    </option>
+                                                    <option value="3" v-if="data.state=='3'" selected="selected">死胎
+                                                    </option>
+                                                    <option value="4" v-if="data.state=='4'" selected="selected">畸形
+                                                    </option>
+                                                    <option value="2">正常</option>
+                                                    <option value="3">死胎</option>
+                                                    <option value="4">畸形</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="name">耳标号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input name="prefix" placeholder="前缀" style="padding:5px;display:none;" alnum
+                                                       :value="data.prefix" type="text" class="col-xs-10 col-sm-1"
+                                                       required maxlength="8" onchange="count()"/>
+                                                <input name="startCode" :value="data.startCode" type="text"
+                                                       style="display:none;" placeholder="开始号"
+                                                       class="col-xs-10 col-sm-2" required maxlength="6" digits="true"
+                                                       onchange="count()"/>
+                                                <input name="visualStartCode" :value="data.visualStartCode" type="text"
+                                                       placeholder="开始" class="col-xs-10 col-sm-3" required
+                                                       maxlength="15" minlength="15" digits="true" onchange="count()"/>
+                                                <input name="number" :value="data.number" type="text" placeholder="数量"
+                                                       class="col-xs-10 col-sm-3" required digits="true" maxlength="3"
+                                                       onchange="count()"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"
+                                               for="end">结束号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="endCode1" id="end" class="col-xs-12 col-sm-6"
+                                                       required readonly="readonly"
+                                                       style="display:none;"/>
+                                                <input type="text" name="visualEndCode" id="end"
+                                                       class="col-xs-12 col-sm-6" required
+                                                       readonly="readonly"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <center>
+                                <button class="btn btn-info" type="button" onclick="tj()" id="add">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>提交</span>
+                                </button>
+                                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-prev" type="reset" id="resetBtn" v-if="data.id==null">
+                                    <i class="fa fa-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+        jQuery.validator.addMethod("alnum", function (value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
+        }, "只能包括英文字母和数字");
+    });
+    jQuery(function () {
+        vue.load("codeRegister/one/", getPama());
+        vue.loadCompany();
+        vue.loadPama1('contact/findBySupplier');
+        vue.loadPama('breed/all');
+    })
+    $(function () {
+        if ($("#s option:selected").text() == '电子耳标') {
+            $("input[name='prefix']").hide();
+            $("input[name='startCode']").hide();
+            $("input[name='endCode1']").hide();
+            $("input[name='number']").show();
+            $("input[name='visualStartCode']").show();
+            $("input[name='visualEndCode']").show();
+        }
+    })
+    function yc() {
+        if ($("#s option:selected").text() == '电子耳标') {
+            $("input[name='prefix']").hide();
+            $("input[name='startCode']").hide();
+            $("input[name='endCode1']").hide();
+            $("input[name='number']").show();
+            $("input[name='visualStartCode']").show();
+            $("input[name='visualEndCode']").show();
+            $("#keshi").hide();
+            $("#keshi1").hide();
+        }
+        else {
+            $("input[name='prefix']").show();
+            $("input[name='startCode']").show();
+            $("input[name='endCode1']").show();
+            $("input[name='number']").show();
+            $("input[name='visualStartCode']").hide();
+            $("input[name='visualEndCode']").hide();
+            $("#keshi").show();
+            $("#keshi1").show();
+        }
+    }
+    //检查校验
+    function check(){
+        if ($(".myform").valid()) {
+            po(getUrl("codeRegister/codeAddsVerify"), $(".myform").serialize(), function (data) {
+                if(data.code=='101'){
+                    msg(data.msg);
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            });
+        }
+    }
+    function count() {
+        if($("input[name='number']").val().length!=0){
+            if($("input[name=number]").val()!='0'){
+                if($("input[name=visualStartCode]").val().substring(0,1)=='0'){
+                    msg("电子耳号不能以0开头")
+                }else{
+                    var s=$("input[name=visualStartCode]").val().length;
+                    var rfids=$("input[name=startCode]").val().length;
+                    var endnum=Number(Number($("input[name='visualStartCode']").val()) + Number($("input[name='number']").val()) - 1)
+                    var rfidsendnum=Number(Number($("input[name='startCode']").val()) + Number($("input[name='number']").val()) - 1)
+                    var tt="000000000"+endnum
+                    var rfidstt="000000000"+rfidsendnum
+                    $("input[name='endCode1']").val($("input[name=prefix]").val()+rfidstt.substring(rfidstt.length-rfids))
+                    $("input[name='visualEndCode']").val(tt.substring(tt.length-s))
+                }
+            }
+            else{
+                $("input[name='endCode1']").val($("input[name=startCode]").val())
+                $("input[name='visualEndCode']").val($("input[name=visualStartCode]").val())
+                msg("耳标数量不能为0")
+            }
+        }
+    }
+    //提交校验
+        function tj() {
+                if ($(".myform").valid()) {
+                    if($("input[name=number]").val()!='0'){
+                        po(getUrl("codeRegister/codeAddsVerify"), $(".myform").serialize(), function (data) {
+                            if(data.code=='101'){
+                                msg(data.msg);
+                            }
+                            else{
+                                po(getUrl("codeRegister/codeAdds"), $(".myform").serialize(), function (data) {
+                                    if(data.code=='101'){
+                                        msg(data.msg);
+                                    }
+                                    else{
+                                    location.href = "#page/earTage/list";
+                                    }
+                                });
+                            }
+                        })
+                    }
+                }
+        }
+</script>

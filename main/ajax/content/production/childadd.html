@@ -1,0 +1,408 @@
+<title>羔羊登记</title>
+<div class="row" id="app">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h4 class="widget-title lighter">羔羊登记</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form class="form-horizontal myform" id="validation-form">
+                        <div id="fuelux-wizard-container">
+                            <div class="step-content pos-rel">
+                                <div class="step-pane active" data-step="1">
+                                    <input type="hidden" name="lambingDam.id" v-model="data.id">
+                                    <input type="hidden" name="breed.id" v-if="data.joining!=null" v-model="data.joining.childBreed.id" id="childBreed">
+                                    <input type="hidden" name="recorder" v-model="data2.cname">
+                                    <input type="hidden" name="org.id" v-if="data2.id!=null" v-model="data2.organization.id">
+                                    <div class="space-2"></div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="code">父号</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <input type="text" name="sireCode1" id="sireCode"
+                                                       class="col-xs-12 col-sm-7" readonly="readonly"
+                                                       required maxlength="14" v-if="data.id!=null" v-model="data.joining.sire.code"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="rfid">母号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="damCode1" id="damCode"
+                                                       class="col-xs-12 col-sm-7" readonly="readonly"
+                                                       required maxlength="15" v-if="data.id!=null" v-model="data.dam.code"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="sex">性别</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="sex" required
+                                                        id="sex" onchange="checkState()">
+                                                    <option value="">请选择</option>
+                                                    <option value="1" v-if="data.sex=='1'" selected="selected">公羊</option>
+                                                    <option value="1" v-else>公羊</option>
+                                                    <option value="2" v-if="data.sex=='2'" selected="selected">母羊</option>
+                                                    <option value="2" v-else>母羊</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="state">出生状态</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="state" id="state" required  @change="deathboby()">
+                                                    <option value="">请选择</option>
+                                                    <option value="2" v-if="data.state=='2'" selected="selected">正常
+                                                    </option>
+                                                    <option value="3" v-if="data.state=='3'" selected="selected">死胎
+                                                    </option>
+                                                    <option value="4" v-if="data.state=='4'" selected="selected">畸形
+                                                    </option>
+                                                    <option value="2">正常</option>
+                                                    <option value="3">死胎</option>
+                                                    <option value="4">畸形</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="code">可视耳号</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <input type="text" name="code" id="code"
+                                                       class="col-xs-12 col-sm-7"
+                                                       required maxlength="14"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="rfid">电子耳号</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="rfid" id="rfid"
+                                                       class="col-xs-12 col-sm-7"
+                                                       maxlength="15" v-model="data.rfid"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="theSameFetus">同胎数</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <input type="text" name="theSameFetus" id="theSameFetus"
+                                                       class="col-xs-12 col-sm-7" readonly="readonly"  v-model="data.theSameFetus"
+                                                       maxlength="20"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="birthDay">出生日期</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="birthDay" id="birthDay"
+                                                       class="col-xs-12 col-sm-7" readonly="readonly"
+                                                       required maxlength="20"  v-model="data.bornDate"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-2"></div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="horn">角</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="looks.horn">
+                                                    <option value="">请选择</option>
+                                                    <option value="1" v-if="data.horn=='1'" selected="selected">小角
+                                                    </option>
+                                                    <option value="2" v-if="data.horn=='2'" selected="selected">大角
+                                                    </option>
+                                                    <option value="3" v-if="data.horn=='3'" selected="selected">无
+                                                    </option>
+                                                    <option value="1">小角</option>
+                                                    <option value="2">大角</option>
+                                                    <option value="3">无</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="initialWeigh">出生重</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <input type="text" name="initialWeigh" id="initialWeigh"
+                                                       class="col-xs-12 col-sm-7"
+                                                       maxlength="20"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="hair">毛发打分</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="looks.hair">
+                                                    <option value="">请选择</option>
+                                                    <option value="1" v-if="data.hair=='1'" selected="selected">1分
+                                                    </option>
+                                                    <option value="2" v-if="data.hair=='2'" selected="selected">2分
+                                                    </option>
+                                                    <option value="3" v-if="data.hair=='3'" selected="selected">3分
+                                                    </option>
+                                                    <option value="1">1分</option>
+                                                    <option value="2">2分</option>
+                                                    <option value="3">3分</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="tooth">牙齿咬合</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="looks.tooth">
+                                                    <option value="">请选择</option>
+                                                    <option value="1" v-if="data.tooth=='1'" selected="selected">正常
+                                                    </option>
+                                                    <option value="2" v-if="data.tooth=='2'" selected="selected">错齿
+                                                    </option>
+                                                    <option value="1">正常</option>
+                                                    <option value="2">错齿</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="footColor">蹄颜色打分</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="looks.footColor">
+                                                    <option value="">请选择</option>
+                                                    <option value="1" v-if="data.footColor=='1'" selected="selected">1分
+                                                    </option>
+                                                    <option value="2" v-if="data.footColor=='2'" selected="selected">2分
+                                                    </option>
+                                                    <option value="3" v-if="data.footColor=='3'" selected="selected">3分
+                                                    </option>
+                                                    <option value="1">1分</option>
+                                                    <option value="2">2分</option>
+                                                    <option value="3">3分</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="splash">色斑打分</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="looks.splash">
+                                                    <option value="">请选择</option>
+                                                    <option value="1" v-if="data.splash=='1'" selected="selected">1分
+                                                    </option>
+                                                    <option value="2" v-if="data.splash=='2'" selected="selected">2分
+                                                    </option>
+                                                    <option value="3" v-if="data.splash=='3'" selected="selected">3分
+                                                    </option>
+                                                    <option value="1">1分</option>
+                                                    <option value="2">2分</option>
+                                                    <option value="3">3分</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--<div class="form-group col-sm-6">-->
+                                        <!--<label class="control-label col-xs-12 col-sm-6 no-padding-right"-->
+                                               <!--for="">母羊产前30天所在圈舍</label>-->
+                                        <!--<div class="col-xs-12 col-sm-6">-->
+                                            <!--<div class="clearfix">-->
+                                                <!--<input type="text" name="" id=""-->
+                                                       <!--class="col-xs-12 col-sm-7" readonly="readonly"/>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group col-sm-6">-->
+                                        <!--<label class="control-label col-xs-12 col-sm-2 no-padding-right"-->
+                                               <!--for="">从产房转至圈舍</label>-->
+                                        <!--<div class="col-xs-12 col-sm-8">-->
+                                            <!--<div class="clearfix">-->
+
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="ewesCode">受体母耳号</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <input type="text" name="ewesCode" id="ewesCode"
+                                                       class="col-xs-12 col-sm-7" readonly="readonly"
+                                                       maxlength="14"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-2 no-padding-right"
+                                               for="mouthColor">嘴颜色打分</label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <select class="col-xs-12 col-sm-7" name="looks.mouthColor">
+                                                    <option value="">请选择</option>
+                                                    <option value="1" v-if="data.mouthColor=='1'" selected="selected">1分
+                                                    </option>
+                                                    <option value="2" v-if="data.mouthColor=='2'" selected="selected">2分
+                                                    </option>
+                                                    <option value="3" v-if="data.mouthColor=='3'" selected="selected">3分
+                                                    </option>
+                                                    <option value="1">1分</option>
+                                                    <option value="2">2分</option>
+                                                    <option value="3">3分</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label col-xs-12 col-sm-6 no-padding-right"
+                                               for="fosterDamCode">代养母耳号</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="clearfix">
+                                                <div class="col-sm-3 col-xs-12"
+                                                     style="padding-left:0px;padding-right:0px;">
+                                                    <input type="radio" class="ace" name="li1"
+                                                           onclick="showeweCdoe(1)"/> <span class="lbl">是</span>
+                                                </div>
+                                                <div class="col-sm-3 col-xs-12">
+                                                    <input type="radio" class="ace" name="li1"
+                                                           onclick="showeweCdoe(0)"/> <span class="lbl">否</span>
+                                                </div>
+                                                <br/><br/>
+                                                <input class="col-sm-7" type="text" name="fosterDamCode" style="display:none"
+                                                    placeholder="请输入代养母羊号">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions col-sm-12">
+                            <center>
+                                <button class="btn btn-info" onclick="tj()" type="button">
+                                    <i class="fa fa-check bigger-110"></i>
+                                    <span>提交</span>
+                                </button>
+                            </center>
+                        </div>
+                        <div style="clear:both;"></div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/vue-one.js"></script>
+<script type="text/javascript">
+    var s = localStorage.motherId;
+    var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        myValidate();
+    });
+    jQuery(function () {
+        vue.load("lambingDam/findOne/", localStorage.motherId );
+//        vue.load("baseInfo/findOne/", +localStorage.motherId);
+        vue.loadCompany();
+    })
+    //是否填写代孕母羊号
+    function showeweCdoe(f){
+        if(f==1){
+            $("input[name=fosterDamCode]").show();
+        }
+        else{
+            $("input[name=fosterDamCode]").hide();
+        }
+    }
+    //提交
+    function tj(){
+        if ($(".myform").valid()) {
+            po(getUrl("baseInfo/lambSaveVerify"), $(".myform").serialize(), function (data) {
+                if (data.code == '101') {
+                    msg(data.msg)
+                }
+//            else if (data.code == '102') {
+//                //询问框
+//                layer.confirm(data.msg, {
+//                    btn: ['确认', '取消'] //按钮
+//                }, function () {
+//                    $("#breed").attr("name", "breed.id");
+//                    po(getUrl("baseInfo/lambSaveVerify"), $(".myform").serialize(), function (data) {
+//                        if (data.code == '101') {
+//                            msg(data.msg)
+//                        }
+//                        else{
+//                            po(getUrl("baseInfo/lambSave"), $(".myform").serialize(), function (data) {
+////                                location.href = "#page/animalRegister/list"
+//                                layer.closeAll();
+//                            })
+//                        }
+//                    })
+//                }, function () {
+//                    layer.closeAll();
+//                });
+//            }
+                else{
+                    $("#damCode").attr('name','damCode');
+                    $("#sireCode").attr('name','sireCode');
+                    po(getUrl("baseInfo/lambSave"), $(".myform").serialize(), function (data) {
+                        if(data.code=='100'){
+                            to("#page/production/childlist");
+                        }
+                    })
+                }
+            });
+        }
+    }
+
+    //自动分配可视耳号
+    function deathboby(){
+        if($("#sex").val().length>=1){
+            po(getUrl("codeRegister/getCodeAndRfid?state="+$("#state").val()+"&breedId="+$("#childBreed").val()+'&sex='+$('#sex').val()), function (data) {
+                if(data.code!=null){
+                    $("#code").val(data.code);
+                }
+                else{
+                    msg("库里没有可使用的可视耳号")
+                    $("#code").val("");
+                }
+            })
+        }
+        else {
+            msg('性别不能为空')
+        }
+
+    }
+    function checkState() {
+        if($("#state").val().length>=1){
+            deathboby()
+        }
+    }
+</script>

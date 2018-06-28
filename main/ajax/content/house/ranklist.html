@@ -1,0 +1,119 @@
+<title>定级存栏</title>
+<script src="js/myUtils.js"></script>
+<div class="row">
+    <div class="col-xs-12" id="app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="operate">
+                    <div style="background-color: #F2F2F2;padding-top: 12px;padding-left: 20px;padding-bottom: 10px;">
+                        <div>
+                            <center><h1 id="getDate"></h1></center>
+                        </div>
+                        <div>
+                            <form class="searchForm">
+                                <div class="box">
+                                    <span>日期</span>
+                                    <input type="text" name="date"  class="datep" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>品种</span>
+                                    <select name="breed.id" id="breed" onchange="">
+                                        <option value="">请选择</option>
+                                        <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <button style="padding:1px 5px;border-radius:5px;"
+                                            type="button" class="btn btn-xs btn-success"
+                                            onclick="getData()">
+                                        <i class="icon-search fa fa-search"></i>&nbsp;查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover" style="text-align: center">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center;">品种</th>
+                        <th style="text-align: center;">性别</th>
+                        <th style="text-align: center;">定级</th>
+                        <th style="text-align: center;">岁龄</th>
+                        <th style="text-align: center;">月龄</th>
+                        <th style="text-align: center;">数量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="monthRankOnHand in data88">
+                        <td style="padding: 0px;vertical-align: middle!important"  :rowspan="monthRankOnHand.breedNamespan"       :class="{hidden: monthRankOnHand.breedNamedis}">{{monthRankOnHand.breedName}}</td>
+                        <td style="padding: 0px;vertical-align: middle!important"  :rowspan="monthRankOnHand.sexspan"       :class="{hidden: monthRankOnHand.sexdis}">
+                            <span v-if="monthRankOnHand.sex=='1'">公羊</span>
+                            <span v-if="monthRankOnHand.sex=='2'">母羊</span>
+                        </td>
+                        <td style="padding: 0px;vertical-align: middle!important" :rowspan="monthRankOnHand.rankNamespan"  :class="{hidden: monthRankOnHand.rankNamedis}">
+                            <span v-if="monthRankOnHand.rankName=='2'">核心群</span>
+                            <span v-if="monthRankOnHand.rankName=='3'">后备核心群</span>
+                            <span v-if="monthRankOnHand.rankName=='4'">生产群</span>
+                            <span v-if="monthRankOnHand.rankName=='5'">销售群</span>
+                            <span v-if="monthRankOnHand.rankName=='6'">淘汰群</span>
+                            <span v-if="monthRankOnHand.rankName==null">未定级</span>
+                        </td>
+                        <td style="padding: 0px;vertical-align: middle!important" :rowspan="monthRankOnHand.agespan"       :class="{hidden: monthRankOnHand.agedis}">
+                            <span v-if="monthRankOnHand.age>=6">6年龄以上</span>
+                            <span v-else>{{monthRankOnHand.age}}</span>
+                        </td>
+                        <td style="padding: 0px;vertical-align: middle!important" :rowspan="monthRankOnHand.moonAgespan"   :class="{hidden: monthRankOnHand.moonAgedis}">
+                            <span v-if="monthRankOnHand.moonAge>=72">72月龄以上</span>
+                            <span v-else>{{monthRankOnHand.moonAge}}</span>
+                        </td>
+                        <td style="padding: 0px;vertical-align: middle!important" :rowspan="monthRankOnHand.numspan"       :class="{hidden: monthRankOnHand.numdis}">{{monthRankOnHand.num}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    localStorage.url_list = "user/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    var scripts = [null, null]
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
+        jQuery(function ($) {
+            initCheckBox();
+            root.loadPama('breed/all')
+            root.rephb('monthRankOnHand/lists?rank.org.id='+JSON.parse(localStorage.userInfo).organization.id,'moonAge,num')
+            $('h1').html(show()+"月龄定级存栏")
+        })
+    });
+    function getData() {
+        var date=$("input[name=date]").val();
+        if(date.length<1){
+            $('h1').html(show()+"月龄定级存栏")
+        }else{
+            $('h1').html(date.substring(0,4)+'年'+date.substring(5,7)+'月'+date.substring(8,10)+'日'+"月龄定级存栏")
+            root.rephb('monthRankOnHand/lists?rank.org.id='+JSON.parse(localStorage.userInfo).organization.id+'&breed.id='+$("#breed").val()+"&ctime="+$("input[name=date]").val(),',moonAge,num,')
+        }
+    }
+
+    function show(){
+        var mydate = new Date();
+        var str = "" + mydate.getFullYear()+"年";
+        if(mydate.getMonth()+1>10){
+            str += (mydate.getMonth()+1)+"月";
+        }
+        else{
+            str+='0';
+            str += (mydate.getMonth()+1)+"月";
+        }
+        str += mydate.getDate()+"日";
+        return str;
+
+    }
+</script>
+<script src="js/base-vue.js"></script>

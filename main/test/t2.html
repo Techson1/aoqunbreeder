@@ -1,0 +1,27 @@
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<input type="checkbox" name="chkId"  value="26"/>26
+<input type="checkbox" name="chkId"  value="25"/>25
+<input type="checkbox" name="chkId"  value="22"/>22
+<input type="checkbox" name="chkId"  value="23"/>23
+<input type="checkbox" name="chkId"  value="21"/>21
+<input type="checkbox" name="chkId"  value="24"/>24
+<button class="all">获得所有项</button>
+<button class="select">获得选中项</button>
+<script>
+    $(function(){
+        var val = '';
+        var strSel = '';
+        $(".all").click(function(){
+            $("[name='chkId']").each(function(index, element) {
+                val += $(this).val() + ",";
+            });
+            alert("所有项："+val);
+        })
+        $(".select").click(function(){
+            $("[name='chkId']:checked").each(function(index, element) {
+                strSel += $(this).val() + ",";
+            });
+            alert("选中项："+strSel);
+        })
+    })
+</script>
