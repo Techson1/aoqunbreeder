@@ -101,10 +101,10 @@
 
 </div>
 <button class="print-link" id="saleBtn" >打印销售联</button>         
-<button class="print-link" id="saleBtn1" >打印库管联</button>  
-<button class="print-link" id="saleBtn2" >打印财务联</button>
-<button class="print-link" id="saleBtn3" >打印客户联</button>  
-<button class="print-link" id="saleBtn4" >打印出门证</button>  
+<button class="print-link" id="saleBtn" >打印库管联</button>  
+<button class="print-link" id="saleBtn" >打印财务联</button>
+<button class="print-link" id="saleBtn" >打印客户联</button>  
+<button class="print-link" id="saleBtn" >打印出门证</button>  
 
 <script  type="text/javascript">
  

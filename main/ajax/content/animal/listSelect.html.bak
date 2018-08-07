@@ -348,8 +348,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    localStorage.url_list = "";
-      //localStorage.url_list = "baseInfo/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+     //localStorage.url_list = "";
+     localStorage.url_list = "baseInfo/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
     var scripts = [null, null]
     $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
         jQuery(function ($) {

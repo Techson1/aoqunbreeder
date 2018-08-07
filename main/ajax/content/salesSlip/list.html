@@ -131,7 +131,7 @@
                                 <input type="checkbox" class="ace" :value="sales.id"/>
                                 <span class="lbl"></span>
                             </label>
-                        <td><a @click="children('#page/salesSlip/listxq',sales.id)">{{sales.code}}</a></td>
+                        <td><a @dblclick="children('#page/salesSlip/listxq',sales.id)">{{sales.code}}</a></td>
                         <td><span v-if="sales.customer!=null">{{sales.customer.firstName}}</span></td>
                         <td><span v-if="sales.customer!=null">{{sales.customer.provinceCode}}</span></td>
                         <td>

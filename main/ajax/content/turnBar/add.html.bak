@@ -121,7 +121,7 @@
 
     <script type="text/javascript">
         var scripts = [null, "ace1.4/components/fuelux/js/wizard.js", "ace1.4/components/jquery-validation/dist/jquery.validate.js", "ace1.4/components/jquery-validation/src/localization/messages_zh.js", "ace1.4/components/jquery-validation/dist/additional-methods.js", "ace1.4/components/bootbox.js/bootbox.js", "ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "ace1.4/components/select2/dist/js/select2.js", "ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null] 
-		localStorage.url_list = "baseInfo/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+		//localStorage.url_list = "paddockChange/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
 		$('.page-content-area').ace_ajax('loadScripts', scripts, function () {
             myValidate();
         });

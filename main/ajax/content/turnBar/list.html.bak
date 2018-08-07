@@ -1,4 +1,4 @@
-﻿<title>转栏管理</title>
+<title>转栏管理</title>
 <div class="row">
     <div class="col-xs-12" id="app">
         <div class="row">
@@ -154,7 +154,7 @@
 </div>
 
 <script type="text/javascript">
-    localStorage.url_list = "paddockChange/findAllTurnList?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+   localStorage.url_list = "paddockChange/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
     localStorage.url_del = "paddockChange/dels";
     var scripts = [null, null]
     $('.page-content-area').ace_ajax('loadScripts', scripts, function () {

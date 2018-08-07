@@ -1,0 +1,261 @@
+﻿<title>销售单添加</title>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <title>奥群物联网育种管理系统</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <!--[if !IE]> -->
+    <!-- <link rel="stylesheet" href="../../ace1.4/assets/css/pace.css" />
+    <script data-pace-options='{ "ajax": true, "document": true, "eventLag": false, "elements": false }' src="../../ace1.4/components/PACE/pace.js"></script> -->
+    <!-- <![endif]-->
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="../../ace1.4/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../ace1.4/components/font-awesome/css/font-awesome.css"/>
+    <!-- text fonts -->
+    <link rel="stylesheet" href="../../ace1.4/assets/css/ace-fonts.css"/>
+    <!-- ace styles -->
+    <link rel="stylesheet" href="../../css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="../../ace1.4/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+    <link rel="stylesheet" href="../../css/ace-skins.css"/>
+    <link rel="stylesheet" href="../../ace1.4/assets/css/ace-rtl.css"/>
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="../../ace1.4/assets/css/ace-ie.css"/>
+    <![endif]-->
+    <link rel="stylesheet" href="../../css/common.css"/>
+
+    <!-- ace settings handler -->
+    <script src="../../ace1.4/assets/js/ace-extra.js"></script>
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="../../ace1.4/components/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="../../ace1.4/components/respond/dest/respond.min.js"></script>
+    <![endif]-->
+     <!--<script src="//code.jquery.com/jquery-1.9.1.js"></script>-->
+
+		<script src="../../ace1.4/components/jquery/dist/jquery.js"></script>
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="../../ace1.4/components/jquery.1x/dist/jquery.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+			if ('ontouchstart' in document.documentElement) document.write("<script src='../../ace1.4/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
+		</script>
+		<script src="../../ace1.4/components/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="../../ace1.4/components/layer/layer.js"></script>
+		
+		<script src="../../ace1.4/assets/js/src/vue.min.js"></script>
+    <!-- ace scripts -->
+
+		<script src="../../ace1.4/assets/js/src/elements.scroller.js"></script>
+		<script src="../../ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+		<script src="../../ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+		<script src="../../ace1.4/assets/js/src/elements.colorpicker.js"></script>
+		<script src="../../ace1.4/assets/js/src/elements.fileinput.js"></script>
+		<script src="../../ace1.4/assets/js/src/elements.typeahead.js"></script>
+		<script src="../../ace1.4/assets/js/src/elements.wysiwyg.js"></script>
+		<script src="../../ace1.4/assets/js/src/elements.spinner.js"></script>
+		<script src="../../ace1.4/assets/js/src/elements.treeview.js"></script>
+		<script src="../../ace1.4/assets/js/src/elements.wizard.js"></script>
+		<script src="../../ace1.4/assets/js/src/elements.aside.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.basics.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.scrolltop.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.ajax-content.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.touch-drag.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.sidebar.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.sidebar-scroll-1.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.submenu-hover.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.widget-box.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.settings.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.settings-rtl.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.settings-skin.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.widget-on-reload.js"></script>
+		<script src="../../ace1.4/assets/js/src/ace.searchbox-autocomplete.js"></script>
+		<script src="../../js/common.js"></script>
+		<script src="../../js/Chart.js"></script>
+        <script src="../../laydate/laydate.js"></script>
+		<style type="text/css">
+		   body { }
+
+		</style>
+</head>
+<div class="win-content-area" data-ajax-content="true">
+<div id="app">
+    <div class="widget-body">
+        <div class="row">
+		<div class="col-xs-12">
+            <table id="simple-table" class="table  table-bordered table-hover" style="font-family:'Microsoft YaHei';font-size:13px;">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>耳号</th>
+                    <th>品种</th>
+                    <th>性别</th>
+                    <th>生长阶段</th>
+                    <th>繁殖状态</th>
+                    <th>定价</th>
+                    <th>折扣</th>
+                    <th>成交价</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="salesDatail in data11">
+                    <td class="center">
+                        <label class="pos-rel">
+                         <template v-if="salesDatail.checkStatus=='1'">
+                            <input type="checkbox" class="ace prid"  onclick="checkUrla(this)"  :value="salesDatail.id"  checked="checked" />
+                        </template>
+                       <template v-if="salesDatail.checkStatus!='1'">
+                            <input type="checkbox" class="ace prid"  onclick="checkUrla(this)" :value="salesDatail.id"  />
+                        </template>
+                        <span class="lbl"></span>
+                        </label> 
+                    </td>  
+                    <td>
+                        <span v-if="salesDatail.item!=null">{{salesDatail.item.code}}</span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">{{salesDatail.item.breed.breedName}}</span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">
+                            <span v-if="salesDatail.item.sex=='1'">公羊</span>
+                            <span v-if="salesDatail.item.sex=='2'">母羊</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item!=null">
+                            <span v-if="salesDatail.item.bornStatus=='2'">羔羊</span>
+                            <span v-if="salesDatail.item.bornStatus=='3'">青年羊</span>
+                            <span v-if="salesDatail.item.bornStatus=='4'">成年羊</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span v-if="salesDatail.item.breedingState=='--'">无状态</span>
+                        <span v-if="salesDatail.item.breedingState=='10'">空怀</span>
+                        <span v-if="salesDatail.item.breedingState=='111'">一配</span>
+                        <span v-if="salesDatail.item.breedingState=='112'">二配</span>
+                        <span v-if="salesDatail.item.breedingState=='113'">三配</span>
+                        <span v-if="salesDatail.item.breedingState=='114'">四配</span>
+                        <span v-if="salesDatail.item.breedingState=='115'">五配</span>
+                        <span v-if="salesDatail.item.breedingState=='116'">六配</span>
+                        <span v-if="salesDatail.item.breedingState=='117'">七配</span>
+                        <span v-if="salesDatail.item.breedingState=='118'">八配</span>
+                        <span v-if="salesDatail.item.breedingState=='119'">九配</span>
+                        <span v-if="salesDatail.item.breedingState=='1110'">十配</span>
+                        <span v-if="salesDatail.item.breedingState=='131'">未孕一</span>
+                        <span v-if="salesDatail.item.breedingState=='132'">未孕二</span>
+                        <span v-if="salesDatail.item.breedingState=='133'">未孕三</span>
+                        <span v-if="salesDatail.item.breedingState=='134'">未孕四</span>
+                        <span v-if="salesDatail.item.breedingState=='135'">未孕五</span>
+                        <span v-if="salesDatail.item.breedingState=='136'">未孕六</span>
+                        <span v-if="salesDatail.item.breedingState=='137'">未孕七</span>
+                        <span v-if="salesDatail.item.breedingState=='137'">未孕八</span>
+                        <span v-if="salesDatail.item.breedingState=='139'">未孕九</span>
+                        <span v-if="salesDatail.item.breedingState=='1310'">未孕十</span>
+                        <span v-if="salesDatail.item.breedingState=='141'">妊娠一</span>
+                        <span v-if="salesDatail.item.breedingState=='142'">妊娠二</span>
+                        <span v-if="salesDatail.item.breedingState=='143'">妊娠三</span>
+                        <span v-if="salesDatail.item.breedingState=='144'">妊娠四</span>
+                        <span v-if="salesDatail.item.breedingState=='145'">妊娠五</span>
+                        <span v-if="salesDatail.item.breedingState=='146'">妊娠六</span>
+                        <span v-if="salesDatail.item.breedingState=='147'">妊娠七</span>
+                        <span v-if="salesDatail.item.breedingState=='148'">妊娠八</span>
+                        <span v-if="salesDatail.item.breedingState=='149'">妊娠九</span>
+                        <span v-if="salesDatail.item.breedingState=='1410'">妊娠十</span>
+                        <span v-if="salesDatail.item.breedingState=='15'">哺乳</span>
+                        <span v-if="salesDatail.item.breedingState=='20'">供体准备</span>
+                        <span v-if="salesDatail.item.breedingState=='21'">受体准备</span>
+                        <span v-if="salesDatail.item.breedingState=='22'">AI</span>
+                        <span v-if="salesDatail.item.breedingState=='23'">供体恢复期</span>
+                        <span v-if="salesDatail.item.breedingState=='24'">已移植</span>
+                    </td>
+                    <td>{{salesDatail.rankPrice}}</td>
+                    <td>{{salesDatail.discount}}</td>
+                    <td>{{salesDatail.price}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+		</div>
+    </div>
+ </div>
+ </div>
+
+  
+    <script type="text/javascript">
+        var scripts = [null, "../../ace1.4/components/fuelux/js/wizard.js", "../../ace1.4/components/jquery-validation/dist/jquery.validate.js", "../../ace1.4/components/jquery-validation/src/localization/messages_zh.js", "../../ace1.4/components/jquery-validation/dist/additional-methods.js", "../../ace1.4/components/bootbox.js/bootbox.js", "../../ace1.4/components/jquery.maskedinput/dist/jquery.maskedinput.js", "../../ace1.4/components/select2/dist/js/select2.js", "../../ace1.4/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js", "../../ace1.4/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js", null]
+        $('.win-content-area').ace_ajax('loadScripts', scripts, function () {
+            myValidate();
+        });
+        localStorage.url_list = "/sales/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+        localStorage.url_del = "/sales/dels";
+        var s=localStorage.deathDisposalReasonId
+        var scripts = [null, null]
+        $('.win-content-area').ace_ajax('loadScripts', scripts, function () {
+        	console.log('.................'+s);
+            jQuery(function ($) {
+                initCheckBox();
+                root.loadPama4("/sales/one/"+s);
+                root.loadCompany();
+                root.loadPama("/customer/all")
+                // root.loadPama2("contact/findBySalesman")
+                root.loadPama3("/salesDatail/findByList?sales.id="+s)
+            })
+        });
+		
+        function checkUrla(obj){
+           
+			if($(obj).is(':checked')) {
+			 
+                $.post(base_url + "/sales/checkOneSheep/"+obj.value+"/1", function (data1) {
+                	 msg("操作成功！")
+                }); 
+           }else{
+		         $.post(base_url + "/sales/checkOneSheep/"+obj.value+"/0", function (data1) {
+                	 msg("操作成功！")
+                }); 
+		   
+		   }
+       }
+       function closeWin(){
+                parent.layer.closeAll();
+                    	parent.root.load();
+       
+       }
+        //开始复核羊只
+        function typeOneUpdate(){
+            //var ids = getIds();
+            var id=localStorage.deathDisposalReasonId;
+            var ids = [];
+            $('.ace:checked').each(function () {
+                ids.push($(this).val());
+            });
+            console.log('ids--------'+ids.length);
+            if (ids.length > 0) {
+                setPama(ids[0]);
+                $.post(base_url + "/sales/checkReviewSheep/"+id+"/"+JSON.parse(localStorage.userInfo).cname+"/" + getIds(), function (data1) {
+                	
+                	//若果修改成功跳转页面
+                    if (data1.code == "100") {
+                    	parent.layer.closeAll();
+                    	parent.root.load();
+                        //$('.ace').attr('checked', false);
+                    }
+                   
+                }); 
+                //layer.closeAll();
+            } else {
+                msg("请选择数据！");
+            }
+        }
+    </script>
+    <script src="../../js/base-vue.js"></script>

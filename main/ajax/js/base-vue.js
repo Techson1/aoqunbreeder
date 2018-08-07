@@ -308,7 +308,13 @@ var root = new Vue({
 function getIds() {
     var ids = [];
     $('.ace:checked').each(function () {
-        ids.push($(this).val());
+    	var va=$(this).val();
+    	if(va=='on'){
+    		console.log('无效值...');
+    	}else{
+    		ids.push($(this).val());
+    	}
+        
     });
     return ids;
 }
