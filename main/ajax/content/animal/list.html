@@ -141,7 +141,6 @@
                                 <option value="3">已育淘</option>
                                 <option value="4">已死亡</option>
                                 <option value="10">已销售</option>
-                                <option value="12">已调拨</option>
                                 <option value="5">病淘待审</option>
                                 <option value="6">育淘待审</option>
                                 <option value="7">死亡待审</option>
@@ -263,6 +262,7 @@
                             <span v-if="baseInfo.bornStatus=='4'">成年羊</span>
                 </td>
                 <td>
+                	<span v-if="baseInfo.rank==null">--</span>
                     <span v-if="baseInfo.rank!=null">{{baseInfo.rank.name}}</span>
                 </td>
                 <td>
@@ -325,7 +325,6 @@
                     <span v-if="baseInfo.physiologyStatus=='9'">销售待审</span>
                     <span v-if="baseInfo.physiologyStatus=='10'">已销售</span>
                     <span v-if="baseInfo.physiologyStatus=='11'">调拨待审</span>
-                    <span v-if="baseInfo.physiologyStatus=='12'">已调拨</span>
                     <span v-if="baseInfo.flag=='1'">存档</span>
                 </td>
                 <td>
@@ -374,6 +373,7 @@
                     <span v-if="baseInfo.base.bornStatus=='4'">成年羊</span>
                 </td>
                 <td>
+                	<span v-if="baseInfo.base.rank==null">--</span>
                     <span v-if="baseInfo.base.rank!=null">{{baseInfo.base.rank.name}}</span>
                 </td>
                 <td>
@@ -434,7 +434,6 @@
                     <span v-if="baseInfo.base.physiologyStatus=='9'">销售待审</span>
                     <span v-if="baseInfo.base.physiologyStatus=='10'">已销售</span>
                     <span v-if="baseInfo.base.physiologyStatus=='11'">调拨待审</span>
-                    <span v-if="baseInfo.base.physiologyStatus=='12'">已调拨</span>
                     <!--<span v-if="baseInfo.base.physiologyStatus=='13'">旧死淘</span>-->
                 </td>
                 <td>
