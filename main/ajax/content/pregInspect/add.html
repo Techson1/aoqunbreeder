@@ -126,7 +126,7 @@
                     <td>{{baseInfo.code}}</td>
                     <td>{{baseInfo.breed.breedName}}</td>
                     <td>{{baseInfo.birthDay}}</td>
-                    <td class="tdEd"></td>
+                    <td class="tdEd">{{baseInfo.verifyMsg}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -195,7 +195,12 @@
                         msg("该羊不存在")
                     }
                     else{
-                        root.data99.push(data)
+                    	$.post(base_url + "pregnancy/verify?damCode=" + data.code,function(data1){
+                    		if(data1.code=='101'){
+                    			data.verifyMsg = data1.msg;
+                    		}
+	                        root.data99.push(data)
+                    	});
                     }
                 });
                 $("input[name='damCode1']").val("")
