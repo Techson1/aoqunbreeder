@@ -12,6 +12,10 @@
                                     <span>客户名称</span>
                                     <input type="text" name="customer.firstName" value="" style="height:25px;width:107px;">
                                 </div>
+								 <div class="box">
+                                    <span>联系人</span>
+                                    <input type="text" name="contact.firstName" value="" style="height:25px;width:107px;">
+                                </div>
                                 <div class="box">
                                     <span>省份</span>
                                     <select name="city" lay-filter="province">
@@ -53,10 +57,10 @@
                                     </select>
                                 </div>
                                 <div class="box">
-                                    <span>审核日期</span>
-                                    <input type="text" name="dateAssistStart" value="" class="datep" readonly="readonly" ondblclick="clearDate()"
+                                    <span>创建日期</span>
+                                    <input type="text" name="startDate" value="" class="datep" readonly="readonly" ondblclick="clearDate()"
                                            style="height:25px;width:107px;">&nbsp;到&nbsp;
-                                    <input type="text" name="dateAssistEnd" value="" class="end" readonly="readonly" ondblclick="clearDate()"
+                                    <input type="text" name="endDate" value="" class="end" readonly="readonly" ondblclick="clearDate()"
                                            style="height:25px;width:107px;">
                                 </div>
                                 <div class="box">
@@ -131,7 +135,7 @@
                                 <input type="checkbox" class="ace" :value="sales.id"/>
                                 <span class="lbl"></span>
                             </label>
-                        <td><a @click="children('#page/salesSlip/listxq',sales.id)">{{sales.code}}</a></td>
+                        <td><a @dblclick="children('#page/salesSlip/listxq',sales.id)">{{sales.code}}</a></td>
                         <td><span v-if="sales.customer!=null">{{sales.customer.firstName}}</span></td>
                         <td><span v-if="sales.customer!=null">{{sales.customer.provinceCode}}</span></td>
                         <td>
@@ -191,7 +195,7 @@
         if (ids.length == 1) {
             setPama(ids[0]);
 //            root.loadedit("sales/one/");
-            $.post(base_url + "sales/accomplish/" + getIds(), function (data1) {
+            $.post(base_url + "sales/accomplish/" + ids, function (data1) {
                 //若果修改成功跳转页面
                 if (data1.code == "100") {
                     root.load();
@@ -213,7 +217,8 @@
                 msg("不能选择标题")
                 $('.ace').attr('checked', false);
             }else{
-                setPama(ids[0]);
+			   if(null!=ids){
+			    setPama(ids[0]);
                 $.post(base_url + "sales/accomplistVerify/" + getIds(), function (data1) {
                     if(!data1){
                         root.edit('#page/salesSlip/edit');
@@ -221,6 +226,9 @@
                         msg("该订单已完成，不允许修改")
                     }
                 })
+			   
+			   }
+               
             }
         } else if (ids.length > 1) {
             msg("只能选择一条数据！")

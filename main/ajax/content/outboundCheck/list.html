@@ -1,4 +1,4 @@
-<title>销售出库复核</title>
+﻿<title>销售出库复核</title>
 <div class="row">
     <div class="col-xs-12" id="app">
         <div class="row">
@@ -13,7 +13,7 @@
                                                            style="height:25px;width:107px;">
                                 </div>
                                 <div class="box">
-                                    <span>出库日期</span>
+                                    <span>销售日期</span>
                                     <input type="text" name="dateAssistStart" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">&nbsp;到&nbsp;
                                     <input type="text" name="dateAssistEnd" value="" class="end" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
                                 </div>
@@ -36,7 +36,7 @@
                                        style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
                                 </div>
                                 <div>
-                                    <a @click="typeUpdate()" class="btn btn-xs btn-success del"
+                                   <a @click="typeUpdate()" class="btn btn-xs btn-success del"
                                        style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i class="fa fa-check"></i>
                                         复核</a>
                                     <a @click="cancel()" class="btn btn-xs btn-success del"
@@ -78,14 +78,12 @@
                 <thead>
                 <tr>
                     <th class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace"/>
-                            <span class="lbl"></span>
-                        </label>
+                       
                     </th>
-                    <th>出库单号</th>
+                    <th>销售单号</th>
                     <th>销售日期</th>
-                    <th>是否复核</th>
+					 <th>明细复核</th>
+                    <th>销售单复核</th>		
                     <th>复核人</th>
                     <th>复核日期</th>
                 </thead>
@@ -97,11 +95,22 @@
                             <span class="lbl"></span>
                         </label>
                     </td>
-                    <td>{{sales.code}}</td>
+                    <td><a @dblclick="showDigWin(sales.id)">{{sales.code}}</a></td>
                     <td>{{sales.ctime==null?"":sales.ctime.substring(0,10)}}</td>
+					
                     <td>
+                        
+						 <span v-if="sales.totalCount==null">0
+						 </span>
+						 <span v-if="sales.totalCount!=null">{{sales.checkCount}}
+						 </span>
+						/ <span >{{sales.totalCount}} </span>
+
+                    </td>
+					
+					<td>
                         <span v-if="sales.checkFlag=='0'">未复核</span>
-                        <span v-if="sales.checkFlag=='1'">复核</span>
+                        <span v-if="sales.checkFlag=='1'">已复核</span>
                     </td>
                     <td>{{sales.reviewing}}</td>
                     <td>{{sales.date!=null?sales.date.substring(0,10):""}}</td>
@@ -132,7 +141,9 @@
     </div>
 </div>
 </div>
-
+<div id="dialog" title="基本的对话框">
+  
+</div>
 <script type="text/javascript">
     localStorage.url_list = "sales/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
     var scripts = [null, null]
@@ -141,16 +152,38 @@
             initCheckBox();
         })
     });
+    function showDigWin(id){
+    	 localStorage.deathDisposalReasonId = id;
+    	  layer.open({
+              type: 2,
+              title: '复核羊只',
+              area: ['800px', '500px'],
+              shadeClose: true,
+			  cancel:function(index, layero){
+					  layer.closeAll();
+                    	root.load();
+			  },
+              content: 'content/outboundCheck/xq.html'
+          });
+    }
+
     function typeUpdate() {
         var ids = getIds();
         if (ids.length == 1) {
             setPama(ids[0]);
-            $.post(base_url + "sales/accomplish/" + getIds()+"/"+JSON.parse(localStorage.userInfo).cname, function (data1) {
+            $.post(base_url + "sales/checkReviewSheep/" + getIds()+"/"+JSON.parse(localStorage.userInfo).cname, function (data1) {
+                console.log(data1.code);
                 //若果修改成功跳转页面
                 if (data1.code == "100") {
                     root.load();
                     $('.ace').attr('checked', false);
-                }
+                }else if(data1.code == "101"){
+				   msg("复核失败，有羊只没确认！");
+				}else if(data1.code == "104"){
+					msg("该销售单下没有羊只！");
+				}else{
+					msg("操作失败！")
+				}
             })
         } else if (ids.length > 1) {
             msg("只能选择一条数据！")

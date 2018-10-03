@@ -1,4 +1,4 @@
-<title>销售单添加</title>
+﻿<title>销售单添加</title>
 <div id="app">
     <div class="row">
         <div class="col-xs-12">
@@ -251,14 +251,14 @@
             jQuery(function ($) {
                 initCheckBox();
                 root.loadCompany();
-                root.loadPama("customer/all")
+                root.loadPama("customer/selectAll?org.id="+JSON.parse(localStorage.userInfo).organization.id);
                 root.loadPama2("contact/findBySalesman?org.id="+JSON.parse(localStorage.userInfo).organization.id)
         })
         });
 
         //动态获取客户列表
         function validate(){
-            root.loadPama("customer/findByFirstNameLike?firstName="+$("#customerName").val())
+            root.loadPama("customer/findByFirstNameLikeAndOrgId?firstName="+$("#customerName").val()+"&orgid="+JSON.parse(localStorage.userInfo).organization.id)
         }
 
         //获取客户信息

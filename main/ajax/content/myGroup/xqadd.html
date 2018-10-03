@@ -7,13 +7,12 @@
                 <div style="margin-top:50px;">
                     <form class="searchForm">
                         <input type="hidden" id="page" value="0" name="pageNum">
-                    </form>
-                    <form class="form-horizontal myform">
+                    
                         <input type="hidden" name="recorder" v-model="data5.cname">
                         <div class="col-sm-12">
                             <div class="box">
                                 <span>耳号</span>
-                                <input type="text" name="code" style="height:25px;width:107px">
+                                <input type="text" name="base.code" style="height:25px;width:107px">
                             </div>
                             <div class="box">
                                 <button style="padding:1px 5px;border-radius:5px;"
@@ -110,8 +109,8 @@
                         <span v-if="group.base.physiologyStatus=='7'">死亡待审</span>
                         <span v-if="group.base.physiologyStatus=='9'">销售待审</span>
                         <span v-if="group.base.physiologyStatus=='10'">已销售</span>
-                        <span v-if="group.base.physiologyStatus=='11'">调拨待审</span>
-                        <span v-if="group.base.physiologyStatus=='12'">已调拨</span>
+                        <span v-if="group.base.physiologyStatus=='12'">调拨待审</span>
+                        
                         <span v-if="group.base.flag=='1'">存档</span>
                     </td>
                     <td>{{group.recorder}}</td>
@@ -164,7 +163,10 @@
                 $("input[name='code']").val("")
             }
         }
-
+    function baseSearch() {
+         
+        root.load();
+    }
         function add() {
             $.post(base_url + "baseGroupDetail/add?code="+$("input[name=code]").val()+"&orgId="+JSON.parse(localStorage.userInfo).organization.id+"&baseGroup.id="+localStorage.deathDisposalReasonId+'&recorder='+JSON.parse(localStorage.userInfo).cname,
                 function (data) {

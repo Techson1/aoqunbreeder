@@ -142,7 +142,8 @@
         if(t=='1'){
             $("#term").hide()
             root.getCount("paddock/livestockStatistics?orgId="+JSON.parse(localStorage.userInfo).organization.id)
-            $("#date").val('')
+            $("#date").val('');
+            $('h1').html(show()+"圈舍存栏")
         }else{
             $("#term").show()
         }

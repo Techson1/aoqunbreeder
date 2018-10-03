@@ -1,4 +1,4 @@
-<title>添加客户</title>
+﻿<title>添加客户</title>
 <div class="row" id="app">
     <div class="col-xs-12">
         <div class="widget-box">
@@ -211,7 +211,7 @@
     });
     jQuery(function () {
         vue.load("customer/one/",getPama());
-        setPama1("customer/save");//为表单传值
+        setPama1("customer/save/"+JSON.parse(localStorage.userInfo).organization.id);//为表单传值
         setPama2("#page/customer/list");//设置提交数据完成的跳转界面
     })
 </script>

@@ -177,6 +177,7 @@
                     <th>性别</th>
                     <th>生长阶段</th>
                     <th>繁殖状态</th>
+                    <th>出库确认</th>
                     <th>销售等级</th>
                     <th>定价</th>
                     <th>折扣</th>
@@ -250,11 +251,16 @@
                         <span v-if="salesDatail.item.breedingState=='23'">供体恢复期</span>
                         <span v-if="salesDatail.item.breedingState=='24'">已移植</span>
                     </td>
+					<td>
+					<span v-if="salesDatail.item.checkStatus=='1'">已确认</span>
+                    <span v-if="salesDatail.item.checkStatus=='0' || salesDatail.item.checkStatus==null">未确认</span>
+					</td>
                     <td>{{salesDatail.item.rank==null?'':salesDatail.item.rank.name}}</td>
+                    
                     <td>{{salesDatail.rankPrice}}</td>
                     <td>{{salesDatail.discount}}</td>
                     <td>{{salesDatail.price}}</td>
-                </tr>
+                </tr>  
                 </tbody>
             </table>
         </div>

@@ -60,7 +60,7 @@
                         <div>
                             <a href="#page/weight/add" class="btn btn-xs btn-success add"
                                style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 添加称重</a>
-                            <a href="#page/weight/add" class="btn btn-xs btn-success add"
+                            <a href="#page/weight/import" class="btn btn-xs btn-success add"
                                style="padding:1px 5px;border-radius:5px;"><i class="fa fa-download"></i>批量导入</a>
                             <a href="javascript:exports('wigth/export?','base.org.id')" class="btn btn-xs btn-success add"
                                style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
@@ -147,7 +147,7 @@
                         <td>{{wigth.daily}}</td>
                         <td><span v-if ="wigth.paddock!=null">{{wigth.paddock.name}}</span></td>
                         <td>{{wigth.recorder}}</td>
-                        <td>{{wigth.org.brief}}</td>
+                        <td ><span v-if="wigth.org!=null">{{wigth.org.brief}}</span></td>
                         <td>{{wigth.ctime}}</td>
                     </tr>
                     </tbody>

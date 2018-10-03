@@ -12,6 +12,33 @@
                                     <span>可视耳号</span> <input type="text" name="base.code" value=""
                                        style="height:25px;width:107px;">
                                 </div>
+								<div class="box">
+                                    <span>品种</span>
+                                    <select name="base.breed.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="breed in data1" :value="breed.id">{{breed.breedName}}
+                                        </option>
+                                    </select>
+                                </div>
+								<div class="box">
+                                    <span>性别</span>
+                                    <select name="base.sex" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option value="1">公羊</option>
+                                        <option value="2">母羊</option>
+                                    </select>
+                                </div>
+                                <div class="box">
+                                    <span>死亡月龄</span> <input type="text" name="base.moonAge" value="" style="height:25px;width:107px;">
+                                </div>
+                                <div class="box">
+                                    <span>圈舍</span>
+                                    <select name="base.paddock.id" style="height:25px;">
+                                        <option value="">全部</option>
+                                        <option v-for="paddock in data8" :value="paddock.id">{{paddock.name}}
+                                        </option>
+                                    </select>
+                                </div>
                                 <div class="box">
                                     <span>死亡原因</span>
                                     <select name="fatherReason.id" style="height:25px;">
@@ -19,6 +46,10 @@
                                         <option v-for="fatherReason in data9" :value="fatherReason.id">{{fatherReason.name}}
                                         </option>
                                     </select>
+                                </div>
+								<div class="box">
+                                    <span>出生日期</span>
+                                    <input type="text" name="base.birthDay" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
                                 </div>
                                 <div class="box">
                                     <span>死亡日期</span>
@@ -82,8 +113,9 @@
                         </th>
                         <th>可视耳号</th>
                         <th>电子耳号</th>
+						 <th>母号</th>
                         <th>父号</th>
-                        <th>母号</th>
+                       
                         <th>出生日期</th>
                         <th>品种</th>
                         <th>性别</th>
@@ -225,6 +257,8 @@
     $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
         jQuery(function ($) {
             initCheckBox();
+			root.loadPama("breed/all");
+			root.loadPama1('paddock/livestock?orgId='+JSON.parse(localStorage.userInfo).organization.id);
             root.loadPama2('deathDisposalReason/parentFlagList/4');
         })
     });

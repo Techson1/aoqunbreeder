@@ -1,4 +1,4 @@
-<title>转栏管理</title>
+﻿<title>转栏管理</title>
 <div class="row">
     <div class="col-xs-12" id="app">
         <div class="row">
@@ -110,20 +110,20 @@
                                 <span class="lbl"></span>
                             </label>
                         </td>
-                        <td>{{paddockChange.base.code}}</td>
-                        <td>{{paddockChange.base.breed.breedName}}</td>
+                        <td>{{paddockChange.code}}</td>
+                        <td>{{paddockChange.breedName}}</td>
                         <td>
-                            <span v-if="paddockChange.base.sex=='2'">母羊</span>
-                            <span v-if="paddockChange.base.sex=='1'">公羊</span>
+                            <span v-if="paddockChange.sex=='2'">母羊</span>
+                            <span v-if="paddockChange.sex=='1'">公羊</span>
                         </td>
                         <td>
-                            <span v-if="paddockChange.fromPaddock!=null">{{paddockChange.fromPaddock.name}}</span>
+                            <span v-if="paddockChange.fromPaddock!=null">{{paddockChange.fromPaddock}}</span>
                         </td>
                         <td>
-                            <span v-if="paddockChange.toPaddock!=null">{{paddockChange.toPaddock.name}}</span>
+                            <span v-if="paddockChange.toPaddock!=null">{{paddockChange.toPaddock}}</span>
                         </td>
                        <!-- <td><span v-if="paddockChange.date!=null">{{paddockChange.date.substring(0,10)}}</span> </td>-->
-                        <td>{{paddockChange.org.brief}}</td>
+                        <td>{{paddockChange.brief}}</td>
                         <td>{{paddockChange.recorder}}</td>
                         <td>{{paddockChange.ctime}}</td>
                     </tr>
@@ -154,7 +154,7 @@
 </div>
 
 <script type="text/javascript">
-    localStorage.url_list = "paddockChange/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.url_list = "paddockChange/findAllTurnList?org.id="+JSON.parse(localStorage.userInfo).organization.id;
     localStorage.url_del = "paddockChange/dels";
     var scripts = [null, null]
     $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
@@ -165,11 +165,11 @@
     });
     
     function paddockChange(t){
-    	if ($(t).val=="0"){
+	    
+    	if ($(t).val()=="0"){
     		$("#paddcokIdChange").attr("name","fromPaddock.id");
     		$("#padockId").html("圈舍")
-    	}
-    	if($(t).val()=='1'){
+    	}else if($(t).val()=='1'){
     		$("#paddcokIdChange").attr("name","fromPaddock.id");
     		$("#padockId").html("转出圈舍")
     	}

@@ -49,7 +49,27 @@
                                     <a @click="cancel()" class="btn btn-xs btn-success del"
                                        style="height：25px;padding:1px 5px;margin-left:0px;border-radius:5px;"><i class="fa fa-close"></i>
                                         取消复核</a>
+										<ul class="pagination pull-right">
+                                        <li><a>共：{{data.totalElements}}</a></li>
+                                        <li><a @click="goto('0')">首页</a></li>
+                                        <li :class="data.first==true?'disabled':''">
+                                            <a @click="prev">
+                                                <i class="ace-icon fa fa-angle-double-left"></i>
+                                            </a>
+                                        </li>
+                                        <li v-for="n in data.endPage" :class="data.number+1 == n?'active':''" v-if="n>=data.startPage">
+                                            <a @click="goto(n-1)">{{n}}</a>
+                                        </li>
+                                        <li :class="data.last==true?'disabled':''">
+                                            <a @click="next">
+                                                <i class="ace-icon fa fa-angle-double-right"></i>
+                                            </a>
+                                        </li>
+                                        <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                                        <li><a href="#pagemd"><i class="fa fa-arrow-down bigger-140"></i></a></li>
+                                    </ul>
                                 </div>
+								
                             </form>
                         </div>
 
@@ -106,7 +126,9 @@
                     </tr>
                     </tbody>
                 </table>
-                <ul class="pagination pull-right">
+                <ul class="pagination pull-right" id="pagemd">
+                    <li><a>共：{{data.totalElements}}</a></li>
+                    <li><a @click="goto('0')">首页</a></li>
                     <li :class="data.first==true?'disabled':''">
                         <a @click="prev">
                             <i class="ace-icon fa fa-angle-double-left"></i>
@@ -120,6 +142,8 @@
                             <i class="ace-icon fa fa-angle-double-right"></i>
                         </a>
                     </li>
+                    <li><a @click="goto(data.totalPages-1)">末页</a></li>
+                    <li><a href="#app"><i class="fa fa-arrow-up bigger-140"></i></a></li>
                 </ul>
             </div>
         </div>

@@ -88,7 +88,9 @@
     jQuery(function () {
         vue.load("paddock/one/", getPama());
         vue.loadCompany();
-        vue.loadPama('contact/breeder');
+        //vue.loadPama('contact/breeder');
+		vue.loadPama('contact/breederOrgid?orgId='+JSON.parse(localStorage.userInfo).organization.id);
+		
 //        setPama1("paddockType/save");//为表单传值
 //        setPama2("#page/fenceManagement/list");//设置提交数据完成的跳转界面
     })

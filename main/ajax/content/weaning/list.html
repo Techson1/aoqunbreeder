@@ -1,4 +1,4 @@
-<title>断奶管理</title>
+﻿<title>断奶管理</title>
 <div class="row">
     <div class="col-xs-12" id="app">
         <div class="row">
@@ -66,7 +66,7 @@
                     <tr>
                         <th class="center">
                             <label class="pos-rel">
-                                <input type="checkbox" class="ace"/>
+                                <input type="checkbox" class="ace" />
                                 <span class="lbl"></span>
                             </label>
                         </th>
@@ -84,24 +84,23 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="weaning in data.content">
+                    <tr v-for="weaningVo in data.content">
                         <td class="center">
                             <label class="pos-rel">
-                                <input type="checkbox" class="ace" :value="weaning.id"/>
+                                <input type="checkbox" class="ace" :value="weaningVo.id"/>
                                 <span class="lbl"></span>
                             </label>
                         </td>
-                        <td>{{weaning.dam.code}}</td>
-                        <td>{{weaning.dam.breed.breedName}}</td>
-                        <td>{{weaning.parity.parityMaxNumber}}</td>
-                        <td><span v-if="weaning.lambingDam.bornDate!=null">{{weaning.lambingDam.bornDate.substring(0,10)}}</span></td>
-                        <td><span v-if="weaning.lambingDam!=null">{{weaning.lambingDam.bornTimes}}</span></td>
-                        <td><span v-if="weaning.weaningDate!=null">{{weaning.weaningDate.substring(0,10)}}</span> </td>
-                        <!--<td>{{weaning.weaningAliveCount}}</td>-->
-                        <!--<td>断奶均重</td>-->
-                        <td>{{Math.abs(new Date(weaning.weaningDate)-new Date(weaning.lambingDam.bornDate))/1000/60/60/24}}</td>
-                        <td>{{weaning.recorder}}</td>
-                        <td>{{weaning.ctime}}</td>
+                        <td>{{weaningVo.code}}</td>
+                        <td>{{weaningVo.breedName}}</td>
+                        <td>{{weaningVo.parityMaxNumber}}</td>
+                        <td><span v-if="weaningVo.bornDate!=null">{{weaningVo.bornDate.substring(0,10)}}</span></td>
+                        <td><span >{{weaningVo.bornTimes}}</span></td>
+                        <td><span v-if="weaningVo.weaningDate!=null">{{weaningVo.weaningDate.substring(0,10)}}</span> </td>
+                         
+                        <td>{{Math.abs(new Date(weaningVo.weaningDate)-new Date(weaningVo.bornDate))/1000/60/60/24}}</td>
+                        <td>{{weaningVo.recorder}}</td>
+                        <td>{{weaningVo.ctime}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -136,7 +135,7 @@
 </div>
 
 <script type="text/javascript">
-    localStorage.url_list = "weaning/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.url_list = "weaning/listAll?org.id="+JSON.parse(localStorage.userInfo).organization.id;
     localStorage.delRelation = "weaning/delVerify/";
     var scripts = [null, null]
     $('.page-content-area').ace_ajax('loadScripts', scripts, function () {

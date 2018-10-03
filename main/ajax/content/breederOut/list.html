@@ -29,7 +29,7 @@
                                     </select>
                                 </div>
                                 <div class="box">
-                                    <span>月龄</span> <input type="text" name="moonAge" value=""
+                                    <span>淘汰月龄</span> <input type="text" name="base.moonAge" value=""
                                                            style="height:25px;width:107px;">
                                 </div>
                                 <div class="box">
@@ -47,6 +47,10 @@
                                         <option v-for="fatherReason in data9" :value="fatherReason.id">{{fatherReason.name}}
                                         </option>
                                     </select>
+                                </div>
+								 <div class="box">
+                                    <span>出生日期</span>
+                                    <input type="text" name="base.birthDay" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
                                 </div>
                                 <div class="box">
                                     <span>淘汰日期</span>
@@ -117,7 +121,7 @@
                         <th>品种</th>
                         <th>性别</th>
                         <th>繁殖状态</th>
-                        <th>月龄</th>
+                        <th>淘汰月龄</th>
                         <th>淘汰日期</th>
                         <th>淘汰原因</th>
                         <th>淘汰详因</th>

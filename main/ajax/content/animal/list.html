@@ -145,7 +145,7 @@
                                 <option value="6">育淘待审</option>
                                 <option value="7">死亡待审</option>
                                 <option value="9">销售待审</option>
-                                <option value="11">调拨待审</option>
+                                <option value="12">调拨待审</option>
                                 <option value="">全部</option>
                                 <option value="99" style="color: red">存档</option>
                             </select>
@@ -233,7 +233,7 @@
                         <span class="lbl"></span>
                     </label>
                 </td>
-                <td><a @click="getxp(baseInfo.code)">{{baseInfo.code}}</a></td>
+                <td><a @dblclick="getxp(baseInfo.code)">{{baseInfo.code}}</a></td>
                 <td>{{baseInfo.rfid}}</td>
                 <td>{{baseInfo.breed==null?'':baseInfo.breed.breedName}}</td>
                 <td>
@@ -324,7 +324,7 @@
                     <span v-if="baseInfo.physiologyStatus=='7'">死亡待审</span>
                     <span v-if="baseInfo.physiologyStatus=='9'">销售待审</span>
                     <span v-if="baseInfo.physiologyStatus=='10'">已销售</span>
-                    <span v-if="baseInfo.physiologyStatus=='11'">调拨待审</span>
+                    <span v-if="baseInfo.physiologyStatus=='12'">调拨待审</span>
                     <span v-if="baseInfo.flag=='1'">存档</span>
                 </td>
                 <td>
@@ -433,7 +433,7 @@
                     <span v-if="baseInfo.base.physiologyStatus=='7'">死亡待审</span>
                     <span v-if="baseInfo.base.physiologyStatus=='9'">销售待审</span>
                     <span v-if="baseInfo.base.physiologyStatus=='10'">已销售</span>
-                    <span v-if="baseInfo.base.physiologyStatus=='11'">调拨待审</span>
+                    <span v-if="baseInfo.base.physiologyStatus=='12'">调拨待审</span>
                     <!--<span v-if="baseInfo.base.physiologyStatus=='13'">旧死淘</span>-->
                 </td>
                 <td>

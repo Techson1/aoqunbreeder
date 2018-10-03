@@ -29,7 +29,7 @@
                                     </select>
                                 </div>
                                 <div class="box">
-                                    <span>月龄</span> <input type="text" name="moonAge" value="" style="height:25px;width:107px;">
+                                    <span>淘汰月龄</span> <input type="text" name="base.moonAge" value="" style="height:25px;width:107px;">
                                 </div>
                                 <div class="box">
                                     <span>圈舍</span>
@@ -38,6 +38,10 @@
                                         <option v-for="paddock in data8" :value="paddock.id">{{paddock.name}}
                                         </option>
                                     </select>
+                                </div>
+								<div class="box">
+                                    <span>出生日期</span>
+                                    <input type="text" name="base.birthDay" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
                                 </div>
                                 <div class="box">
                                     <span>淘汰日期</span>
@@ -107,8 +111,8 @@
                         </th>
                         <th>可视耳号</th>
                         <th>电子耳号</th>
+						 <th>母号</th>
                         <th>父号</th>
-                        <th>母号</th>
                         <th>出生日期</th>
                         <th>品种</th>
                         <th>性别</th>
