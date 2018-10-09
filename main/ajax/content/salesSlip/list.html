@@ -13,7 +13,7 @@
                                     <input type="text" name="customer.firstName" value="" style="height:25px;width:107px;">
                                 </div>
 								 <div class="box">
-                                    <span>联系人</span>
+                                    <span>业务员</span>
                                     <input type="text" name="contact.firstName" value="" style="height:25px;width:107px;">
                                 </div>
                                 <div class="box">
@@ -150,7 +150,7 @@
                             <span v-if="sales.checkFlag=='0'" style="color: red">未复核</span>
                             <span v-if="sales.checkFlag=='1'" style="color: green">已复核</span>
                         </td>
-                        <td><span v-if="sales.contact!=null">{{sales.contact.firstName}}</span></td>
+                        <td><span v-if="sales.contact!=null">{{sales.contact.abbreviation}}</span></td>
                         <td>{{sales.recorder}}</td>
                     </tr>
                     </tbody>
