@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="box">
                                     <span>死亡日期</span>
-                                    <input type="text" name="dateAssistStart" value="" class="datep" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">&nbsp;到&nbsp;
+                                    <input type="text" name="dateAssistStart" value="" class="start" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">&nbsp;到&nbsp;
                                     <input type="text" name="dateAssistEnd" value="" class="end" readonly="readonly" style="height:25px;width:107px;" ondblclick="clearDate()">
                                 </div>
                                 <div class="box">
@@ -69,7 +69,7 @@
                         <div>
                             <a href="#page/death/add" class="btn btn-xs btn-success add"
                                style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 添加死亡</a>
-                            <a href="javascript:exports('deathdisposal/export?','base.org.id')" class="btn btn-xs btn-success add"
+                            <a href="javascript:exportDatas('deathdisposal/exportAll?','base.org.id')" class="btn btn-xs btn-success add"
                                style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
                             <a @click="editVerify('#page/death/edit','deathdisposal/updateAndDelVerify')" class="btn btn-xs btn-success edit"
                                style="padding:1px 5px;border-radius:5px;"><i
@@ -262,5 +262,24 @@
             root.loadPama2('deathDisposalReason/parentFlagList/4');
         })
     });
+function exportDatas(url,org){
+    exportsUrl=url;
+    exportsorg=org;
+    //页面层
+    
+	layer.confirm('确认导出?', {icon: 3, title:'导出查询结果数据'}, function(index){
+      exportsAllinfo();
+     layer.close(index);
+  });
+}
+//导出Excel
+function exportsAllinfo() {
+ layer.closeAll();
+    window.target='_blank';
+    // alert(base_url+exportsUrl+$(".searchForm").serialize()+"&number="+$('#number').val()+'&'+exportsorg+"="+JSON.parse(localStorage.userInfo).organization.id)
+    //window.location.href=
+	var opurl=base_url+exportsUrl+$(".searchForm").serialize()+'&'+exportsorg+"="+JSON.parse(localStorage.userInfo).organization.id;
+    window.open(opurl);  
+	}
 </script>
 <script src="js/base-vue.js"></script>

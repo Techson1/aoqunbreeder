@@ -186,5 +186,24 @@
             root.loadPama('breed/all')
         })
     });
+		function exportDatas(url,org){
+    exportsUrl=url;
+    exportsorg=org;
+    //页面层
+    
+	layer.confirm('确认导出?', {icon: 3, title:'导出查询结果数据'}, function(index){
+      exportsAllinfo();
+     layer.close(index);
+  });
+}
+//导出Excel
+function exportsAllinfo() {
+ layer.closeAll();
+    window.target='_blank';
+    // alert(base_url+exportsUrl+$(".searchForm").serialize()+"&number="+$('#number').val()+'&'+exportsorg+"="+JSON.parse(localStorage.userInfo).organization.id)
+    //window.location.href=
+	var opurl=base_url+exportsUrl+$(".searchForm").serialize()+'&'+exportsorg+"="+JSON.parse(localStorage.userInfo).organization.id;
+    window.open(opurl);  
+	}
 </script>
 <script src="js/base-vue.js"></script>

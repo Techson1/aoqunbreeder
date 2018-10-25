@@ -69,7 +69,7 @@
                         <div>
                             <a href="#page/diseaseOut/add" class="btn btn-xs btn-success add"
                                style="padding:1px 5px;border-radius:5px;"><i class="fa fa-plus"></i> 添加淘汰</a>
-                            <a href="javascript:exports('illnessWeed/export?','base.org.id')" class="btn btn-xs btn-success add"
+                            <a href="javascript:exportDatas('illnessWeed/exportAll?','org.id')" class="btn btn-xs btn-success add"
                                style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
                             <a @click="editVerify('#page/diseaseOut/edit','illnessWeed/updateAndDelVerify')" class="btn btn-xs btn-success edit"
                                style="padding:1px 5px;border-radius:5px;"><i class="fa fa-pencil-square-o"></i> 修改</a>
@@ -246,7 +246,7 @@
 </div>
 
 <script type="text/javascript">
-    localStorage.url_list = "illnessWeed/list?base.org.id="+JSON.parse(localStorage.userInfo).organization.id;
+    localStorage.url_list = "illnessWeed/list?org.id="+JSON.parse(localStorage.userInfo).organization.id;
     localStorage.delRelation = "illnessWeed/delete/";
     var scripts = [null, null]
     $('.page-content-area').ace_ajax('loadScripts', scripts, function () {
@@ -257,5 +257,41 @@
             root.loadPama2('deathDisposalReason/parentFlagList/2');
         })
     });
+	function exportDatas(url,org){
+    exportsUrl=url;
+    exportsorg=org;
+    //页面层
+    
+	layer.confirm('确认导出?', {icon: 3, title:'导出查询结果数据'}, function(index){
+            
+	 exportsAllinfo();
+     layer.close(index);
+  });
+}
+//导出Excel
+function exportsAllinfo() {
+/**var opurl=base_url+exportsUrl+$(".searchForm").serialize()+'&'+exportsorg+"="+JSON.parse(localStorage.userInfo).organization.id;
+console.log(opurl);
+layer.open({
+  title:'正在导出数据....',
+  type: 2, 
+  content: [opurl, 'no'], //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+  success: function(layero, index){
+    console.log(layero, index);
+	layer.close(index);
+  }
+ 
+});**/
+ layer.closeAll();
+    window.target='_blank';
+    // alert(base_url+exportsUrl+$(".searchForm").serialize()+"&number="+$('#number').val()+'&'+exportsorg+"="+JSON.parse(localStorage.userInfo).organization.id)
+    //window.location.href=
+	var opurl=base_url+exportsUrl+$(".searchForm").serialize()+'&'+exportsorg+"="+JSON.parse(localStorage.userInfo).organization.id;
+	console.log(opurl);
+    window.open(opurl);  
+
+ //layer.closeAll();
+   
+}
 </script>
 <script src="js/base-vue.js"></script>

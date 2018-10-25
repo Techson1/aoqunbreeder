@@ -171,7 +171,7 @@
                 <div>
                     <a class="btn btn-xs btn-success add" @click="copyToGroup()"
                        style="padding:1px 5px;border-radius:5px;"><i class="fa fa-copyright"></i> 复制到群组</a>
-                    <a href="javascript:exports('baseInfo/export?','org.id')" class="btn btn-xs btn-success add"
+                    <a href="javascript:exportDatas('baseInfo/exportAll?','org.id')" class="btn btn-xs btn-success add"
                        style="padding:1px 5px;border-radius:5px;"><i class="fa fa-upload"></i> 数据导出</a>
                     <ul class="pagination pull-right">
                         <li><a>共：{{data.totalElements}}</a></li>
@@ -606,6 +606,25 @@
         else
             $("#breedingStateValue").val("");
     }
+	function exportDatas(url,org){
+    exportsUrl=url;
+    exportsorg=org;
+    //页面层
+    
+	layer.confirm('确认导出?', {icon: 3, title:'导出查询结果数据'}, function(index){
+      exportsAllinfo();
+     layer.close(index);
+});
+}
+//导出Excel
+function exportsAllinfo() {
+ layer.closeAll();
+    window.target='_blank';
+    // alert(base_url+exportsUrl+$(".searchForm").serialize()+"&number="+$('#number').val()+'&'+exportsorg+"="+JSON.parse(localStorage.userInfo).organization.id)
+    //window.location.href=
+	var opurl=base_url+exportsUrl+$(".searchForm").serialize()+'&'+exportsorg+"="+JSON.parse(localStorage.userInfo).organization.id;
+    window.open(opurl);  
+	}
 
     function getCross(id) {
         $("#breedingStateValue").val($('#'+id).val())
